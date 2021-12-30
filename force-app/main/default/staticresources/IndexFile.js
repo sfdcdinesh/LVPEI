@@ -1,0 +1,1 @@
+document.getElementById("deathtime").tabIndex = '6';

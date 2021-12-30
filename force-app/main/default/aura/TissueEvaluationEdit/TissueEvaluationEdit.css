@@ -1,0 +1,28 @@
+.THIS .slds-page-header {
+    background: #f3f3f2;
+    border: 1px solid #ccc;
+    padding: 4px 10px;
+    margin-top: 10px;
+}
+
+.THIS .slds-file-selector__text{
+    display:none!important;
+}
+
+.THIS .save-btn{
+    margin-top:20px;
+}
+.THIS.slds-spinner_container {
+    z-index: 10000;
+    position: fixed;
+}
+
+.THIS .slds-p-around--medium {
+    border: 1px solid #ecebea;
+    background: #fff;
+}
+
+.THIS .tissuefomr-btn{
+  margin-top:20px;
+    
+}

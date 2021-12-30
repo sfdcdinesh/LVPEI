@@ -1,0 +1,608 @@
+<aura:component controller="PlacementController" implements="flexipage:availableForAllPageTypes,lightning:actionOverride,force:hasRecordId" access="global">
+    <aura:attribute name="placement" type="Placement__c" default="{'sObjecttype' : 'Placement__c'}"/>
+    <aura:attribute name="request" type="Request__c" default="{'sObjecttype' : 'Request__c'}"/>
+    <aura:attribute name="runningUser" type="sObject"/>
+    <force:recordData aura:id="forceRecord"
+                      recordId="{!v.recordId}"
+                      targetFields="{!v.placement}"
+                      layoutType="FULL"
+                      mode="EDIT" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+     <!--Lookup Tab Index-->
+        <aura:handler name="oSelectedRecordEvent" event="c:selectedsObjectRecordEvent" action="{!c.focusToNextField}"/>
+    
+    <aura:attribute name="tissuelookup" type="sObject" default="{}"/>
+    <aura:attribute name="contactlookup" type="sObject" default="{}"/>
+    <aura:attribute name="requestlookup" type="sObject" default="{}"/>
+    <aura:attribute name="tocontactlookup" type="sObject" default="{}"/> 
+    <aura:attribute name="CompletedBylookup" type="sObject" default="{}"/>
+    <aura:attribute name="selectedreports" type="list"/>
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <aura:attribute name="viewreport" type="boolean" default="false"/>
+    <aura:attribute name="ref" type="Referral__c" default="{}"/>
+    
+    <aura:attribute name="tissuedetail" type="boolean"/>
+    <aura:attribute name="isOpened" type="boolean" default="false"/>  
+    
+    <aura:attribute name="RcdId" type="Id"/>  
+    <aura:attribute name="tisRtrn" type="Tissue_Return__c" default="{'sobjectType': 'Tissue_Return__c'}" /> 
+    <aura:attribute name="tissueReturn" type="Tissue_Return__c" default="{}"/> 
+    <aura:attribute name="plac" type="Placement__c" default="{}"/> 
+    <aura:attribute name="tissueId" type="string"/>    
+    <aura:attribute name="ETDateTime" type="Datetime"/>    
+    <aura:attribute name="lookupList" type="Map" default="{}"/>
+    <aura:attribute name="RequestType" type="string"/>
+    <aura:attribute name="branchAddress" type="String"/>
+    <aura:registerEvent name="tissueReturnId" type="c:TissueReturnId"/>
+    <aura:handler name="tissueReturnId" event="c:TissueReturnId" action="{!c.getTissueReturnId}"/>
+    
+    <aura:attribute name="GenreList" type="List" default="[]" description="Genre Picklist Values"/>
+    <aura:attribute name="selectedGenreList" type="List" default="[]" description="Selected Genre Picklist Values"/>
+     <style>
+    .slds-template_default, html{
+        background:#fff!important;
+     
+        }
+    .slds-brand-band:after, .slds-brand-band:before{
+        background-image:none!important;
+        }
+         
+    
+         .title-heading {
+    background: #005fb2;
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+    padding: 8px 0px;
+    margin-bottom: 20px;
+}
+    </style>
+    <!--HEADER TAG STARTS-->
+    <div class="slds-container--large slds-align_absolute-center">
+       <div class="slds-grid slds-wrap slds-size_1-of-1">
+     <div class="slds-size_1-of-1" style="background:#005fb2;color:#fff;">
+        
+            <lightning:layoutItem padding="horizontal-small">
+                
+                <div class="page-section page-header slds-p-around_x-small">
+                    <h3 class="slds-text-heading--large"> Edit Placement</h3>
+                </div> 
+            </lightning:layoutItem>
+      </div> 
+    <!--HEADER TAG ENDS-->
+    <!--FORM STARTS-->
+    <!-- General Section-->
+    <div class="slds-grid slds-wrap slds-size_1-of-1">     
+            <div class="slds-col slds-size_1-of-1">
+                
+        <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.one}">
+            <section class="slds-clearfix">
+                <div class="slds-float--left ">
+                    <lightning:icon class="slds-hide" aura:id="one" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                    <lightning:icon class="slds-show" aura:id="one" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                </div>
+                <div class="slds-m-left--large sections">General</div>
+            </section>
+        </div>
+        <div class="slds-show slds-p-around--medium" aura:id="one">
+           
+                <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                        <div class="slds-col slds-size_6-of-12">
+                        
+                            
+                                
+                                <div class="slds-form-element">
+                                    <lightning:input  label="Placement ID"
+                                                     name="placementid"
+                                                     value="{!v.placement.Name}"
+                                                     disabled="true"/> 
+                                </div>
+                                <div>
+                                    <c:customLookup objectAPIName="Tissue_Evaluation__c	" IconName="standard:contact" selectedRecord="{!v.tissuelookup}" label="Select Tissue:"  TissueType="{!v.RequestType}"/>
+                                </div>                                
+                                <div class="slds-form-element">
+                                    <lightning:Select aura:id="TisDisp" label="Tissue Disposition" value="{!v.placement.Tissue_Disposition__c}" name="TisDisp"><br/><br/>
+                                            <option value="">...</option>
+                                            <option value="New/In Progress">In Progress</option>
+                                            <option value="Placed: Transplant">Placed: Transplant</option>
+                                            <option value="Placed: Research">Placed: Research</option>
+                                            <option value="Placed: Training">Placed: Training</option>
+                                            <option value="Discarded">Discarded</option>
+                                            <option value="Returned">Returned</option>
+                                   </lightning:Select>            
+                                </div>
+                                <div class="slds-form-element">
+                                    <lightning:textarea  label="Notes"
+                                                        name="notes"                                                                                                   
+                                                        value="{!v.placement.Notes__c}"/>                
+                                </div>
+                                                              
+                                                              
+                    </div>
+                    <!--LEFT SIDE FIELDS ENDS-->
+                    
+                    <!--RIGHT SIDE FIELDS STARTS-->
+                    
+                    
+                       
+                            <div class="slds-col slds-size_6-of-12">
+                                <div class="slds-form-element">
+                                    <ui:button label="Print All Forms" press="{!c.openModel}" class="slds-button slds-button_brand slds-m-top_large printbtn"/>            
+                                    <aura:if isTrue="{!v.isOpen}">                                        
+                                        <!--###### MODAL BOX Start######-->                                         
+                                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                            <div class="slds-modal__container">
+                                                <!-- ###### MODAL BOX HEADER Start ######-->
+                                                <aura:if isTrue="{!v.viewreport}">
+                                                    <header class="slds-modal__header">
+                                                        <lightning:buttonIcon iconName="utility:close"
+                                                                              onclick="{! c.closeModel }"
+                                                                              alternativeText="close"
+                                                                              variant="bare-inverse"
+                                                                              class="slds-modal__close"/>                                                        
+                                                                                                               <div class="slds-form-element" style="text-align:left;">
+                                                            <div class="slds-form-element__control">    
+                                                                <div class="check-div">
+                                                                    <ui:inputCheckbox aura:id="TDForm" name="tissue"/>
+                                                                    <label class="slds-checkbox__label" for="tissue">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span class="slds-form-element__label">Tissue Detail Form</span>
+                                                                    </label>
+                                                                </div></div></div>
+                                                        
+                                                        <div class="slds-form-element" style="text-align:left;">
+                                                            <div class="slds-form-element__control">    
+                                                                <div class="check-div">                                                           
+                                                                    <ui:inputCheckbox aura:id="ARForm"  name="advreactf"/>                                                            
+                                                                    <label class="slds-checkbox__label" for="advreactf">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span class="slds-form-element__label">Adverse Reaction Form</span>
+                                                                    </label>
+                                                                </div></div></div>
+                                                        
+                                                        <div class="slds-form-element" style="text-align:left;">
+                                                            <div class="slds-form-element__control">    
+                                                                <div class="check-div">                                                            
+                                                                    <ui:inputCheckbox aura:id="ACForm"  name="attcorsurf"/>                                                            
+                                                                    <label class="slds-checkbox__label" for="attcorsurf">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span class="slds-form-element__label">Attention Corneal Surgeon</span>
+                                                                    </label>
+                                                                </div></div></div>
+                                                        <div class="slds-form-element" style="text-align:left;">
+                                                            <div class="slds-form-element__control">    
+                                                                <div class="check-div">                                                            
+                                                                    <ui:inputCheckbox aura:id="RIForm"  name="recinfof"/>                                                            
+                                                                    <label class="slds-checkbox__label" for="recinfof">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span class="slds-form-element__label">Recipient Information Form</span>
+                                                                    </label>
+                                                                </div></div></div>
+                                                        <div class="slds-form-element" style="text-align:left;">
+                                                            <div class="slds-form-element__control">    
+                                                                <div class="check-div">                                                            
+                                                                    <ui:inputCheckbox aura:id="RQForm"  name="reqf"/>                                                            
+                                                                    <label class="slds-checkbox__label" for="reqf">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span class="slds-form-element__label">Request Form</span>
+                                                                    </label>
+                                                                </div></div></div>
+                                                        <div class="slds-form-element" style="text-align:left;">
+                                                            <div class="slds-form-element__control">    
+                                                                <div class="check-div">                                                            
+                                                                    <ui:inputCheckbox aura:id="SLForm" name="shipping"/>                                                            
+                                                                    <label class="slds-checkbox__label" for="shipping">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span class="slds-form-element__label">Shipment label</span>
+                                                                    </label>
+                                                                </div></div></div><ui:button label="View Report" press="{!c.viewReport}" class="slds-button slds-button--neutral slds-button slds-button_brand"/>                                                    
+                                                    </header>
+                                                    <!--###### MODAL BOX BODY Part Start######-->
+                                                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                                        <!--Body Content-->
+                                                    </div>                                  
+                                                    <aura:set attribute="else">
+                                                        <header class="slds-modal__header">
+                                                            <lightning:buttonIcon iconName="utility:close"
+                                                                                  onclick="{! c.closeModel }"
+                                                                                  alternativeText="close"
+                                                                                  variant="bare-inverse"
+                                                                                  class="slds-modal__close"/>
+                                                            <div class="slds-float--left" style="cursor:pointer" onclick="{!c.goback}">
+                                                                <lightning:icon class="slds-show" aura:id="goback" iconName="utility:back" size="x-small" alternativeText="Go back"/>
+                                                            </div>
+                                                            <div class="slds-float--right" style="cursor:pointer" onclick="{!c.downloadpdf}">
+                                                                <lightning:icon class="slds-show" aura:id="getpdf" iconName="doctype:pdf" size="medium" alternativeText="Download PDF"/>                                                                
+                                                            </div>                                                            
+                                                        </header>
+                                                        <!--###### MODAL BOX BODY Part Start######-->
+                                                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">                                                            
+                                                            <c:ViewReports referralrecord="{!v.ref}"/>
+                                                            <!--Body Content-->
+                                                        </div>                            
+                                                    </aura:set>
+                                                </aura:if>
+                                                
+                                            </div>
+                                        </section>                                                                                                                            
+                                        <div class="slds-backdrop slds-backdrop_open"></div>
+                                        <!--###### MODAL BOX Part END Here ######-->                                            
+                                    </aura:if>
+                                </div>
+                                <div class="slds-form-element">
+                                    <lightning:input type="string" name="owner" value="{!v.runningUser.LastName+' '+v.runningUser.FirstName}" label="Owner" disabled="true" required="true"/>
+                                </div>
+                                <div class="slds-form-element">
+                                    
+                                           
+                                    <lightning:input  type="string"  value="{!v.placement.Request_ID__c}" label="Request ID" disabled="true" onclick = "{!c.navigateToRequest}"/>
+                                </div>
+                                <div class="slds-form-element">
+                                    <lightning:Select  value="{!v.placement.Placement_Status__c}" name="placementstatus" onchange="{!c.openModelreturn}" label="Placement Status">
+                                        <option value="">--</option>
+                                        <option value="Not Shipped">Not Shipped</option>
+                                        <option value="Shipped">Shipped</option>
+                                        <option value="Returned">Returned</option>
+                                    </lightning:Select>
+                                </div>
+                                
+                                
+                                <aura:if isTrue="{!and(v.placement.Placement_Status__c=='Returned',v.isOpened)}">
+                                    
+                                    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open" >
+                                        
+                                        <div class="slds-container--large slds-align_absolute-center">
+                                            <div class="slds-col slds-size_1-of-1" >
+                                                <div class="slds-modal__container">
+                                                    <!-- ###### MODAL BOX HEADER Start ######-->
+                                                    <header class="slds-modal__header">
+                                                        <lightning:buttonIcon iconName="utility:close"
+                                                                              onclick="{! c.closeModelReturn }"
+                                                                              alternativeText="close"
+                                                                              variant="bare-inverse"
+                                                                              class="slds-modal__close"/>
+                                                        <lightning:layoutItem padding="horizontal-small">
+                                                            <div class="page-section page-header" >
+                                                                <h1 class="slds-text-heading--large">Tissue Return Check List</h1>
+                                                                <h3 class="slds-text-heading--label" >{!v.tisRtrn.Tissue_Id1__c}</h3>
+                                                            </div>
+                                                        </lightning:layoutItem>
+                                                    </header>
+                                                    <!--###### MODAL BOX BODY Part Start######-->
+                                                    
+                                                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="height:430px;">
+                                                        <div class="title-heading" > Tissue Tracking</div>
+                                                        
+                                                        <div class="slds-form-element " >
+                                                            <lightning:input aura:id="tissueReturnid" label="Sent to" value="{!v.tisRtrn.Sent_to__c}" name="Sentto" /> 
+                                                        </div>
+                                                        <div class="slds-form-element">
+                                                            <lightning:input aura:id="tissueReturnid" type="datetime" value="{!v.tisRtrn.Date_Time_Sent__c}" name="date"  label="Date/Time Sent" />  
+                                                        </div>
+                                                        <div class="slds-form-element">
+                                                            <lightning:Select aura:id="tissueReturnid" value="{!v.tisRtrn.Reason_for_Return__c}" name="reasonforReturn" label="Reason for Return">
+                                                                <option value="">--</option>
+                                                                <option value="Surgery Cancelled">Surgery Cancelled</option>
+                                                                <option value="Surgery Postponed">Surgery Postponed</option>
+                                                                <option value="Patient Not Fit for Surgery">Patient Not Fit for Surgery</option>
+                                                                <option value="Surgery Issue">Surgery Issue</option>
+                                                                <option value="Tissue Quality Issue">Tissue Quality Issue</option>
+                                                                <option value="Sterility Issue">Sterility Issue</option>
+                                                                <option value="Media Issue">Media Issue</option>
+                                                                <option value="Tissue Expired">Tissue Expired</option>
+                                                                <option value="Temperature Issue">Temperature Issue</option>
+                                                                <option value="Others">Others</option>
+                                                            </lightning:Select>
+                                                        </div>
+                                                        <aura:if isTrue="{!v.tisRtrn.Reason_for_Return__c=='Others'}">
+                                                            <div class="slds-form-element " >
+                                                                <lightning:input aura:id="tissueReturnid" value="{!v.tisRtrn.If_Others_Specify_Reason__c}" label="If Others Specify" name="If Others Specify" /> 
+                                                            </div>
+                                                        </aura:if>
+                                                        <div class="slds-form-element">
+                                                            <lightning:Select aura:id="tissueReturnid" value="{!v.tisRtrn.Method_of_Transportation__c}" name="methodoftransport" label="Method of Transport to Eye Bank">
+                                                                <option value="">--</option>
+                                                                <option value="Cool Keg">Cool Keg</option>
+                                                                <option value="Thermocol Box">Thermocol Box</option>
+                                                                <option value="Others">Others</option>
+                                                            </lightning:Select>
+                                                        </div>
+                                                        <aura:if isTrue="{!v.tisRtrn.Method_of_Transportation__c=='Others'}">
+                                                            <div class="slds-form-element " >
+                                                                <lightning:input aura:id="tissueReturnid" value="{!v.tisRtrn.If_Other_Specify_Transportation__c}" label="If Other Specify" name="If Other Specify" /> 
+                                                            </div>
+                                                        </aura:if>
+                                                        <div class="slds-form-element">
+                                                            <lightning:Select aura:id="tissueReturnid" value="{!v.tisRtrn.Storage_Conditions_During_Absence__c}" name="StorageConditionsDuringAbsence" label="Storage Conditions During Absence">
+                                                                <option value="">--</option>
+                                                                <option value="2-8 celsius">2-8 celsius</option>
+                                                                <option value="Cold Chain Not Maintained">Cold Chain Not Maintained</option>
+                                                                <option value="Warm Upon Arrival">Warm Upon Arrival</option>
+                                                            </lightning:Select>
+                                                        </div>
+                                                        <div class="slds-form-element " >
+                                                            <lightning:input aura:id="tissueReturnid" value="{!v.tisRtrn.Total_Time_Spent_Out_Cooling_Range__c}" label="Total Time Spent Out Cooling Range" name="TotalTimeSpentOutCoolingRange" /> 
+                                                        </div>
+                                                        <div class="title-heading" style="margin-top:20px;">Tissue Receipt Checklist </div> 
+                                                        
+                                                        <div class="slds-form-element">
+                                                            <lightning:Select aura:id="tissueReturnid" value="{!v.tisRtrn.Tamper_Evident_Seal_Intact__c}" name="tamper" label="Tamper Evident Seal(s) are Intact and do not Appear to have been Tampered With ?">
+                                                                <option value="No">No</option>
+                                                                <option value="Yes">Yes</option>
+                                                            </lightning:Select>
+                                                        </div>  
+                                                        <div class="slds-form-element">
+                                                            <lightning:Select aura:id="tissueReturnid" value="{!v.tisRtrn.Tissue_Have_Been_Refrigerated__c}" name="refrigerated" label="Tissue is Cold and Appears to Have Been Refrigerated ?">
+                                                                <option value="No">No</option>
+                                                                <option value="Yes">Yes</option>
+                                                            </lightning:Select>
+                                                        </div>  
+                                                        <div class="slds-form-element">
+                                                            <lightning:Select aura:id="tissueReturnid" value="{!v.tisRtrn.Vial_or_Viewing_Chamber_Not_Broken__c}" name="viewingChamber" label="The Vial or Viewing Chamber is Not Broken or Damaged ?">
+                                                                <option value="No">No</option>
+                                                                <option value="Yes">Yes</option>
+                                                            </lightning:Select>
+                                                        </div> 
+                                                        <div class="slds-form-element">
+                                                            <lightning:Select aura:id="tissueReturnid" value="{!v.tisRtrn.Accompanying_Paperwork_Matches_Donor_No__c}" name="accompanying" label="The Accompanying Paperwork Matches the Donor Number ?">
+                                                                <option value="No">No</option>
+                                                                <option value="Yes">Yes</option>
+                                                            </lightning:Select>
+                                                        </div> 
+                                                        <div class="slds-form-element">
+                                                            <lightning:Select aura:id="tissueReturnid" value="{!v.tisRtrn.Optisol_Checked_Visually_Color__c}" name="optisol" label="Optisol Checked Visually for Consistency of Color ?">
+                                                                <option value="No">No</option>
+                                                                <option value="Yes">Yes</option>
+                                                            </lightning:Select>
+                                                        </div>
+                                                        <div class="slds-form-element">
+                                                            <lightning:input aura:id="datereturn" type="datetime" value="{!v.tisRtrn.Date_Time_Returned__c}" name="datetime"  label="Date/Time Returned to Eye Bank" />  
+                                                        </div>
+                                                        <div>
+                                                            <c:customLookup contactRole="completedBy" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.CompletedBylookup}" label="Completed By"/>
+                                                        </div>
+                                                         
+                                                    </div>
+                                                    <!--###### MODAL BOX FOOTER Part Start ######-->
+                                                  <footer class="slds-modal__footer">
+                                                        <lightning:button variant="brand" 
+                                                                          label="Save"
+                                                                          title="Save"
+                                                                          onclick="{!c.savemodal}"/>
+                                                        <lightning:button variant="neutral" 
+                                                                          label="Cancel"
+                                                                          title="Cancel"
+                                                                          onclick="{!c.closeModelReturn}"/>
+                                                    </footer>  
+                                                </div></div></div>
+                                    </section>
+                                    <div class="slds-backdrop slds-backdrop_open"></div>
+                                </aura:if> 
+                                
+                                
+                                <div class="slds-form-element">
+                                    <lightning:input type="date" aura:id="placementform"  name="shipmentdate" value="{!v.placement.Shipment_Date__c}" label="Shipment Date" />
+                                </div>
+                                
+                                <div class="slds-form-element">
+                                    <aura:if isTrue="{!v.placement.Placement_Status__c=='Returned'}">
+                                    <lightning:button variant="brand" aura:id="RecordId" label="View Tissue Return CheckList" onclick="{!c.tissueReturndownloadpdf}"/>  
+                                    </aura:if>
+                                    </div>
+                            </div>                            
+                                                               
+                    
+                    <!--RIGHT SIDE FIELDS ENDS-->                    
+                </div>            
+                                       
+        </div>         
+    </div>
+    <!-- General Section End-->
+    
+    <!-- Follow-Up Section-->
+   <div class="slds-col slds-size_1-of-1">       
+        <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.two}">
+            <section class="slds-clearfix">
+                <div class="slds-float--left ">
+                    <lightning:icon class="slds-show" aura:id="two" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                    <lightning:icon class="slds-hide" aura:id="two" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                </div>
+                <div class="slds-m-left--large sections">Follow - Up</div>
+            </section>
+        </div>
+        <div class="slds-hide slds-p-around--medium" aura:id="two">
+            
+                
+                    <!--LEFT SIDE FIELDS STARTS-->
+                    
+                        <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                       
+                            <div class="slds-col slds-size_6-of-12" style="margin-top:13px;">                            
+                                <div class="slds-form-element">
+                                    <lightning:select  label="BU Responsible for Follow-Up"
+                                                      name="bufollowup"
+                                                      value="{!v.placement.BU_Responsible_for_Follow_Up__c}"> 
+                                        <option value="--">--</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </lightning:select>
+                                </div>                                                                                                                                                                                                       
+                                <div class="slds-form-element">
+                                    <lightning:input type="date"  label="Date Initial Info Received"
+                                                     name="dateinitialinfo"                                                                                                   
+                                                     value="{!v.placement.Date_Initial_Info_Received__c}"/>                
+                                </div>
+                                <div class="slds-form-element">
+                                    <lightning:input type="date"  label="Date 1st Follow-Up Request Sent"
+                                                     name="firstfollowup"                                                                                                  
+                                                     value="{!v.placement.Date_1st_Follow_Up_Request_Sent__c}"/>                
+                                </div>
+                                <div class="slds-form-element">
+                                    <lightning:input type="date"  label="Date Recipient Info Completed on"
+                                                     name="daterecipient"                                                                                                  
+                                                     value="{!v.placement.Date_Recipient_Info_Completed_on__c}"/>                
+                                </div>
+                                <div class="slds-form-element">
+                                    <lightning:input type="date"  label="Date 3-6 month Follow-Up Form Sent"
+                                                     name="threesixfollowup"                                                                                                  
+                                                     value="{!v.placement.Date_3_6_month_Follow_Up_Form_Sent__c}"/>                
+                                </div>
+                            </div>                                    
+                                                              
+                    
+                    <!--LEFT SIDE FIELDS ENDS-->
+                    
+                    <!--RIGHT SIDE FIELDS STARTS-->
+                    
+                   
+                            <div class="slds-col slds-size_6-of-12"> 
+                                <div class="slds-form-element">                                                                        
+                                </div>
+                                <div class="slds-form-element">                                                                        
+                                </div>
+                                <div class="slds-form-element" style="margin-top:13px;">
+                                    <lightning:input type="date"  label="Date 2nd Follow-Up Request Sent"
+                                                     name="secondfollowup"
+                                                     value="{!v.placement.Date_2nd_Follow_Up_Request_Sent__c}"/> 
+                                </div>
+                                <div class="slds-form-element">                                    
+                                </div>
+                                <div class="slds-form-element">
+                                    <lightning:input type="date"  label="Date 3-6 Month Follow-Up Form Received"
+                                                     name="threesixfollowupreceived"
+                                                     value="{!v.placement.Date_3_6_Month_Follow_up_Form_Received__c}"/> 
+                                </div>
+                            </div>                            
+                                                               
+                    </div>
+                    <!--RIGHT SIDE FIELDS ENDS-->                    
+                       
+                                     
+        </div>   </div>      
+   
+    <!-- Follow-Up Section End -->  
+    
+    <!-- Shipment Information Section-->
+    <div class="slds-col slds-size_1-of-1">     
+        <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.three}">
+            <section class="slds-clearfix">
+                <div class="slds-float--left ">
+                    <lightning:icon class="slds-show" aura:id="three" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                    <lightning:icon class="slds-hide" aura:id="three" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                </div>
+                <div class="slds-m-left--large sections">Shipment Information</div>
+            </section>
+        </div>
+        
+        <div class="slds-hide slds-p-around--medium" aura:id="three">
+           
+                <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                    <!--LEFT SIDE FIELDS STARTS-->
+                   <div class="slds-col slds-size_6-of-12" style="margin-top:22px;">  
+                                                  
+                                <div class="slds-form-element">
+                                    <lightning:select  label="Purpose for New Shipment"
+                                                      name="newshipment"
+                                                      value="{!v.placement.Purpose_for_New_Shipment__c}"> 
+                                        <option value="">--</option>
+                                        <option value="Shipment">Shipment</option>
+                                        <option value="Return">Return</option>
+                                    </lightning:select>
+                                </div>                                                                                                                                                                                                       
+                                <div class="slds-form-element" style="margin-top:13px;">
+                                    <lightning:select  label="Ship Via"
+                                                      name="shipvia"                                                                                                   
+                                                      value="{!v.placement.Ship_Via__c}">    
+                                        <option value="">--</option>
+                                        <option value="By Hand">By Hand</option>
+                                        <option value="Air">Air</option>
+                                        <option value="Train">Train</option>
+                                        <option value="Bus">Bus</option>
+                                        <option value="Road">Road</option>
+                                        <option value="Other">Other</option>                                        
+                                    </lightning:select>
+                                </div>
+                                <div class="slds-form-element">
+                                    <lightning:input  label="Origin City"
+                                                     name="origincity"                                                                                                  
+                                                     value="{!v.placement.Origin_City__c}"/>                
+                                </div>
+                                <div class="slds-form-element">
+                                    <lightning:input  label="Destination City"
+                                                     name="destinationcity"                                                                                                  
+                                                     value="{!v.placement.Destination_City__c}"/>                
+                                </div>
+                                <div class="slds-form-element">
+                                    <lightning:input type="datetime"  label="ETD Date/Time"
+                                                     name="ETDdatetime"                                                                               
+                                                     value="{!v.placement.ETD_Date_Time__c}"/>                
+                                </div>
+                                
+                                <div class="slds-form-element">
+                                    <lightning:textarea  label="Comments"
+                                                        name="comments"                                                             
+                                                        value="{!v.placement.Comments__c}"/>                
+                                </div>
+                               <div class="slds-form-element">
+                                    <lightning:input aura:id="placementform" label="Airline"
+                                                     name="airline"                                                                                                  
+                                                     value="{!v.placement.Airline__c}"/>                
+                                </div>
+                                <div class="slds-form-element">
+                                    <lightning:input aura:id="placementform" label="Flight #"
+                                                     name="flight"                                                                                                  
+                                                     value="{!v.placement.Flight__c}"/>                
+                                </div>                                 
+                    </div>
+                    <!--LEFT SIDE FIELDS ENDS-->
+                    
+                    <!--RIGHT SIDE FIELDS STARTS-->
+                    
+                   <div class="slds-col slds-size_6-of-12">  
+                        
+                                <aura:if isTrue="{!v.placement.Ship_Via__c == 'By Hand'}">
+                                    <div>
+                                        <c:customLookup contactRole="handBy" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.contactlookup}" label="Hand Carried By/By Hand" objName="contact"/>
+                                    </div>
+                                </aura:if>                                
+                                <div class="slds-form-element" style="margin-top:2px;">                                                                        
+                                    <lightning:input type="datetime"  label="ETA Date/Time"
+                                                     name="ETAdatetime"
+                                                     value="{!v.placement.ETA_Date_Time__c}"/> 
+                                </div>
+                       <div class="slds-form-element">
+                           <lightning:textarea  label="From"
+                                               name="fromaddress"                                                                               
+                                               value="{!v.branchAddress}" disabled="true"/>              
+                                </div>
+                                <div>                                    
+                                    <c:customLookup contactRole="unitOrganisation" objectAPIName="Account" IconName="standard:account" selectedRecord="{!v.tocontactlookup}" label="To" objName="Hospital"/>
+                                </div>  
+                                <aura:if isTrue="{!v.tocontactlookup.Name != null }">                                    
+                                    <div class="slds-form-element">                                    
+                                        <lightning:textarea class="mailingaddress"  label="Address"
+                                                            name="address"
+                                                            value="{!v.tocontactlookup.Street_1__c +'\n'+v.tocontactlookup.Street_2__c+', '+v.tocontactlookup.State__c+', '+v.tocontactlookup.Zip_Postal_Code__c+'\n'+v.tocontactlookup.Country__c+'.'}" disabled="true"/> 
+                                    </div>
+                                    <div class="slds-form-element">                                    
+                                        <lightning:input  label="Mobile Phone"
+                                                         name="mobilephone"
+                                                         value="{!v.tocontactlookup.Phone}" disabled="true"/> 
+                                    </div>                                    
+                                </aura:if>                                
+                                                                  
+                    </div>
+                    <!--RIGHT SIDE FIELDS ENDS-->                    
+                </div>            
+                                    
+        </div>         
+    </div>
+    <!-- Shipment Information Section End -->   
+    <div class="slds-col slds-size_1-of-1 slds-align_absolute-center slds-p-bottom_large">
+        <lightning:button aura:id="save" label="Save"
+                          class="slds-m-top--medium savebtn"
+                          variant="brand"
+                          onclick="{!c.clickCreate}"/>    
+        </div> </div></div> </div> 
+</aura:component>

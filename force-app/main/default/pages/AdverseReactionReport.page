@@ -1,0 +1,409 @@
+<apex:page controller="ShipmentLabelPdfController" renderAs="PDF" cache="true" showheader="false" sidebar="false" applyHtmlTag="false" docType="html-5.0" standardStylesheets="false" >
+    <html>        
+        <head>                                    
+            <style>
+                
+                @page :left {
+                margin-left: 0.5cm;
+                margin-right: 0.5cm;
+                }
+                
+                @page :right {
+                margin-left: 0.5cm;
+                margin-right: 0.5cm;
+                }  
+                @page {
+                margin-top: 0.5cm;
+                margin-bottom: 0cm;
+                
+                }  
+                @media print {
+                table td{
+                padding-left:10px;
+                }
+                
+                }
+                
+                
+                @page 
+                @import url('https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i');
+                
+                }
+            </style> 
+        </head> 
+        <body style="font-family: 'Lato', sans-serif;font-size:12px;font-weight:400;">
+            
+            
+            <div  style="margin:0;padding:0;">   
+                <div style="width:100%;float:left;">
+                    <div  style="text-align:left;padding-bottom:20px;width:30%;float:left;">
+                        <img src="{!$Resource.RIEB_PDF}" style="width:55%;text-align:left"/>
+                    </div>
+                    
+                    
+                    <div style="width:30%;float:right;font-size:12px;float:right;">
+                        
+                        Ramayamma International Eye Bank,<br/>
+                        Kallam Anji Reddy Campus,<br/>
+                        L V Prasad Marg,<br/>
+                        Hyderabad, 500034,<br/>
+                        +91 040 68102514,<br/>
+                        Telangana.
+                    </div>     
+                </div>
+                <table style="width:100%;float:left;margin-top:25px;border:1px solid black;line-height:16px;" cellspacing="1" cellpadding="0" >
+                    <tbody>     
+                        <tr >
+                            <th colspan="6" style="text-align: center; border-bottom:0.5px solid black;padding:5px;0px;font-size:14px;" >
+                                <b>Adverse Reaction Report</b>     
+                            </th>                        
+                        </tr>
+                        
+                        <tr>
+                            <td colspan="2"  style="padding:2px;text-align:justify;font-size:12px;">The Receiving Surgeon is responsible for reporting any adverse reaction to the appropriate eye bank facility within 24 hours of the 
+                                occurence. A reportable adverse reaction is any communicable or other disease transmissible by, and attributable to, transplantation 
+                                of donor eye tissue, including infection (as manifested by endophthalmitis, keratitis, or systemic viral disease) and biologic 
+                                dysfucntion (such as immediate donor endothelial failure or donor corneal dystrophy). <strong>IF NO ADVERSE REACTION IS OBSERVED</strong> within 30 days, lease do signature at the end of the sheet &amp; place in recipient folder. <strong>IF AN ADVERSE REACTION IS OBSERVED</strong>, please 
+                                complete all items below, incomplete items will require follow-up.</td>
+                        </tr>
+                        <tr>
+                            <td bgcolor="#000000" style="padding:5px 0px; color:#fff;text-align:center;font-weight:600;border-right:2px solid #000;">SURGERY INFORMATION</td>
+                            <td bgcolor="#000000" style="padding:5px 0px; color:#fff;text-align:center;font-weight:600;border-left:2px solid #000;">RECIPIENT INFORMATION</td>
+                        </tr>
+                        <tr>
+                            <td bgcolor="#FFFFFF" style="padding:0px;border-right:1px solid #000;" valign="top" >
+                                <table width="100%"  cellspacing="2" cellpadding="0" style="font-size:12px;">
+                                    <tr>
+                                        <td >Surgeon Name:</td>
+                                        <td>{!req.Requesting_Surgeon__r.Name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Surgery Location:</td>
+                                        <td>{!req.Surgery_Location__r.Name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phone:</td>
+                                        <td>{!req.Mobile_Phone__c}</td>
+                                    </tr>
+                                </table>
+                                
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-size:12px;">
+                                    <tr>
+                                        <td colspan="2" bgcolor="#000000" style="color:#fff;text-align:center;padding:5px;font-weight:600;">DONOR INFORMATION</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Distributing Eye Bank:</td>
+                                        <td align="left">Ramayamma International Eye Bank</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tissue ID:</td>
+                                        <td align="left">{!plac.Select_Tissue__r.Name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Donor Age:</td>
+                                        <td align="left">{!ref.Age_of_Donor__c}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cause of Death:</td>
+                                        <td align="left">{!ref.Primary_Cause_of_Death__c}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Preservation Date-Time:</td>
+                                        <td align="left">
+                                            <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                                <apex:param value="{!rec.Cornea_Preservation_Date_Time__c+offset}"/>
+                                            </apex:outputText>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Death-Preservation 
+                                            Interval(HRS):</td>
+                                        <td align="left">
+                                            {!med.Death_to_Cornea_Preservation_Time__c} hrs
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Surgery Date-Time:</td>
+                                        <td align="left">
+                                             <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                                <apex:param value="{!req.Surgery_Date_Time__c+offset}"/>
+                                            </apex:outputText>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Death-Surgery Interval:</td>
+                                        <td align="left">{!diffDate} days </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Preservation Medium:</td>
+                                        <td align="left">{!tissue.Preservation_Medium__c}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Media Lot Number:</td>
+                                        <td align="left">{!tissue.Media_Lot__c}</td>
+                                    </tr>
+                                </table>
+                                
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-size:12px;">
+                                    <tr>
+                                        <td colspan="2" bgcolor="#000000" style="color:#fff;text-align:center;padding:5px;font-weight:600;">TISSUE SOURCE INFORMATION</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tissue Obtained From:</td>
+                                        <td align="left">Ramayamma International Eye Bank</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Recipient ID:</td>
+                                        <td align="left">{!req.Medical_Record__c}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tissue Distributed:</td>
+                                        <td align="left">{!req.Tissue_Type__c}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Imported Tissue:</td>
+                                        <td align="left">{!med.Tissue_Imported__c}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Origin Eye Bank:</td>
+                                        <td align="left">{!med.Origin_Eye_Bank__c}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Origin Eye Bank#:</td>
+                                        <td align="left">{!med.Origin_Eye_Bank_Tissue_ID__c}</td>
+                                    </tr>
+                                </table>
+                                
+                                
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-size:12px;">
+                                    <tr>
+                                        <td colspan="2" bgcolor="#000000" style="color:#fff;text-align:center;padding:5px;font-weight:600;">RECIPIENT OUTCOME</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Additional Surgery (Check Applicable):</td>
+                                        <td align="left">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Regraft</td>
+                                        <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Enucleation</td>
+                                    </tr>
+                                    <tr>
+                                        <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Other</td>
+                                        <td >&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-top:2px;">
+                                            Recent Vision (Check Applicable):</td>
+                                        <td align="left">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>No Light Perception</td>
+                                        <td ></td>
+                                    </tr>
+                                    <tr>
+                                        <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Light Perception-counting Fingers</td>
+                                        <td align="left"></td>
+                                    </tr>
+                                    <tr>
+                                        <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>6/60 Or Better</td>
+                                        <td align="left"></td>
+                                    </tr>
+                                </table></td>
+                            
+                            <td bgcolor="#FFFFFF" style="padding:0px;" valign="top">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-size:12px;">
+                                    <tr>
+                                        <td >Patient Name:</td>
+                                        <td>{!req.First_Name__c} {!req.Last_Name__c}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Patient ID/SSN:</td>
+                                        <td>{!req.Medical_Record__c}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td width="12%" align="left">Age</td>
+                                                <td width="88%">{!req.Age__c}</td>
+                                            </tr>
+                                            </table></td>
+                                        <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td width="22%">Gender:</td>
+                                                <td width="78%">{!req.Gender__c}</td>
+                                            </tr>
+                                            </table></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pre-Operative Diagnosis:</td>
+                                        <td>{!req.Pre_Surgical_Diagnosis__c}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Surgery Date:</td>
+                                        <td>
+                                             <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                                <apex:param value="{!req.Surgery_Date_Time__c+offset}"/>
+                                            </apex:outputText>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Procedure:</td>
+                                        <td>{!req.Surgery__c}</td>
+                                    </tr>
+                                </table>
+                                
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-size:12px;">
+                                    <tr>
+                                        <td colspan="2" bgcolor="#000000" style="color:#fff;text-align:center;padding:5px;font-weight:600;">ADVERSE REACTION</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="45%">Date of Diagnosis:</td>
+                                        <td width="55%" align="left"  ><hr style="border-bottom:1px solid #000;margin-top:30px;width:100px;float:left;" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td align="left">(day,month,year)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>(Check One)</td>
+                                        <td align="left">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Primary Graft Failure</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Intraocular Infection (Microbial Endophthalmitis)</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Corneal Infection (Microbial or Viral Keratitis)</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Transmission of Systemic of Viral Disease</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Evidence Suggestive of Prior Refractive Surgery</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Other</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td colspan="2">(Check One)</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Probably Due to Donor Tissue</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Probably Not Due to Donor Tissue</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td colspan="2">Brief Description of Reaction Including Treatment and Outcome:</td>
+                                    </tr>
+                                    
+                                </table>
+                                
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-size:12px;">
+                                    <tr>
+                                        <td colspan="2" bgcolor="#000000" style="color:#fff;text-align:center;padding:5px;font-weight:600;">MICROBIOLOGY</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Donor Cultures (Check Applicable):</td>
+                                        <td align="left">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Preservation Medium</td>
+                                        <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Corneoscleral</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Other</td>
+                                        <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Not Done</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td><br />
+                                            Results:</td>
+                                        <td align="left">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td >Patient Cultures (Check Applicable):</td>
+                                        <td ></td>
+                                    </tr>
+                                    <tr>
+                                        <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Aqueous</td>
+                                        
+                                        <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Cornea</td>
+                                    </tr>
+                                    <tr>
+                                        <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Vitreous</td>
+                                        <td align="left"><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Other</td>
+                                    </tr>
+                                    <tr>
+                                        <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Not Done</td>
+                                        <td align="left"></td>
+                                    </tr>
+                                </table></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top" bgcolor="#FFFFFF" style="padding:5px;border-top:1px solid #000;border-bottom:0.5px solid #000;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td>Surgeon Signature:</td>
+                                    <td>  </td>
+                                    <td>Date:</td>
+                                    <td>  </td>
+                                </tr>
+                                </table></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center" valign="top" bgcolor="#FFFFFF" style="padding:5px;"><strong>THIS SECTION TO BE COMPLETED BY THE EYE BANK</strong></td>
+                        </tr>
+                        <tr>
+                            <td bgcolor="#FFFFFF"  valign="top">Date-time Received at Eye Bank:</td>
+                            <td bgcolor="#FFFFFF"  valign="top">  </td>
+                        </tr>
+                        <tr>
+                            <td bgcolor="#FFFFFF"  valign="top">Mate Cornea Tissue Number:</td>
+                            <td bgcolor="#FFFFFF"  valign="top">  </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top" bgcolor="#FFFFFF" ><table width="100%" border="0" cellspacing="2" cellpadding="0">
+                                <tr>
+                                    <td>Mate Cornea Status:</td>
+                                    <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>No Adverse Reaction</td>
+                                    <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Adverse REaction</td>
+                                    <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Tissue Not Used (Reason):</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Mate Culture Results</td>
+                                    <td >&nbsp;</td>
+                                    <td ><span style="border:1px solid #000;padding:6px 8px;margin-right:5px;float:left;"></span>Mate Culture Not Done:</td>
+                                </tr>
+                                </table></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top" bgcolor="#FFFFFF" style="padding:5px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td>This Form Completed By:</td>
+                                    <td>(Name)</td>
+                                    <td>(Signature) On</td>
+                                    <td>(Date)</td>
+                                </tr>
+                                </table></td>
+                        </tr>
+                        <tr>
+                            <td ><span style="border:1px solid #000;padding:5px;margin-right:5px;float:left;"></span>Medical Director's Adverse Reaction Investigation Form Attached</td>
+                        </tr>         
+                        
+                        
+                    </tbody>
+                    
+                    
+                    
+                </table>
+            </div>
+        </body>
+    </html>  
+</apex:page>

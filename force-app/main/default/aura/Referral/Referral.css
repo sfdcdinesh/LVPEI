@@ -1,0 +1,74 @@
+.THIS.donor-details-box {
+    margin-top: 1rem;
+   
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 75px;
+    z-index: 99;
+   
+    
+}
+
+.THIS .date-timebox .slds-form-element__row .slds-form-element{
+   width:98%;
+}
+
+.THIS.slds-brand-band:after{
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.0) 60%, rgba(255, 255, 255, 1.0))!important;
+}
+
+.THIS.medical-pad{
+    padding-top:99px;
+   
+}
+
+
+.THIS .medical-rec{
+margin-top:33px; 
+margin-bottom: 16px;    
+}
+
+
+.THIS .slds-page-header--object-home {
+    padding-top: 10px;
+    padding-bottom: 5px;
+    text-align: center;
+    margin:0 auto;
+    
+}
+.THIS .check-div input {
+    float: left;
+    margin-top: 4px;
+}
+
+.THIS .check-div .slds-checkbox_faux {
+    margin-right: .5rem;
+}
+
+.THIS .slds-page-header{
+background: #f3f3f2;
+border: 1px solid #ccc;
+padding: 4px 10px; 
+margin-top:10px;
+   
+}
+
+.THIS .slds-m-left--large{
+font-weight:600;    
+}
+
+
+.THIS .medical-txt{
+margin-top: 21px;
+margin-bottom:16px;
+}
+
+.THIS .slds-p-around--medium{
+border:1px solid #ecebea;
+background:#fff;    
+}
+
+.THIS .custom-box1{
+    pointer-events:none; 
+}

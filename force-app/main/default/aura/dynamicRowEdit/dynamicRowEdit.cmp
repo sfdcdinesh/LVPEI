@@ -1,0 +1,185 @@
+<!--Parent Lightning Compomemt-->
+<aura:component controller="MedicalReview" Implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:appHostable" access="global">
+  <!--Init handler which is call doInit js function on component Load-->  
+    
+     <force:recordData aura:id="forceRecord"
+                      recordId="{!v.recordId}"
+                      targetFields="{!v.MedRev}"
+                      layoutType="FULL"
+                      mode="EDIT" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+  
+ <!--Event handler for Add and Delete Row Event which is fire from Child Component-->    
+    <aura:handler name="DeleteRowEvt" event="c:DeleteRowEvt" action="{!c.removeDeletedRow}"/>
+    <aura:handler name="AddRowEvt" event="c:AddNewRowEvt" action="{!c.addNewRow}"/>
+ <!-- Register Event to send data to Medical review Component-->
+    <aura:registerEvent name="bloodData" type="c:samplesData"/>
+ <!--Aura Attribute for store Contact Object List as Array-->    
+    <aura:attribute name="bloodList" type="Blood_Product__c[]"/> 
+    <aura:attribute name="colloidList" type="Colloid__c[]"/>
+    <aura:attribute name="crystalloidList" type="Crystalloid__c[]"/>
+    <aura:attribute name="tableName" type="String"/>
+    
+ <!--Aura Method -->
+    <aura:method name="RecordCount">
+        <aura:attribute name="bloodCount" type="Integer"/>
+        <aura:attribute name="colloidCount" type="Integer"/>
+        <aura:attribute name="crystalloidCount" type="Integer"/>  
+        <aura:attribute name="successMessage" type="String"/>
+    </aura:method>
+    <aura:attribute name="bloodCount" type="Integer"/>
+    <aura:attribute name="colloidCount" type="Integer"/>
+    <aura:attribute name="crystalloidCount" type="Integer"/>  
+    <aura:attribute name="successMessage" type="String"/>
+    
+ <!--Table Part-->    
+  
+        <!--First Table-->
+    
+         
+    <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-m-top_large"> 
+     
+     
+  <thead>
+ <tr class="slds-line-height_reset" style="background:#0070d2;color:#fff;">
+
+     <th class="slds-text-title_caps" scope="col" colspan="5" style="padding: 10PX 0PX;" >
+        <b>Record Volume of Blood Products Tranfused During The 48 Hours Before The Sample Was Drawn (or cardiac death if drawn post cardiac death)</b>
+      </th>
+            </tr>
+            
+            <tr class="slds-text-title_caps" style=" background:#0070d2; color: #fff;">
+                <th align="left" scope="col">
+                    <div class="slds-truncate" title="S.No">S.No</div>
+                </th>
+                <th scope="col">
+                  <div class="slds-truncate" title="Blood Product">Blood Product</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Date/Time">Date/Time</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Volume">Volume(mL)</div>
+                </th>
+                <th></th>
+            </tr>
+        </thead> 
+          
+        <tbody>
+              
+            <aura:iteration items="{!v.bloodList}" var="item" indexVar="index">
+                <c:dynamicRowItem bloodInstance="{!item}" rowIndex="{!index}" tableName="bloodTable" />
+            </aura:iteration>
+        </tbody>
+    
+     <tr class="slds-line-height_reset" >
+      <td class="slds-text-title_caps" scope="col" style=" background: #f3f3f2; padding: 10px;" colspan="5">
+          <div><b>Total Blood Products Transfused In 48 Hours:</b><span>{!v.bloodCount}</span></div>
+      </td>
+      
+     </tr>
+    
+ </table>
+        
+        <!--Second Table-->
+       
+       
+         
+    <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-m-top_xx-large"> 
+       
+        <thead>
+              <tr class="slds-line-height_reset" style="background:#0070d2;color:#fff;">
+      <th class="slds-text-title_caps" scope="col" colspan="5" style="padding: 10PX 0PX;">
+        <b>Record Volume of Colloids Tranfused During The 48 Hours Before The Sample Was Drawn (or cardiac death if drawn post cardiac death)</b>
+      </th>
+            </tr>
+            
+            <tr class="slds-text-title_caps">
+                <th scope="col">
+                    <div class="slds-truncate">S.No</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Colloid">Colloid</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Date/Time">Date/Time</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Volume">Volume(mL)</div>
+                </th>
+                <th></th>
+            </tr>
+        </thead>   
+        <tbody>
+           <!--Iterate the child Component for display Table rows 
+               with pass the List Item Index for track the Every child Component 
+               and pass each List Contact Instance -->         
+            <aura:iteration items="{!v.colloidList}" var="item" indexVar="index">
+                <c:dynamicRowItem colloidInstance="{!item}" rowIndex="{!index}" tableName="colloidTable"/>
+            </aura:iteration>
+        </tbody>
+   
+     <tr class="slds-line-height_reset">
+      <td class="slds-text-title_caps" scope="col" style=" background: #f3f3f2; padding: 10px;" colspan="5">
+         <div><b>Total Colloid Transfused in 48 Hours: </b><span>{!v.colloidCount}</span></div>
+      </td>
+        
+     </tr>
+
+   </table>
+        
+        <!--Third Table-->
+        
+     
+        
+    <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-m-top_xx-large"> 
+        <thead>
+            
+     <tr class="slds-line-height_reset" style="background:#0070d2;color:#fff;">
+      <th class="slds-text-title_caps" scope="col"  colspan="5" style="padding: 10PX 0PX;">
+        <div><b>Record Volume of Crystalloid Tranfused During The 1 Hour Before The Sample Was Drawn (or cardiac death if drawn post cardiac death)</b></div>
+      </th>
+            </tr>
+            
+            <tr class="slds-text-title_caps">
+                <th scope="col">
+                    <div class="slds-truncate" title="S.No">S.No</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Crystalloid">Crystalloid</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Date/Time">Date/Time</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Volume">Volume(mL)</div>
+                </th>
+                <th></th>
+            </tr>
+        </thead>   
+        <tbody>
+           <!--Iterate the child Component for display Table rows 
+               with pass the List Item Index for track the Every child Component 
+               and pass each List Contact Instance -->         
+            <aura:iteration items="{!v.crystalloidList}" var="item" indexVar="index">
+                <c:dynamicRowItem crystalloidInstance="{!item}" rowIndex="{!index}" tableName="crystalloidTable"/>
+            </aura:iteration>
+        </tbody>
+  
+     <tr class="slds-line-height_reset" >
+      <td class="slds-text-title_caps" scope="col" style=" background:#f3f3f2; padding: 10px;" colspan="5">
+          <div><b>Total Crystalloid Infused In 1 Hour: </b><span>{!v.crystalloidCount}</span> </div>
+      </td>
+         
+    </tr>
+     
+  </table>   
+
+    <br/> 
+    <!--Submit Button which is to send data to parent component on click --> 
+  <div class=" slds-size_1-of-1 slds-p-around_large" style="text-align:center;">  
+      <button class="slds-button slds-button_brand" onclick="{!c.Submit}">Ok</button>
+      <div aura:id ="successMessage" class="slds-hide">{!v.successMessage}</div>
+  </div>
+</aura:component>

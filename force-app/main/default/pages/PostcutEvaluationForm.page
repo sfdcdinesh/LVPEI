@@ -1,0 +1,290 @@
+<apex:page controller="PostCutEvaluationFormPrint" renderAs="PDF" cache="true" showheader="false" sidebar="false" applyHtmlTag="false" docType="html-5.0" standardStylesheets="false" >
+   
+    <html>
+        <head>
+            <style>
+                @page :left {
+                margin-left: 0.5cm;
+                margin-right: 0.5cm;
+                }
+               
+                @page :right {
+                margin-left: 0.5cm;
+                margin-right: 0.5cm;
+                }
+               
+                @media print{
+               
+                table tr th{
+                padding:8px 0px;
+                }
+               
+                table tr td{
+                padding:5px;
+                }
+               
+               
+               
+                }
+            </style>
+        </head>
+        <div  style="margin:0;padding:0;">  
+            <div style="width:99.8%;float:left;border:1px solid #000;border-bottom:none;">
+                <div  style="text-align:left;padding-bottom:20px;width:30%;float:left;">
+                    <apex:variable var="imageVar" value="{!branch.LogoName__c}"/> 
+                    <apex:image alt="cloud" title="cloud" url="{!URLFOR($Resource.LVPEI_Logos, imageVar)}"/>
+                    <!-- <img src="{!$Resource.RIEB_PDF}" style="width:60%;text-align:left;padding-left:10px;padding-top:10px;"/> -->
+                </div>
+               
+                <div style="width:50%;float:left;font-size:12px;font-family:sans-serif;padding-top:10px;padding-bottom:10px;">
+                   
+                    <table>
+                        <tbody>
+                            <tr>
+                            <td>Name :</td>
+                            <td>{!branch.Name}</td>
+                           
+                            </tr>
+                            <tr>
+                            <td>Phone :</td>
+                            <td>{!branch.Phone__c}</td>
+                           
+                            </tr>
+                            <tr>
+                            <td>Fax :</td>
+                            <td></td>
+                           
+                            </tr>
+                             <tr>
+                            <td valign="top" >Address :</td>
+                            <td>{!branch.Address__c}</td>
+                           
+                            </tr>  
+                                                       
+                        </tbody>
+                    </table>
+                </div>    
+            </div>  
+   <table style="width:100%;float:left;border:1px solid #000;border-top:none!important;" cellspacing="0">    
+               
+                <thead  >
+                   
+                    <th colspan="6" style="text-align: center; border-top: 1px solid #000; padding: 5px 0px;font-family:sans-serif;" >
+                        <b>POST CUT EVALUATION FORM</b>  </th>    
+                <td width="0%"></td></thead>
+                <tbody>
+                   
+                    <tr style="color:white;background:black;">
+                       
+                        <th colspan="2" style="text-align: left;font-size:14px;font-family:sans-serif;" >
+                            <b>TISSUE ID# :{!tissue.Name}</b>
+                        </th>
+                        <th colspan="3" style="text-align: left;font-size:14px;font-family:sans-serif;" >
+                            <b>{!tissue.Tissue_Type__c} </b>
+                        </th>
+                    </tr>
+                    <tr style="line-height:20px;">
+                        <td  width="23%" align="left" style="font-size:12px;font-family:sans-serif;">
+                            TISSUE PROCESSED FOR :  
+                        </td>
+                       
+                        <td width="29%" style="font-size:12px;font-family:sans-serif;">
+                             <apex:outputPanel rendered="{!tissue.Pre_Cut__c =='Yes'}" >
+                           {!tissue.Tissue_Processed_for__c}
+                                 </apex:outputPanel>
+                        </td>
+                        <td colspan="2"  align="left" style="font-size:12px;font-family:sans-serif;">
+                            GRAFT THICKNESS (microns) :
+                        </td>
+                        <td>  {!tissue.Graft_Thickness_microns__c} </td>
+                    </tr>
+                    <tr style="line-height:20px;">
+                        <td align="left" style="font-size:12px;font-family:sans-serif;">
+                            DATE/TIME PROCESSED :
+                        </td>
+                        <td style="font-size:12px;font-family:sans-serif;">
+                            <apex:outputText value="{0,date,dd/MM/yyyy HH:mm}">
+                                <apex:param value="{!tissue.Date_Time_Processed__c+offset}"/>
+                            </apex:outputText>
+                        </td>
+                        <td colspan="2" align="left" style="font-size:12px;font-family:sans-serif;">
+                            GRAFT DIAMETER (mm) :
+                        </td>
+                        <td> {!tissue.Graft_Diameter_mm__c}</td>
+                    </tr>
+                    <tr style="line-height:20px;" >
+                        <td align="left" style="font-size:12px;font-family:sans-serif;">
+                            COMMENTS-POST-CUT :
+                        </td>
+                        <td style="font-size:12px;font-family:sans-serif;">
+                            {!tissue.Comments_Post_Cut__c}
+                        </td>
+                       
+                    </tr>
+                   
+                    <tr style="color:white;background:black;border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;line-height:20px;">
+                        <th colspan="5" style="text-align: center;font-size:14px;font-family:sans-serif;">
+                            <b>POST-CUT EVALUATION</b>
+                        </th>
+                    </tr>
+                   
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                       
+                        <td align="left" style="font-size:12px;font-family:sans-serif;padding-bottom:20px;">
+                            ENDOTHELIAL CELL DENSITY (per mm2) :
+                        </td>
+                        <td colspan="2" valign="bottom" style="font-size:12px;font-family:sans-serif;padding-bottom:20px;">
+                        {!tissue.Endothelial_Cell_Density_mm2__c}                         </td>
+                       
+                       
+
+                        <td width="15%" rowspan="7" valign="top">
+                            <apex:outputPanel rendered="{!tissue.Pre_Cut__c =='Yes'}" >
+                <apex:image url="/servlet/servlet.FileDownload?file={!attachment.Id}" style="width:300px;height:200px;"/>
+                                  </apex:outputPanel>
+                                </td>
+
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;line-height:20px;">
+                       
+                        <td align="left" style="font-size:12px;font-family:sans-serif;">
+                            EPITHELIUM :
+                        </td>
+                        <td colspan="2" style="font-size:12px;font-family:sans-serif;">
+                            {!tissue.Post_Cut_Epithelium__c}
+                        </td>
+                    </tr>
+                   
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;line-height:20px;">
+                        <td align="left" style="font-size:12px;font-family:sans-serif;">
+                            ANTERIOR STROMA :
+                        </td>
+                        <td colspan="2" style="font-size:12px;font-family:sans-serif;">
+                            {!tissue.Anterior_Stroma__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;line-height:20px;">
+                       
+                        <td align="left" style="font-size:12px;font-family:sans-serif;">
+                            POSTERIOR STROMA :
+                        </td>
+                        <td colspan="2" style="font-size:12px;font-family:sans-serif;">
+                           {!tissue.Posterior_Stroma__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;line-height:20px;">
+                        <td align="left" style="font-size:12px;font-family:sans-serif;">
+                            DESCEMET'S :
+                        </td>
+                        <td colspan="2" style="font-size:12px;font-family:sans-serif;">
+                           {!tissue.Descemet_s__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;line-height:20px;">
+                        <td align="left" style="font-size:12px;font-family:sans-serif;">
+                            ENDOTHELIUM :
+                           
+                             </td>
+                        <td colspan="2" style="font-size:12px;font-family:sans-serif;">
+                            <span>{!tissue.Post_Cut_Endothelium__c} </span>
+                        </td>
+                        <td width="13%" align="left" style="font-size:12px;font-family:sans-serif;">
+                         
+                        </td>
+                        <td width="1%" style="font-size:12px;font-family:sans-serif;">
+                           
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;line-height:20px;">
+                       
+                        <td align="left" style="font-size:12px;font-family:sans-serif;">
+                            ADDITIONAL :
+                        </td>
+                        <td colspan="2" style="font-size:12px;font-family:sans-serif;">
+                           {!tissue.Additional__c}
+                        </td>
+                    </tr>
+                    <tr>
+                    <td align="left"> </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;line-height:20px;">
+                        <td align="left" style="font-size:12px;font-family:sans-serif;">
+                            SLIT LAMP DATE-TIME :
+                        </td>
+                        <td style="font-size:12px;font-family:sans-serif;">
+                           <apex:outputText value="{0,date,dd/MM/yyyy HH:mm}">
+                                <apex:param value="{!tissue.Slit_Lamp_Date_Time__c+offset}"/>
+                            </apex:outputText>
+                        </td>
+                        <td colspan="3" rowspan="5" align="left" valign="top" style="font-size:12px;font-family:sans-serif;"><table width="100%" border="0" cellspacing="0" cellpadding="2">
+                          <tr>
+                            <td width="60%">SLIT LAMP TECH : </td>
+                            <td width="40%">{!tissue.Slit_Lamp_Technician__r.Name} </td>
+                          </tr>
+                          <tr style="line-height:20px;">
+                            <td>SPECULAR TECH : </td>
+                            <td>{!tissue.Specular_Technician__r.Name}</td>
+                          </tr>
+                          <tr style="line-height:20px;">
+                            <td>EK TECH : </td>
+                            <td>{!tissue.EK_Tech__r.Name} </td>
+                          </tr>
+                          <tr style="line-height:20px;">
+                            <td>CIRCULATOR : </td>
+                            <td>{!tissue.Circulator__r.Name} </td>
+                          </tr>
+                        </table></td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;line-height:20px;">
+                        <td align="left" style="font-size:12px;font-family:sans-serif;">
+                            SPECULAR DATE-TIME :
+                        </td>
+                        <td style="font-size:12px;font-family:sans-serif;">
+                           <apex:outputText value="{0,date,dd/MM/yyyy HH:mm}">
+                                <apex:param value="{!tissue.Specular_Date_Time__c+offset}"/>
+                            </apex:outputText>  
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;line-height:20px;">
+                        <td align="left" style="font-size:12px;font-family:sans-serif;">
+                           
+                        </td>
+                        <td style="font-size:12px;font-family:sans-serif;">
+                         
+                        </td>
+                    </tr>
+                   
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;line-height:20px;">
+                       
+                        <td align="left" style="font-size:12px;font-family:sans-serif;">
+                            STORAGE MEDIA :
+                        </td>
+                        <td style="font-size:12px;font-family:sans-serif;">
+                            {!tissue.Post_Cut_Preservation_Medium__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;line-height:20px;">
+                       
+                        <td align="left" style="font-size:12px;font-family:sans-serif;">
+                            MEDIA LOT# :
+                        </td>
+                        <td style="font-size:12px;font-family:sans-serif;">
+                            {!tissue.Post_Cut_Media_lot__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;line-height:20px;">
+                       
+                        <td align="left" style="font-size:12px;font-family:sans-serif;">
+                            MEDIA EXPIRATION DATE :
+                        </td>
+                        <td style="font-size:12px;font-family:sans-serif;">
+                           <apex:outputText value="{0,date,dd/MM/yyyy HH:mm}">
+                               <apex:param value="{!tissue.Post_Cut_Media_Expiration_Date_Time__c+offset}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>    
+        </div>
+    </html>
+</apex:page>

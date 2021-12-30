@@ -1,0 +1,317 @@
+<apex:page controller="ShipmentLabelPdfController" renderAs="PDF" cache="true" showheader="false" sidebar="false" applyHtmlTag="false" docType="html-5.0" standardStylesheets="false" >
+    <html>        
+        <head>                                    
+            <style>
+                @page :left {
+                margin-left: 0.5cm;
+                margin-right: 0.5cm;
+                }
+                
+                @page :right {
+                margin-left: 0.5cm;
+                margin-right: 0.5cm;
+                }  
+                                @page 
+                @import url('https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i');
+           
+                }
+            </style> 
+        </head> 
+        <body style="font-family: 'Lato', sans-serif;font-size:12px;font-weight:400;">    
+        <div  style="margin:0;padding:0;">   
+            <div style="width:100%;float:left;">
+                <div  style="text-align:left;padding-bottom:20px;width:30%;float:left;">
+                    <img src="{!$Resource.RIEB_PDF}" style="width:55%;text-align:left"/>
+                </div>
+                
+                
+                <div style="width:30%;float:right;font-size:13px;float:right;">
+                    
+                    Ramayamma International Eye Bank,<br/>
+                    Kallam Anji Reddy Campus,<br/>
+                    L V Prasad Marg,<br/>
+                    Hyderabad, 500034,<br/>
+                    +91 040 6810514,<br/>
+                    Telangana.
+                </div>     
+            </div>
+     <table cellspacing="5" style="width:100%;float:left;margin-top:25px;border:1px solid black">
+                <tbody>     
+                    <tr >
+                        <th colspan="6" style="text-align: center; border-bottom:0.5px solid black;padding:10px;0px;font-size:15px;" >
+                            <b>Recipient Information Form</b>     
+                        </th>                        
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td width="30%" align="left" valign="top" style="font-size:13px;">
+                            <b> Attention : </b>
+                        </td>
+          <td style="font-size:13px;" colspan="4">
+                            <b> {!req.Requesting_Surgeon__r.Name}  </b>
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td width="30%" align="left" valign="top" style="font-size:13px;">
+                            <b> Tissue ID# : </b>
+                        </td>
+          <td style="font-size:13px;" colspan="4">
+                            <b> {!plac.Select_Tissue__r.Name}  </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-top:1px solid #000;" colspan="6"></td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="center" valign="top" style="font-size:13px;" colspan="4">
+                            <b> Please complete and return by mail or fax ASAP following the transplant </b>
+                        </td>
+                  </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="center" valign="top" style="font-size:13px;" colspan="4">
+                            This form verifies that the tissue referenced was transplanted to the patient indicated below
+                        </td>
+                  </tr>
+                    <tr style="color:white;background:black;border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;">
+                        <th colspan="6" style="text-align: center;font-size:14px;">
+                            <b>SURGEON AND INSTITUTION</b>
+                        </th>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;">
+                            Date of Transplant :
+                        </td>
+                        <td width="31%" style="font-size:13px;">
+                            <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                        <apex:param value="{!req.Surgery_Date_Time__c+offset}"/>
+                          </apex:outputText> 
+                        </td>
+                        <td width="16%" align="left" style="font-size:13px;">
+                            Surgeon :
+                        </td>
+                        <td width="23%" style="font-size:13px;">
+                           {!req.Requesting_Surgeon__r.Name}  
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;">
+                            Surgery Location :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.Surgery_Location__r.Name} 
+                        </td>
+                    </tr>
+                     <tr style="color:white;background:black;border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;">
+                        <th colspan="6" style="text-align: center;font-size:14px;">
+                            <b>RECIPIENT INFORMATION</b>
+                        </th>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;">
+                            Family Name :
+                        </td>
+                        <td style="font-size:13px;">
+                           {!req.Last_Name__c}  
+                        </td>
+                        <td align="left" style="font-size:13px;">
+                            Given Name :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.First_Name__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;">
+                            DOB :
+                        </td>
+                        <td style="font-size:13px;">
+                            <apex:outputText value="{0,date,dd/MM/yyyy}">
+                                <apex:param value="{!req.DOB__c+offset}"/>
+                            </apex:outputText>
+                        </td>
+                        <td align="left" style="font-size:13px;">
+                            Age :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.Age__c}
+                        </td>
+                    </tr>
+                     <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;">
+                            ID# :
+                        </td>
+                        <td style="font-size:13px;">
+                          {!req.Name}  
+                        </td>
+                        <td align="left" style="font-size:13px;">
+                            Gender :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.Gender__c}
+                        </td>
+                    </tr>
+                     <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;">
+                            MR No :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.Medical_Record__c}
+                        </td>
+                        <td align="left" style="font-size:13px;">
+                            Email :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.Email__c}
+                        </td>
+                    </tr>
+                     <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;">
+                            Address :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.Address__c}
+                        </td>
+                        <td align="left" style="font-size:13px;">
+                            *Hobbies/Interests :
+                        </td>
+                        <td style="font-size:13px;">
+                            
+                        </td>
+                    </tr>
+                     <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;">
+                            Phone :
+                        </td>
+                        <td style="font-size:13px;">
+                           {!req.Phone__c} 
+                        </td>
+                        <td align="left" style="font-size:13px;">
+                            *Occupation :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.Occupation__c}
+                        </td>
+                    </tr>
+                    <tr style="color:white;background:black;border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;">
+                        <th colspan="6" style="text-align: center;font-size:14px;">
+                            <b>OPHTHALMIC HISTORY: (PLEASE USE DIAGNOSIS CODE LISTED IN THE ATTACHED FORM)</b>
+                        </th>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;">
+                            Pre-Operative Diagnosis :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.Pre_Surgical_Diagnosis__c}
+                        </td>
+                    </tr>
+                     <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;">
+                            Previous Ocular Surgeries :
+                        </td>
+                        <td style="font-size:13px;">
+                           {!req.Previous_Ocular_Surgery__c} 
+                        </td>
+                    </tr>
+                     <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;">
+                            Special Concerns :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.Other_Patient_Notes__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;">
+                            Eye Grafted :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.Eye_Involved__c}
+                        </td>
+                        <td align="left" style="font-size:13px;">
+                            Surgery Type :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.Surgery__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;">
+                            Surgery Sub-Type :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.Surgery_Sub_Type_EK__c}
+                        </td>
+                    </tr>
+                     <tr style="color:white;background:black;border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;">
+                        <th colspan="6" style="text-align: center;font-size:14px;">
+                            <b>PRE-OPERATIVE CHECKLIST</b>
+                        </th>
+                    </tr>
+  <tr>
+  <td colspan="4">                 
+<table width="100%" border="0" cellspacing="0" cellpadding="5">
+  <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;" colspan="3">
+                            1. Is the tamper-evident seal on the tissue chamber or vial intact?
+                        </td>
+                       
+                        <td width="15%"><span style="border:1px solid #000;padding:1px 8px;margin-right:5px;"></span>Yes <span style="border:1px solid #000;padding:1px 8px;margin-right:5px;"></span>No</td>
+                        
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;" colspan="3">
+                            2. Does the graft number on the tissue label match the number on all accompanying paperwork ?
+                        </td>
+                         <td><span style="border:1px solid #000;padding:1px 8px;margin-right:5px;"></span>Yes <span style="border:1px solid #000;padding:1px 8px;margin-right:5px;"></span>No</td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;" colspan="3">
+                            3. Is above recipient information correct? If not,please correct.
+                        </td>
+                         <td><span style="border:1px solid #000;padding:1px 8px;margin-right:5px;"></span>Yes <span style="border:1px solid #000;padding:1px 8px;margin-right:5px;"></span>No</td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;" colspan="3">
+                            4. Tissue evaluation acceptable?
+                        </td>
+                         <td><span style="border:1px solid #000;padding:1px 8px;margin-right:5px;"></span>Yes <span style="border:1px solid #000;padding:1px 8px;margin-right:5px;"></span>No</td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;" colspan="3">
+                            5. Indicate performance of steps 1-4 by signing below. Then fax this form to "Eye Bank" or @ fax number
+                        </td>
+                         <td><span style="border:1px solid #000;padding:1px 8px;margin-right:5px;"></span>Yes <span style="border:1px solid #000;padding:1px 8px;margin-right:5px;"></span>No</td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td width="52%" align="left" style="font-size:13px;"> Surgeon/Designee :<span style="border:1.5px solid #000;width:100%;padding:2px 120px;margin-left:10px;border-top:none;border-right:none;border-left:none;"></span></td>
+                      
+                        
+                        <td width="17%" style="font-size:13px;">
+                            
+                        </td>
+                        <td width="16%" align="left" style="font-size:13px;">
+                            Date/Time :<span style="border:1.5px solid #000;width:100%;padding:2px 70px;margin-left:10px;border-top:none;border-right:none;border-left:none;"></span>
+                        </td>
+                        <td style="font-size:13px;">
+                            
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:13px;">
+                            Signature :
+                        </td>
+                        <td style="font-size:13px;">
+                            
+                        </td>
+                    </tr>
+</table>
+</td>
+</tr>
+
+                   
+                </tbody>
+            </table>
+        </div>
+        </body>
+    </html>
+</apex:page>

@@ -1,0 +1,174 @@
+<aura:component controller="InventoryController" implements="force:appHostable">
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="isProcessing" type="boolean" default="false"/>
+    <aura:attribute name="sortBy" type="String" default="Name"/>
+    <aura:attribute name="sortDirection" type="String" default="asc"/>
+    <aura:attribute name="tissueType" type="string"/>
+    <aura:attribute name="approvedoutcome" type="string"/>
+    <aura:attribute name="approvedFor" type="string"/>
+    <aura:attribute name="tissueId" type="ID"/>
+    <aura:attribute name="allTissuesList" type="Tissue_Evaluation__c[]"/>
+    <aura:attribute name="OriginalTissuesList" type="Tissue_Evaluation__c[]"/>
+    <aura:attribute name="InventoryList" type="List"/>
+    <aura:attribute name="transplantWG" type="Integer"/>
+    <aura:attribute name="transplantWC" type="Integer"/>
+    <aura:attribute name="transplantS" type="Integer"/>
+    <aura:attribute name="researchWG" type="Integer"/>
+    <aura:attribute name="researchWC" type="Integer"/>
+    <aura:attribute name="researchS" type="Integer"/>
+    <aura:attribute name="trainingWG" type="Integer"/>
+    <aura:attribute name="trainingWC" type="Integer"/>
+    <aura:attribute name="trainingS" type="Integer"/>
+    <aura:attribute name="QuarantineWG" type="Integer"/>
+    <aura:attribute name="QuarantineWC" type="Integer"/>
+    <aura:attribute name="QuarantineS" type="Integer"/>
+    
+    <aura:attribute name="showFilter" type="boolean"/>
+    <aura:attribute name="emptytissueList" type="list"/>
+    <aura:attribute name="errorMessage" type="String"/>
+    <aura:attribute name="arrowDirection" type="string" default="arrowup" description="Use for change arrow sign direction on header based on click"/>
+    <aura:attribute name="isAsc" type="boolean" default="true" description="boolean flag for pass sorting condition to apex class"/> 
+    <aura:attribute name="selectedTabsoft" type="string" description="Use for show/hide arraow sign on header based on conditions"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+ 	
+    <div class="slds-grid slds-gutters">
+		<div class="slds-col slds-size_2-of-4 slds-float_left">
+    		<div style="margin-bottom:20px;">
+                <table class=" inventary slds-table slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols slds-table_col-bordered slds-table_striped" style="margin-top: 20px;">
+                    <thead>
+                        <tr class="">
+                            <th class="" scope="col" style="background-color:#08419a;color:#fff;">
+                                <div class="slds-truncate slds-p-around_small" title="Null"></div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate slds-p-around_small" style="background-color:#08419a;color:#fff;" title="Account Name">Whole Globes</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate slds-p-around_small" style="background-color:#08419a;color:#fff;" title="Close Date">Whole Cornea</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate slds-p-around_small" style="background-color:#08419a;color:#fff;" title="Stage">Scleras</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="slds-hint-parent">
+                            <td data-label="Opportunity Name" scope="row">
+                                <div class="slds-truncate slds-p-around_small" title="Cloudhub">Released for Transplant</div>
+                            </td>
+                            <td data-label="Account Name">
+                                <div class="slds-truncate slds-p-around_small" title="id1">{!v.transplantWG}</div>
+                            </td>
+                            <td data-label="Close Date">
+                                <div class="slds-truncate slds-p-around_small" title="id2">{!v.transplantWC}</div>
+                            </td>
+                            <td data-label="Prospecting">
+                                <div class="slds-truncate slds-p-around_small" title="id3">{!v.transplantS}</div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td data-label="Opportunity Name" scope="row">
+                                <div class="slds-truncate slds-p-around_small" title="Cloudhub">Released for Research</div>
+                            </td>
+                            <td data-label="Account Name">
+                                <div class="slds-truncate slds-p-around_small" title="id4">{!v.researchWG}</div>
+                            </td>
+                            <td data-label="Close Date">
+                                <div class="slds-truncate slds-p-around_small" title="id5">{!v.researchWC}</div>
+                            </td>
+                            <td data-label="Prospecting">
+                                <div class="slds-truncate slds-p-around_small" title="id6">{!v.researchS}</div>
+                            </td>
+                            
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td data-label="Opportunity Name" scope="row">
+                                <div class="slds-truncate slds-p-around_small" title="Cloudhub">Released for Training</div>
+                            </td>
+                            <td data-label="Account Name">
+                                <div class="slds-truncate slds-p-around_small" title="id7">{!v.trainingWG}</div>
+                            </td>
+                            <td data-label="Close Date">
+                                <div class="slds-truncate slds-p-around_small" title="id8">{!v.trainingWC}</div>
+                            </td>
+                            <td data-label="Prospecting">
+                                <div class="slds-truncate slds-p-around_small" title="id9">{!v.trainingS}</div>
+                            </td>
+                            
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td data-label="Opportunity Name" scope="row">
+                                <div class="slds-truncate slds-p-around_small" title="Cloudhub">In-Quarantine </div>
+                            </td>
+                            <td data-label="Account Name">
+                                <div class="slds-truncate slds-p-around_small" title="id10">{!v.QuarantineWG}</div>
+                            </td>
+                            <td data-label="Close Date">
+                                <div class="slds-truncate slds-p-around_small" title="id11">{!v.QuarantineWC}</div>
+                            </td>
+                            <td data-label="Prospecting">
+                                <div class="slds-truncate slds-p-around_small" title="id12">{!v.QuarantineS}</div>
+                            </td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+  		</div>
+  		<div class="slds-col slds-size_2-of-4 slds-float_left" style="margin-top: 20px;">
+    		<div class="slds-p-around_large slds-box" style="background-color:#fff;border-radius:5px;">
+                <div class="slds-text-heading_medium">Please select value to filter.</div>
+                <div> 
+                    <lightning:Select aura:id="approvdOutcome" label="Tissue Type" value="{!v.tissueType}" onchange="{!c.onFilterChange}" class="approve">
+                        <option value="None" style="color:#000;">None</option>
+                        <option value="Cornea" style="color:#000;">Cornea</option>
+                        <option value="Sclera" style="color:#000;">Sclera</option>
+                        <option value="Whole Globe" style="color:#000;">Whole Globe</option>
+                    </lightning:Select>
+                </div> 
+                <div> 
+                    <lightning:Select aura:id="approvdOutcome" label="Approved Outcome" value="{!v.approvedoutcome}" onchange="{!c.onFilterChange}" class="approve">
+                        <option value="None" style="color:#000;">None</option>
+                        <option value="Transplant" style="color:#000;">Transplant</option>
+                        <option value="Research" style="color:#000;">Research</option>
+                        <option value="Training" style="color:#000;">Training</option>
+                        <option value="Quarantine" style="color:#000;">Quarantine</option>
+                    </lightning:Select>
+                </div>
+                <div> 
+                    <lightning:Select aura:id="approvdOutcome" label="Approved For" value="{!v.approvedFor}" onchange="{!c.onFilterChange}" class="approve">
+                        <option value="None" style="color:#000;">None</option>
+                        <option value="PK" style="color:#000;">PK</option>
+                        <option value="ALK" style="color:#000;">ALK</option>
+                        <option value="EK" style="color:#000;">EK</option>
+                        <option value="K-Pro" style="color:#000;">K-Pro</option>
+                        <option value="KLA" style="color:#000;">KLA</option>
+                        <option value="Tectonic/Therapeutic" style="color:#000;">Tectonic/Therapeutic</option>
+                    </lightning:Select>
+                </div> 
+            </div>
+  		</div>
+	</div>
+    
+    
+   <!-- Table 2 -->
+    
+    <div class="header-bgs"></div>
+    <aura:if isTrue="{!v.isProcessing}">
+        <lightning:spinner alternativeText="Loading..."/>
+        <aura:set attribute="else">
+            <lightning:datatable
+                    columns="{! v.columns }"
+                    data="{! v.data }"
+                    keyField="id"
+                    hideCheckboxColumn="true"
+                    sortedBy="{!v.sortBy}"
+                    sortedDirection="{!v.sortDirection}"
+                    onsort="{!c.handleSort}"
+                    onrowaction="{!c.printTissueDetail}"
+                    class="mytable"/>
+      	</aura:set>
+    </aura:if>
+</aura:component>

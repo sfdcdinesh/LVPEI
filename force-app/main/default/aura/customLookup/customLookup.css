@@ -1,0 +1,20 @@
+.THIS .leftPaddingClass {
+    padding-left: 2rem;
+}
+ 
+.THIS .pillSize{
+ width:100%;
+}
+
+.THIS .uiInput--input.input{
+min-height: calc(1.125rem + 1px)!important;    
+}
+
+.THIS .slds-modal__container {
+    width: 50% !important;
+   
+}
+.THIS .slds-modal{
+    top:0px;
+    right:0px;
+}

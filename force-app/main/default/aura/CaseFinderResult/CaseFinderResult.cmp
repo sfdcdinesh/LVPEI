@@ -1,0 +1,46 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	
+    <aura:attribute name="refferals" type="List"/>
+     <aura:attribute name="cols" type="List"/>
+         <aura:attribute name="isshow" type="Boolean" default="false"/>
+         <aura:attribute name="isspin" type="Boolean" default="false"/>
+
+
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+
+    <aura:handler name="CaseSearch"  event="c:CaseFinderSearchEvent" action="{!c.searchCase}"  />
+                  
+         <lightning:card title="" iconName="standard:record" class="slds-m-horizontal_small slds-m-vertical_small slds-var-p-around_small">
+    <aura:set attribute="title">
+          
+          <b> Case Finder</b>
+        </aura:set>
+       <c:CaseFinderSearch isspin="{!v.isspin}" />         
+             
+    </lightning:card>
+
+                 <aura:if isTrue="{!v.isshow}">
+
+      <lightning:card title=""  class="slds-m-horizontal_small slds-m-vertical_small slds-var-p-around_small" >
+    <aura:set attribute="title">
+          
+          <b> Case Records</b>
+        </aura:set>
+             
+
+             <div >
+             
+                 <lightning:dataTable keyField="Id"
+                                      data="{!v.refferals}"
+                                      columns="{!v.cols}"
+                                      hideCheckboxColumn="true"
+                                      onrowaction="{!c.handleRowAction}"
+                                      />
+             </div>
+             
+    
+    </lightning:card>
+             
+                          </aura:if>
+     
+</aura:component>

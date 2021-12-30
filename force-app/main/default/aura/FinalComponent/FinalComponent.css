@@ -1,0 +1,44 @@
+.THIS .slds-card{
+    border:none;
+        border-bottom: 1px solid rgb(221, 219, 218);
+    border-radius: 0;
+}
+
+.THIS .new-btn{
+float:right;    
+}
+.THIS .next-btn{
+  float:right;
+    margin-top:20px;
+}
+.THIS .previ-btn{
+ float:left;   
+}
+.THIS.vshow{
+    display:block;
+}
+.THIS.vhide{
+    
+    display:none;
+}
+
+.THIS .slds-path__nav .slds-is-complete{
+    background:rgb(4, 132, 75);
+    
+}
+
+.THIS .slds-path__nav .slds-is-complete:first-child:before{
+     background:rgb(4, 132, 75);
+    
+}
+.THIS .slds-path__nav .slds-is-complete:first-child:after{
+     background:rgb(4, 132, 75);
+    
+}
+.THIS .slds-path__nav .slds-is-complete:before, .THIS .slds-path__nav .slds-is-complete:after {
+      background:rgb(4, 132, 75);
+}
+
+.THIS .slds-path__nav .slds-is-complete .slds-path__title {
+    transform: rotateX(0deg);
+}

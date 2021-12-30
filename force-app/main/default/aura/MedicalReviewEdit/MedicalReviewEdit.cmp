@@ -1,0 +1,683 @@
+<!-- removed </br> tag in the custom lookup fields-->
+<aura:component controller="MedicalReview" implements="flexipage:availableForAllPageTypes,lightning:actionOverride,force:appHostable,force:hasRecordId" access="global">
+    <aura:attribute name="MedRev" type="Medical_Review__c"/>
+    <aura:attribute name="bloodProduct" type="Blood_Product__c[]" default="null"/>
+    <aura:attribute name="booleanvalue" type="boolean" default="false"/>
+    <aura:attribute name="booleanvalue1" type="boolean" default="false"/>
+    <aura:attribute name="booleanvalue2" type="boolean" default="false"/>
+    <aura:attribute name="isAgeGt12" type="boolean" default="false"/>
+    <aura:attribute name="colloid" type="Colloid__c[]" default="null"/>
+    <aura:attribute name="crystalloid" type="Crystalloid__c[]" default="null"/>
+    <aura:attribute name="MedRevEmpty" type="Medical_Review__c" default="{ 'sobjectType': 'Medical_Review__c'}"/>
+    <aura:attribute name="selectedLookUpRecord" type="sObject" default="{}"/>
+    <aura:attribute name="HBsAgpicklistValues" type="list" />
+    <aura:attribute name="HCVpicklistValues" type="list" />
+    <aura:attribute name="HIVpicklistValues" type="list" />
+    <aura:attribute name="SyphilispicklistValues" type="list" />
+    <aura:attribute name="picklistValues1" type="list" />
+    <aura:attribute name="currentUser" type="sObject"/>
+    <aura:attribute name="RecoveryId" type="String"/>
+    <aura:attribute name="recId" type="String"/>
+    <aura:attribute name="donorName" type="String"/>
+    <aura:attribute name="donorAge" type="Integer"/>
+    <aura:attribute name="donorGender" type="String"/>
+    <aura:attribute name="dates" type="List"/>
+    <aura:attribute name="tissueId" type="String"/>
+    <aura:attribute name="tissueData" type="Tissue_Evaluation__c"/>
+    <aura:attribute name="eyeType" type="string"/>
+    <aura:attribute name="errorMessage" type="string"/>
+    <aura:attribute name="tissueList" type="Tissue_Evaluation__c[]"/>
+    <aura:attribute name="callTissueEvaluation" type="Boolean" default="false"/>
+    <aura:attribute name="donorcon" type="sObject" default="{}"/>
+    <aura:attribute name="donorcon1" type="sObject" default="{}"/>
+    <aura:attribute name="donorcon2" type="sObject" default="{}"/>
+    <aura:attribute name="donorcon3" type="sObject" default="{}"/>
+    <aura:attribute name="donorcon4" type="sObject" default="{}"/>
+    <aura:attribute name="sampleCollectedBy" type="String"/>  
+    <aura:attribute name="sampleCollectedOn" type="datetime"/>  
+    <aura:attribute name="medicalReviewDoneBy" type="String"/> 
+    <aura:attribute name="dislpayNext" type="Boolean"/>
+    
+    <aura:attribute name="displayTissueImp" type="Boolean" default="false"/>
+    
+    <aura:method name="MedicalReviewMethod">
+     <aura:attribute name="Recovery" type="Recovery__c"/>
+     <aura:attribute name="dislpayNext" type="Boolean"/>
+    </aura:method>
+    <aura:attribute name="Recovery" type="Recovery__c"/>
+    <aura:attribute name="Rec" type="Recovery__c" default="{'sobjectType': 'Recovery__c','Name':''}"/>
+    <aura:attribute name="lookupList" type="Map" default="{}"/>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    <aura:handler name="bloodData" event="c:samplesData" action="{!c.getBloodData}"/>
+    <aura:handler name="GetTissueDetail" event="c:GetTissueDetail" action="{!c.getTissueDetail}"/>
+    
+    <!--Lookup Tab Index-->
+        <aura:handler name="oSelectedRecordEvent" event="c:selectedsObjectRecordEvent" action="{!c.focusToNextField}"/>
+    
+ <style>
+    .slds-template_default, html{
+        background:#fff!important;
+     
+        }
+    .slds-brand-band:after, .slds-brand-band:before{
+        background-image:none!important;
+        }
+        
+    </style>    
+    <div class="slds-container--large slds-align_absolute-center slds-wrap slds-m-bottom_medium donor-details-box" style="margin-top:1rem;"> 
+        <div class="slds-col slds-size_1-of-1">
+        <div class="slds-show slds-p-around_xx-small" aura:id="Zero" style="background:#f3f3f2;color:#000;
+           box-shadow:0px 0px 1px 0px  rgba(0, 0, 0, 0.10);">
+              <div class="slds-grid  slds-form slds-form_stacked ">
+               <div class="slds-grid slds-size_1-of-1 " style="border-bottom:1px solid #ccc;">
+                         
+                   <div class="slds-col slds-size_4-of-12">
+                    <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                             <div class="slds-col slds-size_4-of-12 slds-text-align_right slds-p-around_none"><span>Donor Name</span>: </div>
+                             <div class="slds-col slds-size_8-of-12">   <ui:outputText value="{!v.MedRev.Name_of_Donor_MedicalReview__c}"/></div>
+                                          
+                   </div></div>
+                   
+                    <div class="slds-col slds-size_4-of-12">
+                    <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                        <div class="slds-col slds-size_5-of-12 slds-text-align_right slds-p-around_none"><span>Date/Time of Death</span><span style="color:#ff0000;font-weight:bold;">*</span>: </div>
+                             <div class="slds-col slds-size_7-of-12">   <ui:outputDateTime format="dd/MM/yyyy HH:mm:ss" aura:id="dt"
+                               
+                                 value="{!v.MedRev.Date_Time_of_Death_MedicalReview__c}"/>
+                        			
+                                  		</div>
+                         </div></div>
+                   
+                   <div class="slds-col slds-size_2-of-12">
+                    <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                             <div class="slds-col slds-size_2-of-12 slds-text-align_right slds-p-around_none"><span>Age</span>: </div>
+                             <div class="slds-col slds-size_10-of-12">   <ui:outputText value="{!v.MedRev.Age__c}"/></div>
+                       </div></div>
+                   
+                      <div class="slds-col slds-size_2-of-12">
+                    <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                             <div class="slds-col slds-size_3-of-12 slds-text-align_right slds-p-around_none"><span>Gender</span>: </div>
+                             <div class="slds-col slds-size_9-of-12">   <ui:outputText value="{!v.MedRev.Gender__c}"/></div>
+                          </div></div>                        
+                  </div>            
+            </div>    
+            
+            
+                <div class="slds-grid slds-gutters slds-form slds-form_stacked ">
+                    <div class="slds-col slds-size_6-of-12" style="border-right: 1px solid #ccc;">
+                        
+                         <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                             <div class="slds-col slds-size_5-of-12 slds-text-align_right slds-p-right_none">  <span>Medical Review Completed By:</span> </div>
+                            <div class="slds-size_7-of-12"> <ui:outputText value="{!v.donorcon3.Name}"/></div>
+                        </div>
+                         <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                             <div class="slds-col slds-size_5-of-12 slds-text-align_right slds-p-right_none">  <span >Donor Eligibility :</span> </div>
+                             <div class="slds-col slds-size_7-of-12">  <ui:outputText value="{!v.MedRev.Donor_Eligibility__c}"/> </div>
+                        </div>
+                         <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                          <div class="slds-col slds-size_5-of-12 slds-text-align_right slds-p-right_none">  <span > Serology Test Done By : </span> 
+                             </div> <div class="slds-col slds-size_7-of-12"><ui:outputText value="{!v.donorcon1.Name}"/></div>
+                        </div>
+                    </div>
+                 
+                    <div class="slds-col slds-size_6-of-12">
+                         <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                             <div class="slds-col slds-size_3-of-12 slds-text-align_right slds-p-right_none">   <span >Owner</span><span style="color:#ff0000;font-weight:bold;">*</span> : </div>
+                             <div class="slds-col slds-size_9-of-12"> <ui:outputText value="{!v.MedRev.CreatedBy.Name}"/></div>
+                        </div>
+                        
+                        <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                             <div class="slds-col slds-size_3-of-12 slds-text-align_right slds-p-right_none">   <span >Donor ID</span> : </div>
+                             <div class="slds-col slds-size_9-of-12"> <ui:outputText value="{!v.MedRev.Donor_Name_Id__c}"/></div>
+                        </div>
+                        
+                         <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                             <div class="slds-col slds-size_3-of-12 slds-text-align_right slds-p-right_none">   <span >Modified By : </span></div>
+                             <div class="slds-col slds-size_9-of-12"> <ui:outputText value="{!v.MedRev.LastModifiedBy.Name}"/></div>
+                        </div>
+                        
+                        <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                             <div class="slds-col slds-size_3-of-12 slds-text-align_right slds-p-right_none">   <span >Branch : </span></div>
+                             <div class="slds-col slds-size_9-of-12"> <ui:outputText value="{!v.MedRev.Branch_Name__c}"/></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div></div>
+   
+<div class="slds-container--large slds-align_absolute-center medical-pad" >
+<div class="slds-grid slds-wrap slds-size_1-of-1">
+  <div class="slds-col slds-size_1-of-1">
+   <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.section01}">
+     <section class="slds-clearfix">
+         <div class="slds-float--left ">
+             <lightning:icon class="slds-show" aura:id="One" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+             <lightning:icon class="slds-hide" aura:id="One" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+         </div>
+         <div class="slds-m-left--large">Hemodilution Assessment and Serology Test</div>
+     </section>
+  </div>
+      
+     
+     <div class="slds-hide slds-p-around--medium" aura:id="One">
+    <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+         <div class="slds-col slds-size_1-of-1">
+                <div class="slds-form-element slds-size_6-of-12">
+                              <lightning:input type="string" name="DonorId" label="Donor Id" value="{!v.MedRev.Donor_Name_Id__c}" disabled="true"/> 
+                            </div>
+                            
+             
+               <div class="slds-form-element slds-size_6-of-12">
+                     <lightning:Select aura:id="SampleCollected" value="{!v.MedRev.Sample_Collected__c}" label="Sample Collected?">
+                         <option value="">--</option>
+                         <option value="Yes">Yes</option>
+                         <option value="No">No</option>
+                     </lightning:Select>
+               </div> 
+             
+               <aura:if isTrue="{!v.MedRev.Sample_Collected__c=='Yes'}">
+                
+                 <div class="slds-form-element slds-size_6-of-12">
+                              <lightning:input type="string" label="Sample Collected By" value="{!v.MedRev.Sample_Collected_By__c}" disabled="true"/> 
+                            </div>
+                  
+                   <div class="slds-form-element">
+                      <div class="slds-form-element">
+                              <lightning:input type="datetime" label="Sample Collected Date/Time" value="{!v.MedRev.Date_Time_of_blood_sample_collection__c}" disabled="true"/> 
+                            </div>
+                   </div>
+                   
+              <div class="slds-form-element slds-size_6-of-12">
+                  <lightning:Select aura:id="donorBloodIntake" value="{!v.MedRev.Was_donor_infused_or_transfused_prior_t__c}" label="Was Donor Infused or Transfused Prior To Sample Collection?">
+                      <option value="">--</option>
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                  </lightning:Select>
+             </div>
+             
+             
+          <!--   <aura:if isTrue="{!v.MedRev.Was_donor_infused_or_transfused_prior_t__c=='No'}">
+                 <div class="slds-form-element slds-size_6-of-12">
+                      <c:customLookup contactRole="EyebankAndQA" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.donorcon4}" label="Person Collected By"/>
+                     <lightning:input aura:id="Date" type="datetime" value="{!v.MedRev.Date__c}" label="Date" />  
+                 </div>
+             </aura:if> -->
+                   
+             <aura:if isTrue="{! and(v.MedRev.Was_donor_infused_or_transfused_prior_t__c=='Yes', v.isAgeGt12==false)}">
+             <div class="slds-grid slds-wrap slds-size_1-of-1">
+                     <c:dynamicRow aura:id="bloodSample" />             
+                  <div class="slds-form-element">   
+                      <lightning:input type="number" label="Donor Plasma Volume" value="{!v.MedRev.Pulse_Value_PV__c}" disabled="true"/> 
+                  </div>
+                  <div class="slds-form-element">
+                     <lightning:input type="number" label="Donor Blood Volume" value="{!v.MedRev.Blood_Value__c}" disabled="true"/> 
+                  </div> 
+                    
+                  <div class="slds-form-element">
+                     <lightning:input type="string" label="Sample Rejected" value="{!v.MedRev.Sample_Rejected__c}" /> 
+                  </div>  
+                 <div class="slds-form-element">
+                    <aura:if isTrue="{! or(v.MedRev.Sample_Rejected__c=='No',v.MedRev.Sample_Rejected__c=='Yes')}"> 
+                        <lightning:Select aura:id="HemoOutput" value="{!v.MedRev.Hemodilution_has_been_reviewed_and_deter__c}"  label="Hemodilution Has Been Reviewed and Determined Acceptable?">
+                          <option value="">--</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                      </lightning:Select>
+                   </aura:if> 
+                 </div>
+                </div>
+               </aura:if>      
+             <aura:if isTrue="{! and(v.MedRev.Was_donor_infused_or_transfused_prior_t__c=='Yes', v.isAgeGt12)}">
+                 <div class="slds-form-element slds-size_6-of-12">
+                 <lightning:Select aura:id="bloodLoss" value="{!v.MedRev.Has_extravascular_blood_loss_occurred_I__c}" label="Has Extravascular Blood Loss Occurred(Internal/External Bleeding)? Blood is not Lost in the Event of Closed Head Injuries">
+                     <option value="">--</option>
+                     <option value="Yes">Yes</option>
+                     <option value="No">No</option>
+                  </lightning:Select>
+                 </div>
+       
+              <!--   <aura:if isTrue="{!v.MedRev.Has_extravascular_blood_loss_occurred_I__c=='No'}">
+                   <div class="slds-form-element slds-size_6-of-12">
+                     <c:customLookup contactRole="EyebankAndQA" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.donorcon4}" label="Person Collected By:"/> 
+                     <lightning:input aura:id="DateTime" type="datetime" value="{!v.MedRev.Date__c}" label="Date" />  
+                   </div>
+                 </aura:if>  -->
+                 
+                 <aura:if isTrue="{!v.MedRev.Has_extravascular_blood_loss_occurred_I__c=='Yes'}"> 
+                 <div class="slds-grid slds-wrap slds-size_1-of-1">
+                     <c:dynamicRow aura:id="bloodSample" bloodList="{!v.bloodProduct}" colloidList="{!v.colloid}" crystalloidList="{!v.crystalloid}"/>             
+                  <div class="slds-form-element">   
+                      <lightning:input type="Number" label="Donor Plasma Volume" value="{!v.MedRev.Pulse_Value_PV__c}" disabled="true"/> 
+                  </div>
+                  <div class="slds-form-element">
+                     <lightning:input type="Number" label="Donor Blood Volume" value="{!v.MedRev.Blood_Value__c}" disabled="true"/> 
+                  </div> 
+                    
+                  <div class="slds-form-element">
+                     <lightning:input type="string" label="Sample Rejected" value="{!v.MedRev.Sample_Rejected__c}" /> 
+                  </div>      
+                </div>
+              </aura:if>
+                 
+           </aura:if>
+                  
+          </aura:if>  
+        </div> </div>
+           
+       
+          
+            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">  
+              <div class="slds-col slds-size_6-of-12">
+                     <aura:if isTrue="{! or(v.MedRev.Sample_Rejected__c=='No',v.MedRev.Was_donor_infused_or_transfused_prior_t__c=='No',v.MedRev.Has_extravascular_blood_loss_occurred_I__c=='No')}"> 
+                        <lightning:Select aura:id="HemoOutput" value="{!v.MedRev.Hemodilution_has_been_reviewed_and_deter__c}"  label="Hemodilution Has Been Reviewed and Determined Acceptable?">
+                          <option value="">--</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                      </lightning:Select>
+                   </aura:if> 
+               </div>
+            </div>
+       
+
+      
+       <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+
+        <aura:if isTrue="{! or(v.MedRev.Hemodilution_has_been_reviewed_and_deter__c=='No',v.MedRev.Hemodilution_has_been_reviewed_and_deter__c=='Yes')}"> 
+  
+        <div class="slds-col slds-size_6-of-12">
+    
+               <div class="slds-form-element">
+                    <c:customLookup contactRole="recoverytech" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.donorcon}" label="Hemodilution Done By"  objName="contact"/>
+                    <lightning:input aura:id="HemodilutionDoneOn" type="datetime" value="{!v.MedRev.Hemodilution_Done_On__c}" label="Hemodilution Done On" onblur="{!c.Hemo}"/>
+                   <aura:if isTrue="{!v.booleanvalue}">
+                       <div class="slds-text-color_error slds-p-left_x-small">
+                           Selected Date/Time Should be Greater than Death Date/Time.
+                       </div>
+                   </aura:if>
+            </div>
+            
+            <div class="slds-form-element">
+                 <lightning:Select aura:id="SampleQual" value="{!v.MedRev.Sample_Qualified__c}"  name="SampleQualified" label="Sample Qualified?">
+                     <option value="">--</option>
+                     <option value="Yes">Yes</option>
+                     <option value="No">No</option>
+                 </lightning:Select>
+             </div> 
+           
+         <!--   <aura:if isTrue="{!v.MedRev.Sample_Qualified__c=='Yes'}"> -->
+                <div class="slds-form-element">
+                    <lightning:Select aura:id="SerTest" value="{!v.MedRev.Serology_Test_Done__c}"  name="SerologyTest" label="Serology Test Done?">
+                        <option value="">--</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </lightning:Select>
+                </div> 
+       <!--   </aura:if> -->
+         <aura:if isTrue="{!v.MedRev.Serology_Test_Done__c=='Yes'}"> 
+         <div>
+             <div>
+             <c:customLookup contactRole="serologytech" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.donorcon1}" label="Serology Test Done By" objName="contact"/>
+           </div>
+        <div>
+          <lightning:input aura:id="SerologyReview" type="datetime" value="{!v.MedRev.Date_Time_of_Serology_Review__c}" label="Date/Time of Serology Review" onblur="{!c.ser}"/>
+            <aura:if isTrue="{!v.booleanvalue1}">
+                <div class="slds-text-color_error slds-p-left_x-small">
+                    Selected Date/Time Should be Greater than Death Date/Time.
+                </div>
+            </aura:if>
+             </div>            
+              <div>
+           <c:customLookup aura:id="SerologyTestApprovedBy" contactRole="microbiologist" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.donorcon2}" label="Serology Test Approved By"  objName="contact"/>
+         </div> 
+             </div></aura:if></div> 
+        </aura:if> 
+                  
+                  
+                  
+   <aura:if isTrue="{!v.MedRev.Hemodilution_has_been_reviewed_and_deter__c=='Yes'}">
+     <aura:if isTrue="{!v.MedRev.Serology_Test_Done__c=='Yes'}"> 
+         
+                        
+<div class="slds-col slds-size_6-of-12">
+                       
+    <div>
+      <lightning:Select aura:id="HBsAg"  value="{!v.MedRev.HBsAG__c}" label="HBsAG" onchange="{!c.HBsAGWarning}">
+      <option value="">--</option>
+      <aura:iteration items="{!v.HBsAgpicklistValues}" var="item">
+      <option value="{!item}">{!item}</option>
+      </aura:iteration>
+      </lightning:Select>
+      </div> 
+       <div>
+      <lightning:Select aura:id="HCV"  value="{!v.MedRev.HCV__c}" label="HCV"  onchange="{!c.HCVWarning}">
+      <option value="">--</option>
+      <aura:iteration items="{!v.HCVpicklistValues}" var="item">
+      <option value="{!item}">{!item}</option>
+      </aura:iteration>
+      </lightning:Select>
+      </div> 
+      <div>
+      <lightning:Select aura:id="HIV" value="{!v.MedRev.HIV_I_II__c}" label="HIV I/II" onchange="{!c.HIVWarning}">
+      <option value="">--</option>
+      <aura:iteration items="{!v.HIVpicklistValues}" var="item">
+      <option value="{!item}">{!item}</option>
+      </aura:iteration>  
+      </lightning:Select>
+      </div> 
+        <div>
+      <lightning:Select aura:id="Syphilis" value="{!v.MedRev.Syphilis__c}" label="Syphilis" onchange="{!c.SyphilisWarning}">
+      <option value="">--</option>
+      <aura:iteration items="{!v.SyphilispicklistValues}" var="item">
+      <option value="{!item}">{!item}</option>
+      </aura:iteration>
+      </lightning:Select>
+      </div> 
+    </div>
+                     
+    
+    
+ <div aura:id="testResult" class="warning-pop slds-hide">
+    <section class="slds-popover slds-popover_warning slds-nubbin_bottom-left" role="dialog" aria-labelledby="dialog-heading-id-2" aria-describedby="dialog-body-id-2">
+<button class="slds-button slds-button_icon slds-button_icon-small slds-float_right slds-popover__close slds-button_icon" title="Close dialog">
+ <lightning:icon iconName="utility:close" size="xx-small" onclick="{!c.closeAlert}"/>    
+<span class="slds-assistive-text">Close dialog</span>
+</button>
+<header class="slds-popover__header">
+    <div class="slds-media slds-media_center slds-has-flexi-truncate ">
+      <div class="slds-media__figure">
+        
+       <lightning:icon iconName="utility:warning"  size="small"/> 
+          
+        
+      </div>
+      <div class="slds-media__body">
+        <h2 class="slds-truncate slds-text-heading_medium" id="dialog-heading-id-2" title="Review warning">User Warning</h2>
+      </div>
+    </div>
+  </header>
+<div class="slds-popover__body slds-popover_warning__body" id="dialog-body-id-2">
+<p>If any of the serology tests is selected other than "Negative", the donor is not eligible for donating tissue. Therefore you cannot select 'Donor Eligibility' as 'Eligible' on this screen.</p>
+</div>
+</section>
+</div>   
+    
+       </aura:if></aura:if></div></div> </div>  
+                       
+                       
+
+<!-- CLINICAL REVIEW --> 
+ <div class="slds-col slds-size_1-of-1">    
+<div class="slds-page-header" style="cursor: pointer;" onclick="{!c.section02}">
+     <section class="slds-clearfix">
+         <div class="slds-float--left ">
+             <lightning:icon class="slds-show" aura:id="Two" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+             <lightning:icon class="slds-hide" aura:id="Two" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+         </div>
+         <div class="slds-m-left--large">Clinical Review</div>
+     </section>
+</div>
+  
+    <div class="slds-hide slds-p-around--medium" aura:id="Two">
+     
+            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+               <div class="slds-col slds-size_6-of-12">
+                    
+                      
+                           <div class="slds-form-element">
+                              <lightning:input type="string" label="Death to Cornea Preservation Time (In Hours)" value="{!v.MedRev.Death_To_Cornea_Preservation_Time1__c}" disabled="true"/> 
+                            </div>
+                            <div class="slds-form-element">
+                              <lightning:input type="string" label="Total Cooling Time (In Hours)"  value="{!v.MedRev.Total_Cooling_Time__c}" disabled="true"/>
+                            </div>
+                            <div class="slds-form-element">
+                              <lightning:input type="string" label="Primary Cause of Death"  value="{!v.MedRev.Primary_Cause_of_Death__c}" disabled="true"/>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning:input type="datetime" label="Cornea Preservation Date/Time"  value="{!v.MedRev.Cornea_Preservation_Date_Time__c}" disabled="true"/>  
+                            </div>
+                            <div class="slds-form-element">
+                              <lightning:input type="datetime" label="Date/Time Body Subjected to Cooling"  value="{!v.MedRev.Date_Time_Body_Subjected_to_Cooling__c}" disabled="true"/>  
+                            </div>
+                        
+                    
+                </div>
+                <div class="slds-col slds-size_6-of-12">
+                   
+                             <div class="slds-form-element">
+                                <lightning:input type="string" label="Death to Cooling Start Time (In Hours)"  value="{!v.MedRev.Death_to_Cooling_Start_Time__c}" disabled="true"/>
+                             </div>
+                             <div class="slds-form-element">
+                                <lightning:input type="string" label="Death to Current Time (In Hours)"  value="{!v.MedRev.Death_to_Current_Time__c}" disabled="true"/>
+                             </div>
+                             <div class="slds-form-element">
+                                 <lightning:input type="datetime" label="Tissue Recovery Date/Time"  value="{!v.MedRev.Cornea_Preservation_Date_Time__c}" disabled="true"/>
+                             </div>
+                             <div class="slds-form-element">
+                                 <lightning:input type="datetime" label="Date/Time Body Removed from Cooling"  value="{!v.MedRev.Date_Time_body_recovered_from_cooling__c}" disabled="true"/>
+                             </div>
+                           </div>
+                        
+                    </div>
+       
+    </div></div>
+    
+    
+<!-- MEDICAL HISTORY -->
+ <div class="slds-col slds-size_1-of-1">    
+<div class="slds-page-header" style="cursor: pointer;" onclick="{!c.section03}">
+     <section class="slds-clearfix">
+         <div class="slds-float--left ">
+             <lightning:icon class="slds-show" aura:id="Three" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+             <lightning:icon class="slds-hide" aura:id="Three" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+         </div>
+         <div class="slds-m-left--large">Medical History</div>
+     </section>
+</div>
+
+    <div class="slds-hide slds-p-around--medium" aura:id="Three">
+       
+            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+               <div class="slds-col slds-size_6-of-12">
+                          <div class="slds-form-element">   
+                              <lightning:Select aura:id="MedChart" value="{!v.MedRev.Medical_Chart__c}" label="Medical Chart">
+                     
+                              <option value="No">No</option>
+                              <option value="Yes">Yes</option>
+                              </lightning:Select>
+                          </div>
+                          
+                          <div class="slds-form-element">   
+                              <lightning:Select aura:id="DFI" value="{!v.MedRev.Donor_Family_Information__c}" label="Donor Family Information">
+                              <option value="No">No</option>
+                              <option value="Yes">Yes</option>
+                              
+                              </lightning:Select>
+                          </div>
+                         
+                          <div class="slds-form-element">   
+                              <lightning:Select aura:id="autopsy" value="{!v.MedRev.Autopsy__c}" label="Autopsy">
+                                   <option value="No">No</option>
+                                  <option value="Yes">Yes</option>
+                                 
+                              </lightning:Select>
+                          </div>
+                          
+                          <div class="slds-form-element">
+                              <lightning:input type="string" label="Medical/Surgical History Summary" value="{!v.MedRev.MedicalSurgical_History_Summary__c}" disabled="true"/>
+                              
+                          </div>
+                         
+                          <div class="slds-form-element">
+                               <c:customLookup contactRole="EyebankStaff" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.donorcon3}" label="Medical Review Completed By"  objName="contact"/>
+                          </div>
+                   
+                   <div>
+                <B>  If you have selected 'Yes' for any of the options listed in this section, you can scan and
+                    attach the available records using Attachments option at the bottom of this screen.</B>
+              </div>
+                   
+                     </div>
+                   
+               
+            
+          <div class="slds-col slds-size_6-of-12">
+                      <div class="slds-form-element"  >   
+                          <lightning:Select aura:id="PA" value="{!v.MedRev.Physical_Assessment__c}" label="Physical Assessment">
+                            <option value="No">No</option>
+                            <option value="Yes">Yes</option>
+                           
+                          </lightning:Select>
+                      </div>
+                      <div class="slds-form-element">   
+                          <lightning:Select aura:id="AP" value="{!v.MedRev.Attending_Physician__c}" label="Attending Physician">
+                              <option value="No">No</option>
+                              <option value="Yes">Yes</option>       
+                          </lightning:Select>
+                      </div>
+                      <div class="slds-form-element">
+                         <lightning:input type="string" label="Other" value="{!v.MedRev.Other__c}" />
+                      </div>
+                      <div class="slds-form-element" style="margin-top:48px;">
+                         <lightning:input aura:id="mreview" type="datetime" label="Medical Review Date/Time" value="{!v.MedRev.Medical_Review_Date_time__c}" onblur="{!c.mrev}"/>
+                          <aura:if isTrue="{!v.booleanvalue2}">
+                              <div class="slds-text-color_error slds-p-left_x-small">
+                                  Selected Date/Time Should be Greater than Death Date/Time.
+                              </div>
+                          </aura:if>
+              </div> 
+              
+                 </div>    
+            
+           </div>  
+       
+    </div>
+     </div>
+    
+<!-- DONOR ELIGIBILITY --> 
+     <div class="slds-col slds-size_1-of-1">
+<div class="slds-page-header" style="cursor: pointer;" onclick="{!c.section04}">
+     <section class="slds-clearfix">
+         <div class="slds-float--left ">
+             <lightning:icon class="slds-show" aura:id="Four" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+             <lightning:icon class="slds-hide" aura:id="Four" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+         </div>
+         <div class="slds-m-left--large">Outcome: Donor Eligibility</div>
+     </section>
+</div>
+
+    <div class="slds-hide slds-p-around--medium" aura:id="Four">
+      
+          <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+
+<div class="slds-col slds-size_6-of-12">
+                
+                       
+    <div class="slds-form-element"  >   
+        <lightning:Select aura:id="DE" value="{!v.MedRev.Donor_Eligibility__c}" label="Donor Eligibility" onchange="{!c.eligibleWarning}">
+            <option value="">--</option>
+            <option value="Eligible">Eligible</option>
+            <option value="Ineligible">Ineligible</option>
+        </lightning:Select>
+    </div>
+    <aura:if isTrue="{!v.MedRev.Donor_Eligibility__c=='Ineligible'}">
+        <div class="slds-form-element">   
+            <lightning:Select  aura:id="InElReason" value="{!v.MedRev.Reason_Donor_is_Ineligible__c}" label="Reason Donor is Ineligible">
+                <option value="">--</option>
+                 <aura:iteration items="{!v.picklistValues1}" var="item">
+                   <option value="{!item}">{!item}</option>
+                 </aura:iteration>
+              </lightning:Select>
+        </div>
+    </aura:if>
+    <div class="slds-form-element"> 
+                              <lightning:input type="string" label="Donor Id" value="{!v.MedRev.Donor_Name_Id__c}" disabled="true"/>
+                          </div>
+                        </div>
+              
+              
+                        
+        </div></div></div>
+                  
+             
+
+<!-- TISSUE IMPORT -->  
+ <div class="slds-col slds-size_1-of-1">         
+<div class="slds-page-header" style="cursor: pointer;" onclick="{!c.section05}">
+     <section class="slds-clearfix">
+         <div class="slds-float--left ">
+             <lightning:icon class="slds-show" aura:id="Five" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+             <lightning:icon class="slds-hide" aura:id="Five" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+         </div>
+         <div class="slds-m-left--large">Tissue Import</div>
+     </section>
+</div>
+    
+    <div class="slds-hide slds-p-around--medium" aura:id="Five">
+        
+          
+                   
+                      
+ <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+<div class="slds-col slds-size_6-of-12">
+                          <div class="slds-form-element"> 
+                              <lightning:Select aura:id="tissueImp" value="{!v.MedRev.Tissue_Imported__c}" label="Tissue Imported" onchange="{!c.OnTissueImpPick}">
+                                  <option value="">--</option>
+                                  <option value="Yes">Yes</option>
+                                  <option value="No">No</option>
+                              </lightning:Select>
+                          </div>
+                        </div>
+     
+     <!-- TISSUE IMPORT INFORMATION -->
+           <aura:if isTrue="{!v.displayTissueImp}">         
+     <div class="slds-col slds-size_1-of-1">
+                                <div class="slds-page-header"  style="cursor: pointer;" onclick="{!c.section07}">
+                                    <section class="slds-clearfix">
+                                        <div class="slds-float--left"> 
+                                            <lightning:icon class="slds-show" aura:id="Seven" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                                            <lightning:icon class="slds-hide" aura:id="Seven" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                                        </div>
+                                        <div class="slds-m-left--large">Tissue Import Information</div>
+                                    </section>
+                                </div>
+                                
+                                <div aura:id="Seven" class="slds-hide slds-p-around--medium"> 
+                                    
+                                    
+                                    <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                                        <div class="slds-col slds-size_6-of-12">
+                                            
+                                            <div class="slds-form-element ">
+                                                <lightning:textarea type="string" label="Reason for Import"  value="{!v.MedRev.Reason_for_Import__c}" placeholder="Enter a Reason"/>             
+                                            </div>        
+                                            
+                                            <div class="slds-form-element ">
+                                                <lightning:input type="string" label="Origin Eye Bank Tissue ID"  value="{!v.MedRev.Origin_Eye_Bank_Tissue_ID__c}" />             
+                                            </div>         
+                                            
+                                            <div class="slds-form-element"> 
+                              <lightning:Select value="{!v.MedRev.Tissue_Receipt_Acceptable__c}" label="Tissue Receipt Acceptable?">
+                                  <option value=" ">--</option>
+                                  <option value="Yes">Yes</option>
+                                  <option value="No">No</option>
+                              </lightning:Select>
+                          </div>      
+                                        </div>
+                                      
+                                        <div class="slds-col slds-size_6-of-12">                                          
+                                            <div class="slds-form-element ">
+                                                <lightning:input type="string" label="Origin Eye Bank"  value="{!v.MedRev.Origin_Eye_Bank__c}" />             
+                                            </div>                                                               
+                                        </div>    
+                                        
+                                    </div> 
+                                </div> </div>
+     </aura:if>
+        </div></div> </div>
+       
+ <div class="slds-col slds-size_1-of-1 slds-p-bottom_large" style="text-align:center;margin-top:20px;">    
+ <lightning:button aura:id="save" type="submit" class="slds-button_brand slds-align_absolute-center" onclick="{!c.saveMedicalReview}">Save</lightning:button>
+ </div>     
+</div></div>
+</aura:component>

@@ -1,0 +1,167 @@
+<apex:page controller="ShipmentLabelPdfController" renderAs="PDF" cache="true" showheader="false" sidebar="false" applyHtmlTag="false" docType="html-5.0" standardStylesheets="false" >
+    <html>        
+        <head>                                    
+            <style>
+                @page :left {
+                margin-left: 0.5cm;
+                margin-right: 0.5cm;
+                }
+                
+                @page :right {
+                margin-left: 0.5cm;
+                margin-right: 0.5cm;
+                } 
+                            @page 
+                @import url('https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i');
+           
+                }
+            </style> 
+        </head> 
+        
+        
+     <body style="font-family: 'Lato', sans-serif;font-size:12px;font-weight:400;">      
+        <div  style="margin:0;padding:0;">   
+            <div style="width:100%;float:left;">
+                <div  style="text-align:left;padding-bottom:20px;width:30%;float:left;">
+                    <img src="{!$Resource.RIEB_PDF}" style="width:55%;text-align:left"/>
+                </div>
+                
+                
+                <div style="width:30%;float:right;font-size:13px;float:right;">
+                    
+                    Ramayamma International Eye Bank,<br/>
+                    Kallam Anji Reddy Campus,<br/>
+                    L V Prasad Marg,<br/>
+                    Hyderabad, 500034,<br/>
+                    +91 040 68102514,<br/>
+                    Telangana.
+                </div>     
+            </div>
+           <table style="width:100%;float:left;margin-top:25px;border:1px solid black">
+                <tbody>     
+                    <tr >
+                        <th colspan="6" style="text-align: center; border-bottom:0.5px solid black;padding:10px;font-size:15px;" >
+                            <b>Shipment Label</b>     
+                        </th>                        
+                    </tr>
+                    <tr >
+                        <td width="17%" align="left" valign="top" style="font-size:14px;padding:10px;">
+                            Printed :
+                        </td>
+                        <td width="38%"  align="left" valign="top" style="font-size:13px;padding:10px 0px;">
+                          <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                          <apex:param value="{!Now()+offset}"/>
+                          </apex:outputText>  
+                        </td>
+                        
+                        <td width="18%" align="left" style="font-size:14px;padding:10px;">
+                            Hand Carried By :
+                    </td>
+                        <td width="27%" style="font-size:13px;">
+                            {!plac.Hand_Carried_By_By_Hand__r.Name} 
+                        </td>
+                    </tr>
+                    <tr >
+                        <td align="left" valign="top" style="font-size:14px;padding:10px;">
+                            Ship Via :
+                        </td>
+                        <td align="left" style="font-size:13px;">
+                            {!plac.Ship_Via__c} 
+                        </td>
+                    </tr>
+                   
+                    <tr>
+                        <td style="border-top:1px solid #000;" colspan="6"></td>
+                    </tr>
+                    
+                    
+                    <tr >
+                        <td align="left" valign="top" style="font-size:14px;padding:10px;">
+                            Ship From :
+                        </td>
+                        <td align="left" valign="top" style="font-size:13px;"> 
+                            Ramayamma International Eye Bank, Kallam Anji Reddy Campus, L V Prasad Marg, Hyderabad, 500034, +91 040 30612514, Telangana.
+                      </td>
+                        
+                        <td align="left" style="font-size:14px;padding:10px;">
+                            Ship To :
+                    </td>
+                        <td colspan="3" style="font-size:14px;padding:10px;">
+                            {!plac.To__r.Name}
+                        </td>
+                    </tr>
+                    
+                   
+                    <tr >
+                        <td align="left" valign="top" style="font-size:14px;padding:10px;" >
+                            Comments  : 
+                        </td>
+                        <td style="font-size:13px;"> 
+                            {!plac.Comments__c}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" style="font-size:14px; "> 
+                            <table width="100%;" cellpadding="0" cellspacing="0" style="border:1px solid #000;border-right:none;border-left:none;border-bottom:0.5px solid #000;border-top:0.5px solid #000;" >
+                                <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                                    <td align="left" valign="top" style="font-size:13px;text-align:center;border-right:0.5px solid #000;padding-top:5px;width:10%">
+                                        <b style="padding-bottom:10px;">Airline </b>
+                                    </td>
+                                    
+                                    
+                                    <td align="left" valign="top" style="font-size:13px;text-align:center;border-right:0.5px solid #000;padding-top:5px;width:10%;padding-bottom:10px;">
+                                        <b >From </b>
+                                    </td>
+                                    
+                                    <td align="left" valign="top" style="font-size:13px;text-align:center;border-right:0.5px solid #000;padding-top:5px;width:10%">
+                                        <b>To </b>
+                                    </td>
+                                    
+                                    <td align="left" valign="top" style="font-size:13px;text-align:center;border-right:0.5px solid #000;padding-top:5px;width:10%">
+                                       <b> Flight# </b>
+                                    </td>
+                                    
+                                    <td align="left" valign="top" style="font-size:13px;text-align:center;border-right:0.5px solid #000;padding-top:5px;width:10%">
+                                       <b> ETD Date-Time </b>
+                                    </td>
+                                    
+                                    <td align="left" valign="top" style="font-size:13px;text-align:center;padding-top:5px;width:10%">
+                                        <b> ETA Date-Time </b>
+                                    </td>
+                                </tr>   
+                                <tr>
+                                   <td align="left" valign="top" style="font-size:13px;text-align:center;border-right:0.5px solid #000;width:10%">{!plac.Airline__c}</td>
+                                   <td align="left" valign="top" style="font-size:13px;text-align:center;border-right:0.5px solid #000;width:10%">{!plac.Origin_City__c}</td>
+                                    <td align="left" valign="top" style="font-size:13px;text-align:center;border-right:0.5px solid #000;width:10%">{!plac.Destination_City__c}</td>
+                                    <td align="left" valign="top" style="font-size:13px;text-align:center;border-right:0.5px solid #000;width:10%">{!plac.Flight__c}</td>
+                                    <td align="left" valign="top" style="font-size:13px;text-align:center;border-right:0.5px solid #000;width:10%">
+                                        <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                        <apex:param value="{!plac.ETD_Date_Time__c+offset}"/>
+                                        </apex:outputText> 
+                                    </td>
+                                    <td align="left" valign="top" style="font-size:13px;text-align:center;width:10%">
+                                        <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                        <apex:param value="{!plac.ETA_Date_Time__c+offset}"/>
+                                        </apex:outputText> 
+                                    </td>
+                                </tr>
+                                
+                                
+                            </table>   
+                        </td>
+                    </tr>                                                            
+                    
+                    <tr >
+                        <td align="left" style="font-size:14px;padding:10px;">
+                            Included Tissue  :
+                        </td>
+                        <td style="font-size:13px;"> 
+                            {!plac.Select_Tissue__r.Name}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+         </body>
+    </html>
+</apex:page>

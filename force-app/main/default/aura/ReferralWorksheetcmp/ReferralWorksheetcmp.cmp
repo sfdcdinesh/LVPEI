@@ -1,0 +1,416 @@
+<aura:component controller="ReferralController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	
+    <aura:attribute name="referralrecord" type="Referral__c" default="{}" />
+  <div class="slds-container--large slds-align_absolute-center slds-wrap slds-m-bottom_medium">
+  <div class="slds-grid">
+    <div style="width:100%;text-align:center;padding-bottom:20px;">
+        <img src="{!$Resource.LvpeiEyeBankLogo}" style="width:35%;text-align:center"/>
+    </div>
+    <div class="slds-col slds-size_4-of-12">
+    <div class="slds-m-bottom_xxx-small slds-grid slds-gutters slds-p-top_x-large">
+    <div class="slds-col slds-size_4-of-12 slds-text-align_right slds-p-around_none"> <b>Referral# :</b></div>
+        <div class="slds-col slds-size_8-of-12  slds-p-around_none">value</div>
+     </div>       
+  
+     </div>
+      
+     <div class="slds-col slds-size_4-of-12  slds-p-around_none">
+         Ramayamma International Eye Bank,<br/>
+        Kallam Anji Reddy Campus,<br/>
+        LV Prasad Marg,<br/>
+        Hyderabad,500034,<br/>
+        +91 040 30612514,<br/>
+        Telangana.
+    
+    </div>
+         
+        </div>
+   <table style="border:2px solid #000;" class="workshett-table">
+        <thead>
+        </thead>
+        <tbody>
+            <tr>
+                <th colspan="4" style="text-align: center;padding:10px 0px;" >
+                    <b>REFERRAL WORKSHEET</b>
+        
+                </th>
+            </tr>
+            <tr >
+                <th colspan="4" style="text-align: center;background:#000;color:#fff;">
+                    <b>REFERRAL INFORMATION</b>
+                </th>
+            </tr>
+            <tr >
+                <td>
+                    <b>Referral Taken By :</b>
+                </td>
+                <td>
+                    
+                </td>
+                <td>
+                    <b>Death / Consignment Notification (Date-Time) :</b>
+                </td>
+                <td>
+                    {!v.referralrecord.Referral__r.Death_Notification_Consignment_Date_Time__c}
+                </td>
+            </tr>
+            <tr >
+                <td>
+                    <b>Referral Method :</b>
+                </td>
+                <td>
+                    <b>{!v.referralrecord.Referral__r.Referral_Method__c}</b>
+                </td>
+                <td>
+                    <b>Donation Counselor :</b>
+                </td>
+                <td>
+                    {!v.referralrecord.Referral__r.DonationCounselorVolunteer__c}
+                </td>
+            </tr>
+            <tr >
+                <td>
+                    <b>Caller First / Family Name :</b>
+                </td>
+                <td>
+                    <b>{!v.referralrecord.Caller_First_Name__c}</b>
+                </td>
+                <td>
+                    <b>Caller Last / Given Name :</b>
+                </td>
+                <td>
+                    {!v.referralrecord.Caller_Last_Name__c}
+                </td>
+            </tr>
+            <tr >
+                <td>
+                    <b>Relationship :</b>
+                </td>
+                <td>
+                    <b>{!v.referralrecord.Referral__r.Relationship_of_caller_to_donor__c}</b>
+                </td>
+  
+                <td>
+                    <b>Phone :</b>
+                </td>
+                <td>
+                    {!v.referralrecord.Referral__r.Phone_Number_Of_Caller__c}
+                </td>
+            </tr>
+            
+           <tr >
+                <th>
+                    Death Notification From :
+                
+                </th>
+                <td>
+                    {!v.referralrecord.Unit_Organization_Hospital_Name__c}   
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+                <th>
+                    Unit Type :
+                </th>
+                <td>
+                    {!v.referralrecord.Referral__r.Unit_Type__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+           <tr >
+            
+                <th>
+                    Special Instructions :
+                </th>
+                <td>
+                    {!v.referralrecord.Referral__r.Special_Instructions__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+            
+                <th>
+                    Body Location :
+                </th>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+            
+                <th>
+                    Recovery Address :
+                </th>
+                <td>
+                    {!v.referralrecord.Referral__r.Recovery_Address__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+            
+                <th>
+                    Recovery Directions :
+                </th>
+                <td>
+                    {!v.referralrecord.Referral__r.Recovery_Direction__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+            
+                <th>
+                    General Referral Comments :
+                </th>
+                <td></td>
+                <td></td>
+                 <td></td>
+                    
+                
+            </tr>
+           
+            <tr >
+                <th colspan="4" style="text-align: center;background:#000;color:#fff;">
+                    <b>PATIENT INFORMATION</b>
+                </th>
+            </tr>
+            
+                <tr >
+                <td>
+                    <b>First / Family Name :</b>
+                </td>
+                <td>
+                    <b>{!v.referralrecord.First_Name__c}</b>
+                </td>
+                <td>
+                    <b>Last / Given Name :</b>
+                </td>
+                <td>
+                    {!v.referralrecord.Last_Name__c}
+                </td>
+            </tr>
+            <tr >
+                <td>
+                    <b>DOB :</b>
+                </td>
+                <td>
+                    <b>{!v.referralrecord.Date_of_Birth__c}</b>
+                </td>
+                <td>
+                    <b>Age :</b>
+                </td>
+                <td>
+                    {!v.referralrecord.Age_of_Donor__c}
+                </td>
+            </tr>
+            <tr >
+                <td>
+                    <b>Sex Of Donor :</b>
+                </td>
+                <td>
+                    <b>{!v.referralrecord.Gender__c}</b>
+                </td>
+                <td>
+                    <b>Religion :</b>
+                </td>
+                <td>
+                    {!v.referralrecord.Religion__c}
+                </td>
+            </tr>
+            <tr >
+                <td>
+                    <b>Height :</b>
+                </td>
+                <td>
+                    <b>{!v.referralrecord.Height__c}</b>
+                </td>
+                <td>
+                    <b>Weight :</b>
+                </td>
+                <td>
+                    {!v.referralrecord.Weight__c}
+                </td>
+            </tr>
+            <tr >
+            
+                <th>
+                    MRN :
+                </th>
+                <td>
+                    {!v.referralrecord.Medical_Record_Number__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+            
+                <th>
+                    Admission Date-Time :
+                </th>
+                <td>
+                    {!v.referralrecord.Date_of_Admission__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+            
+                <th>
+                    Primary Cause Of Death :
+                </th>
+                <td>
+                    {!v.referralrecord.Primary_Cause_of_Death__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+            
+                <th>
+                    Other Diseases :
+                </th>
+                <td>
+                    {!v.referralrecord.If_Other_Provide_Cause__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+            
+                <th>
+                   Circumstances Of Death  :
+                </th>
+                <td>
+                    {!v.referralrecord.Circumstances_Leading_to_Death__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+            
+                <th>
+                    Att. MD :
+                </th>
+                <td>
+                    {!v.referralrecord.Attending_physician__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            
+            <tr >
+                <th colspan="4" style="text-align: center;background:#000;color:#fff;">
+                    <b>PRELIMINARY TISSUE SCREENING INFORMATION</b>
+                </th>
+            </tr>
+             <tr >
+            
+                <th>
+                    Death Date-Time :
+                </th>
+                <td>
+                    {!v.referralrecord.Date_Time_of_Death__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+                <td>
+                    <b>Donor On A Respirator :</b>
+                </td>
+                <td>
+                    <b>{!v.referralrecord.Was_the_donor_on_a_ventilator__c}</b>
+                </td>
+                <td>
+                    <b>How Long ? :</b>
+                </td>
+                <td>
+                    {!v.referralrecord.Duration_of_time_on_Ventilator_if_Yes__c}
+                </td>
+            </tr>
+            <tr >
+            
+                <th>
+                    Isolation :
+                </th>
+                <td>
+                    {!v.referralrecord.Isolation__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+            
+                <th>
+                    Signs / Symptoms Of Systemic Infection ? :
+                </th>
+                <td>
+                    {!v.referralrecord.Sign_symptoms_of_systemic_infection__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+            
+                <th>
+                    IV Fluid Given In The Last Hour ? :
+                </th>
+                <td>
+                    {!v.referralrecord.How_many_IV_Fluids_given_in_Last_Hour__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+            
+                <th>
+                    Blood Given In The Last 48 Hours ? :
+                </th>
+                <td>
+                    {!v.referralrecord.Blood_given_in_the_last_48_hours__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+            
+                <th>
+                    Transferred From Other Facility ? :
+                </th>
+                <td>
+                    {!v.referralrecord.Transferred_from_other_facility__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+            
+                <th>
+                    Medical/Ocular History :
+                </th>
+                <td>
+                    {!v.referralrecord.Medical_Ocular_History__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr >
+            
+                <th>
+                    Social And Behavioral History :
+                </th>
+                <td>
+                    {!v.referralrecord.Social_and_Behavioral_History__c}
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            
+        </tbody>
+    </table>
+</div>    
+</aura:component>

@@ -1,0 +1,226 @@
+<aura:component controller="customContactController">
+    <aura:attribute name="eMsg" type="String"/>
+    <aura:attribute name="post" type="Contact"
+                    default="{'sObjecttype': 'Contact', 'Zip_Postal_Code__c' : ' '
+                             }"/>
+    <aura:attribute name="Con" type="Contact" default="{'sObjecttype': 'Contact'}"/>
+    <aura:attribute name="disabled" type="Boolean" default="false" />
+    <aura:attribute name="saved" type="Boolean" default="false" />
+    <aura:attribute name="showSpinner" type="Boolean" default="true" />
+    <aura:attribute name="isContinue" type="Boolean" default="false" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="contactRole" type="string"/>
+    <aura:attribute name="ApiList" type="Map"/>
+    <aura:attribute name="donorcon" type="Sobject" default="{}"/>
+    <aura:attribute name="CustomLookup" type="Aura.Component" required="true"/>
+    <aura:registerEvent name="test" type="c:CustomCon"/>
+    <aura:registerEvent name="oSelectedRecordEvent" type="c:selectedsObjectRecordEvent"/>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    <aura:if isTrue="{!!v.saved}">
+        <!--lightning:recordEditForm aura:id="editform" onsuccess="{!c.handleSuccess}" objectApiName="Contact"-->
+        <!-- the messages component is for error messages -->
+        
+        
+        <div class="slds-size_1-of-1" style="background:#005fb2;color:#fff;">
+            
+            <lightning:layoutItem padding="horizontal-small">
+                
+                <div class="page-section page-header slds-p-around_x-small">
+                    <h3 class="slds-text-heading--large">New Contact</h3>
+                </div> 
+            </lightning:layoutItem>
+        </div>            
+        <div>
+            <div class="slds-page-header" style="cursor: pointer;" >
+                <section class="slds-clearfix">
+                    <div class="slds-float--left ">
+                        <lightning:icon class="slds-show" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                        <lightning:icon class="slds-hide" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                    </div>
+                    <div class="slds-m-left--large"><b>Contact Information</b></div>
+                </section>
+            </div>
+            <br/>
+            <lightning:input type="string" aura:id="Fname" label="First Name" value="{!v.Con.FirstName}"/> 
+            <lightning:input type="string" aura:id="Lname" label="Last Name" value="{!v.Con.LastName}" required="true" onblur="{!c.checkContact}"/>
+            <lightning:input type="string" label="Description" value="{!v.Con.Description}" />
+            <c:customLookup objectAPIName="Account" IconName="standard:account" selectedRecord="{!v.donorcon}" contactRole="unitOrganisation" label="Account" objName="Hospital"/>
+            <lightning:input type="tel" pattern="[0-9]{10}" messageWhenPatternMismatch="Please Enter a Valid Mobile Number" label="Work Phone" value="{!v.Con.npe01__WorkPhone__c}" maxlength="15"/>
+            <lightning:input type="tel" pattern="[0-9]{10}" messageWhenPatternMismatch="Please Enter a Valid Mobile Number" label="Mobile" value="{!v.Con.MobilePhone}" maxlength="10"/>
+            <lightning:input type="email" label="Work Email" value="{!v.Con.npe01__WorkEmail__c}" />
+            <lightning:input type="email" aura:id="Email" label="Personal Email" value="{!v.Con.npe01__HomeEmail__c}" onblur="{!c.checkContact}"/> 
+            <br/>
+            <div class="slds-page-header" style="cursor: pointer;" >
+                <section class="slds-clearfix">
+                    <div class="slds-float--left ">
+                        <lightning:icon class="slds-show" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                        <lightning:icon class="slds-hide" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                    </div>
+                    <div class="slds-m-left--large"><b>Contact Roles</b></div>
+                </section>
+            </div>
+            <br/>
+            
+            <lightning:input type="checkbox"  label="HCRP Counselor" aura:id="hcrp" value="{!v.Con.HCRP_Counselor__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox"  label="Volunteer" aura:id="vol" value="{!v.Con.Volunteer__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox" label="Slit Lamp Technician" aura:id="slt" value="{!v.Con.Slit_Lamp_Technician__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox" label="Recovery Technician" aura:id="rt" value="{!v.Con.Recovery_Technician__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox" label="Specular Technician" aura:id="spt" value="{!v.Con.Specular_Technician__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox" label="Serology Technician" aura:id="set" value="{!v.Con.Serology_Technician__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox" label="Eye Bank Manager" aura:id="ebm" value="{!v.Con.Eye_Bank_Manager__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox" label="QA Manager" aura:id="qa" value="{!v.Con.QA_Manager__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox"  label="HCRP Manager" aura:id="hcrpM" value="{!v.Con.HCRP_Manager__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox" label="Microbiologist" aura:id="micro" value="{!v.Con.Microbiologist__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox" label="EK Technician" aura:id="ekt" value="{!v.Con.EK_Technician__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox" label="HCRP Hospital" aura:id="hcrph" value="{!v.Con.HCRP_Hospital__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox" label="Distribution Assistant" aura:id="da" value="{!v.Con.Distribution_Assistant__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox" label="EK Circulator" aura:id="ekc" value="{!v.Con.EK_Circulator__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox" label="Transplant Hospital" aura:id="th" value="{!v.Con.Transplant_Hospital__c}" onchange="{!c.chkRole}"/> 
+            <lightning:input type="checkbox" label="Eye Bank Staff" aura:id="ebs" value="{!v.Con.Eye_Bank_Staff__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox" label="Transplant Surgeon" aura:id="ts" value="{!v.Con.Transplant_Surgeon__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox"  label="Hospital Staff" aura:id="hs" value="{!v.Con.Hospital_Staff__c}" onchange="{!c.chkRole}"/>
+            <lightning:input type="checkbox" label="Organisation / Hospital" aura:id="oh" value="{!v.Con.Organisation_Hospital__c}" onchange="{!c.chkRole}"/>
+            
+            <!--<aura:if isTrue="{!v.contactRole=='hrcpcounselor'}"> 
+                <lightning:input type="checkbox"  label="HCRP Counselor" aura:id="hcrp" value="{!v.Con.HCRP_Counselor__c}" onchange="{!c.chkRole}"/>
+                <lightning:input type="checkbox"  label="Volunteer" aura:id="vol" value="{!v.Con.Volunteer__c}" onchange="{!c.chkRole}"/>
+                <lightning:input type="checkbox"  label="Hospital Staff" aura:id="hs" value="{!v.Con.Hospital_Staff__c}" onchange="{!c.chkRole}"/>
+                <lightning:input type="checkbox"  label="HCRP Manager" aura:id="hcrpM" value="{!v.Con.HCRP_Manager__c}" onchange="{!c.chkRole}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.contactRole=='recoverytech'}"> 
+                <lightning:input type="checkbox" label="Recovery Technician" aura:id="rt" value="{!v.Con.Recovery_Technician__c}" onchange="{!c.chkRole}"/>
+                <lightning:input type="checkbox" label="Eye Bank Staff" aura:id="ebs" value="{!v.Con.Eye_Bank_Staff__c}" onchange="{!c.chkRole}"/>
+            </aura:if>
+            <aura:if isTrue="{! or(v.contactRole=='EyebankAndQA',v.contactRole=='EyebankAndQA1')}"> 
+                <lightning:input type="checkbox" label="Eye Bank Manager" aura:id="ebm" value="{!v.Con.Eye_Bank_Manager__c}" onchange="{!c.chkRole}"/>
+                <lightning:input type="checkbox" label="QA Manager" aura:id="qa" value="{!v.Con.QA_Manager__c}" onchange="{!c.chkRole}"/>  
+            </aura:if>
+            <aura:if isTrue="{!v.contactRole=='serologytech'}"> 
+                <lightning:input type="checkbox" label="Serology Technician" aura:id="st" value="{!v.Con.Serology_Technician__c}" onchange="{!c.chkRole}"/>  
+                <lightning:input type="checkbox" label="Eye Bank Staff" aura:id="ebs" value="{!v.Con.Eye_Bank_Staff__c}" onchange="{!c.chkRole}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.contactRole=='microbiologist'}">
+                <lightning:input type="checkbox" label="Eye Bank Staff" aura:id="ebs" value="{!v.Con.Eye_Bank_Staff__c}" onchange="{!c.chkRole}"/>
+                <lightning:inputField fieldName="Microbiologist__c" aura:id="micro" onchange="{!c.chkRole}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.contactRole=='EyebankStaff'}">
+                <lightning:input type="checkbox" label="Eye Bank Staff" aura:id="ebs" value="{!v.Con.Eye_Bank_Staff__c}" onchange="{!c.chkRole}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.contactRole=='specularTech'}">
+                <lightning:input type="checkbox" label="Specular Technician" aura:id="st" value="{!v.Con.Specular_Technician__c}" onchange="{!c.chkRole}"/>
+                <lightning:input type="checkbox" label="Eye Bank Staff" aura:id="ebs" value="{!v.Con.Eye_Bank_Staff__c}" onchange="{!c.chkRole}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.contactRole=='specularTech1'}">  
+                <lightning:input type="checkbox" label="Specular Technician" aura:id="st" value="{!v.Con.Specular_Technician__c}" onchange="{!c.chkRole}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.contactRole=='specularTechTiss'}">
+                <lightning:input type="checkbox" label="Recovery Technician" aura:id="rt" value="{!v.Con.Recovery_Technician__c}" onchange="{!c.chkRole}"/>
+                <lightning:input type="checkbox" label="Eye Bank Staff" aura:id="ebs" value="{!v.Con.Eye_Bank_Staff__c}" onchange="{!c.chkRole}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.contactRole=='slitLampTech'}">
+                <lightning:input type="checkbox" label="Slit Lamp Technician" aura:id="slt" value="{!v.Con.Slit_Lamp_Technician__c}" onchange="{!c.chkRole}"/>
+                <lightning:input type="checkbox" label="Eye Bank Staff" aura:id="ebs" value="{!v.Con.Eye_Bank_Staff__c}" onchange="{!c.chkRole}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.contactRole=='slitLampTech1'}">
+                <lightning:input type="checkbox" label="Slit Lamp Technician" aura:id="slt" value="{!v.Con.Slit_Lamp_Technician__c}" onchange="{!c.chkRole}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.contactRole=='ekTech'}">
+                <lightning:input type="checkbox" label="EK Technician" aura:id="ekt" value="{!v.Con.EK_Technician__c}" onchange="{!c.chkRole}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.contactRole=='ekCirculator'}">
+                <lightning:input type="checkbox" label="EK Circulator" aura:id="ekc" value="{!v.Con.EK_Circulator__c}" onchange="{!c.chkRole}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.contactRole=='unitOrganisation'}">
+                <lightning:input type="checkbox" label="HCRP Counselor" aura:id="hcrp" value="{!v.Con.HCRP_Counselor__c}" onchange="{!c.chkRole}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.contactRole=='transsurgeon'}">
+                <lightning:input type="checkbox" label="Transplant Surgeon" aura:id="ts" value="{!v.Con.Transplant_Surgeon__c}" onchange="{!c.chkRole}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.contactRole=='completedBy'}">
+                <lightning:input type="checkbox" label="Recovery Technician" aura:id="rt" value="{!v.Con.Recovery_Technician__c}" onchange="{!c.chkRole}"/>
+                <lightning:input type="checkbox" label="Specular Technician" aura:id="spectech" value="{!v.Con.Specular_Technician__c}" onchange="{!c.chkRole}"/> 
+            </aura:if>
+            <aura:if isTrue="{!v.contactRole=='handBy'}">
+                <lightning:input type="checkbox" label="Distribution Assistant" aura:id="da" value="{!v.Con.Distribution_Assistant__c}" onchange="{!c.chkRole}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.contactRole=='to'}">
+                <lightning:input type="checkbox" label="Organisation Hospital" aura:id="oh" value="{!v.Con.Organisation_Hospital__c}" onchange="{!c.chkRole}"/> 
+                <lightning:input type="checkbox" label="Transplant Hospital" aura:id="th" value="{!v.Con.Transplant_Hospital__c}" onchange="{!c.chkRole}"/> 
+            </aura:if>-->
+            
+            <br/>
+            <div class="slds-page-header" style="cursor: pointer;" >
+                <section class="slds-clearfix">
+                    <div class="slds-float--left ">
+                        <lightning:icon class="slds-show" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                        <lightning:icon class="slds-hide" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                    </div>
+                    <div class="slds-m-left--large"><b>Address Information</b></div>
+                </section>
+            </div>
+            <br/>
+            <lightning:input type="string" label="Street 1" value="{!v.Con.Street_1__c}" /> 
+            <lightning:input type="string" label="Street 2" value="{!v.Con.Street_2__c}" /> 
+                  <lightning:select  label="Country" value="{!v.Con.Country__c}" > 
+            <option value="--None--">--None--</option>
+            <option value="India">India</option>
+            </lightning:select>
+            <lightning:select label="State" value="{!v.Con.State__c}" > 
+            <option value="--None--">--None--</option>
+           <option value="Andhra Pradesh">Andhra Pradesh</option>
+            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+            <option value="Assam">Assam</option>
+            <option value="Bihar">Bihar</option>
+            <option value="Chhattisgarh">Chhattisgarh</option>
+            <option value="Goa">Goa</option>
+            <option value="Gujarat">Gujarat</option>
+            <option value="Haryana">Haryana</option>
+            <option value="Himachal Pradesh">Himachal Pradesh</option>
+            <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+            <option value="Jharkhand">Jharkhand</option>
+            <option value="Karnataka">Karnataka</option>
+            <option value="Kerala">Kerala</option>
+            <option value="Madhya Pradesh">Madhya Pradesh</option>
+            <option value="Maharashtra">Maharashtra</option>
+            <option value="Manipur">Manipur</option>
+            <option value="Meghalaya">Meghalaya</option>
+            <option value="Mizoram">Mizoram</option>
+            <option value="Nagaland">Nagaland</option>
+            <option value="Odisha">Odisha</option>
+            <option value="Punjab">Punjab</option>
+            <option value="Rajasthan">Rajasthan</option>
+            <option value="Sikkim">Sikkim</option>
+            <option value="Tamil Nadu">Tamil Nadu</option>
+            <option value="Telangana">Telangana</option>
+            <option value="Tripura">Tripura</option>
+            <option value="Uttar Pradesh">Uttar Pradesh</option>
+            <option value="Uttarakhand">Uttarakhand</option>
+            <option value="West Bengal">West Bengal</option>
+            <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+            <option value="Chandigarh">Chandigarh</option>
+            <option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
+            <option value="Daman and Diu">Daman and Diu</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Lakshadweep">Lakshadweep</option>
+            <option value="Puducherry (Pondicherry)">Puducherry (Pondicherry)</option>
+            </lightning:select> 
+            <lightning:input type="string" label="City" value="{!v.Con.City__c}" />
+            <lightning:input type="string"  aura:id="zipcode" label="ZipCode" value="{!v.Con.Zip_Postal_Code__c}" onchange="{!c.validateFields}" /> 
+            <p style="color:red;">{!v.eMsg}</p>
+            <br/>  
+        </div>
+        
+        
+        <div class="slds-m-top_medium">
+            <aura:if isTrue="{! !v.isContinue}">
+                <lightning:button  variant="brand"  aura:id="savebtn" type="submit" name="save" label="Save" disabled="false" onclick="{!c.continueToSaveContact}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.isContinue}">
+                <lightning:button  variant="brand"  aura:id="contnbtn" type="submit" name="Continue" label="Continue" onclick="{!c.continueToSaveContact}"/>
+            </aura:if>
+        </div>
+        <aura:set attribute="else">
+            <p>Saved! New record id is {!v.recordId}</p>
+        </aura:set>
+    </aura:if>
+</aura:component>

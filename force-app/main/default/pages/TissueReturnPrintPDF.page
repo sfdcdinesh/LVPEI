@@ -1,0 +1,232 @@
+<apex:page standardcontroller="Tissue_Return__c" extensions="TissueReturnPrintController" renderAs="PDF"  applyHtmlTag="false" cache="true" showheader="false" sidebar="false" docType="html-5.0" standardStylesheets="false" >
+    <head>
+        <style>
+            
+            @page :left {
+            margin-left: 0.5cm;
+            margin-right: 0.5cm;
+            }
+            
+            @page :right {
+            margin-left: 0.5cm;
+            margin-right: 0.5cm;
+            }  
+            @page {
+            margin-top: 0.5cm;
+            margin-bottom: 0cm;
+            
+            }  
+            
+            
+            
+            @page {
+            @import url('https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i');
+            
+            }
+        </style>   
+    </head>
+    <body style="margin:0px!important;padding:0px!important;font-family: 'Lato', sans-serif;font-size:12px;font-weight:400;">      
+        <div style="margin:0;padding:0;">   
+            <div style="width:100%;float:left;">
+                <div  style="text-align:left;padding-bottom:20px;width:20%;float:left;">
+                    <img src="{!$Resource.RIEB_PDF}" style="width:75%;text-align:left"/>
+                </div>
+                <br/><br/><br/><br/>
+                <div style="width:30%;float:left;font-size:13px;">
+                    <div><b>TR ID# :</b> {!tissuereturn.Name} </div>
+                    <div><b>Tissue ID# :</b>{!tissuereturn.Tissue_Id1__c}  </div>
+                </div>
+                
+            </div>   
+            <table style="width:100%;float:left;margin-top:0px;border:1px solid #000;">       
+                <tbody>
+                    <tr style="border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;font-size:14px;">
+                        <th colspan="4" style="text-align: center;font-family: sans-serif;font-size:20px;" >
+                            <b>TISSUE RETURN INFORMATION</b>     
+                        </th>
+                    </tr>
+                    <tr style="color:white;background:black;">
+                        <th colspan="4" style="text-align: center;font-size:13px; font-family: sans-serif;padding:4px 0px;" >
+                            <b>TISSUE TRACKING</b>
+                        </th>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td width="30%" align="left" valign="top" style="font-size:12px;padding-top:5px;">
+                            <b>Tissue sent to :</b>
+                        </td>
+                        <td width="19%" style="font-size:12px;padding-top:5px;"  valign="top">
+                            {!tissuereturn.Sent_to__c}
+                        </td>
+                        
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td style="font-size:12px;">
+                            <b>Date / Time sent  :</b>  
+                        </td>
+                        <td width="22%" style="font-size:12px;padding-top:5px;" valign="bottom">
+                            <apex:outputText value="{0,date,dd/MM/yyyy HH:mm }">
+                                <apex:param value="{!tissuereturn.Date_Time_Sent__c+offset}"/>
+                            </apex:outputText>    
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            <b>Reason for Return :</b>
+                        </td>
+                        <td style="font-size:12px;">
+                            {!tissuereturn.Reason_for_Return__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            <b>Method of Transport to Eye Bank :</b>
+                        </td>
+                        <td style="font-size:12px;">
+                            {!tissuereturn.Method_of_Transportation__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            <b> Storage conditions during absence : </b>
+                        </td>
+                        <td style="font-size:12px;">
+                            {!tissuereturn.Storage_Conditions_During_Absence__c}
+                        </td>
+                    </tr>
+                    
+                    <tr style="color:white;background:black;border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;">
+                        <th colspan="4" style="text-align: center;font-size:13px;font-family: sans-serif;padding:4px 0px;">
+                            <b>TISSUE RECEIPT CHECKLIST</b>
+                        </th>
+                    </tr>
+                    
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;padding-top:5px;">
+                            <b>Check the following carefully :</b>
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <td style="font-size:12px;">
+                            <b>1.Tamper evident seal(s) are intact and do not appear to have been tampered?  :</b>  
+                        </td>
+                        <td style="font-size:12px;">{!tissuereturn.Tamper_Evident_Seal_Intact__c}</td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <td style="font-size:12px;">
+                            <b>2.Tissue is cold and appears to have been refrigerated?  :</b>  
+                        </td>
+                        <td style="font-size:12px;">{!tissuereturn.Tissue_Have_Been_Refrigerated__c}</td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <td style="font-size:12px;">
+                            <b>3.The vial or viewing chamber is not broken or damaged?  :</b>  
+                        </td>
+                        <td style="font-size:12px;">{!tissuereturn.Vial_or_Viewing_Chamber_Not_Broken__c}</td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <td style="font-size:12px;">
+                            <b>4.The accompanying paperwork matches the donor number?  :</b>  
+                        </td>
+                        <td style="font-size:12px;">{!tissuereturn.Accompanying_Paperwork_Matches_Donor_No__c}</td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <td style="font-size:12px;">
+                            <b>5.Media checked visually for consistency of color?  :</b>  
+                        </td>
+                        <td style="font-size:12px;">{!tissuereturn.Optisol_Checked_Visually_Color__c}</td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <td style="font-size:12px;">
+                            <b>Date / Time returned to Eye Bank  :</b>  
+                        </td>
+                        <td width="22%" style="font-size:12px;padding-top:5px;" valign="bottom">
+                            <apex:outputText value="{0,date,dd/MM/yyyy HH:mm }">
+                                <apex:param value="{!tissuereturn.Date_Time_Returned__c+offset}"/>
+                            </apex:outputText>    
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <td style="font-size:12px;">
+                            <b>Completed by  :</b>  
+                        </td>
+                        <td style="font-size:12px;">{!tissuereturn.Completed_By__r.Name}</td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <td style="font-size:12px;">
+                            <b>*Re-evaluation:  :</b>  
+                        </td>
+                       
+                        <td style="font-size:12px;">
+                            <b>Slit Lamp :</b>  
+                        </td>
+                        
+                        <td style="font-size:12px;">
+                            <b>Date :</b>  
+                        </td>
+                        
+                        <td style="font-size:12px;">
+                            <b>Done By :</b>  
+                        </td>
+                        <td style="font-size:12px;"></td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td style="font-size:12px;">
+                            <b></b>  
+                        </td>
+                        
+                        <td style="font-size:12px;">
+                            <b>Specular Microscopy  :</b>  
+                        </td>
+                        
+                        <td style="font-size:12px;">
+                            <b>Date :</b>  
+                        </td>
+                        
+                        <td style="font-size:12px;">
+                            <b>Done By :</b>  
+                        </td>
+                        
+                    </tr>
+                    
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <td style="font-size:12px;">
+                            <b>Tissue suitable for re-distribution:</b>  
+                        </td>
+                        <td style="font-size:12px;">
+                            Yes</td>
+                        <td style="font-size:12px;">No</td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <td style="font-size:12px;">
+                            <b>Approved By:</b>  
+                        </td>
+                        <td style="font-size:12px;"></td>
+                        <td style="font-size:12px;">
+                            <b>Signature:</b>  
+                        </td>
+                        <td style="font-size:12px;"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width:100%;float:left;margin-top:25px;border-top:1px solid #000;position: fixed;
+                          bottom: 0px;margin-bottom:20px;">
+                <tbody><tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                    <td>
+                    *Note: 	Re-evaluation has to be done if the tissue is returned to the Eye Bank after 24hrs of its distribution
+                    A copy of this form must accompany the tissue at the time of redistribution
+                   </td> </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</apex:page>

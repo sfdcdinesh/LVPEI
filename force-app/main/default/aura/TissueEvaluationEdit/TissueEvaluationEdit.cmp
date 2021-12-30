@@ -1,0 +1,1769 @@
+<aura:component controller="TissueEvaluationSave" implements="force:appHostable,lightning:actionOverride,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <!-- Ruma -->
+    <aura:attribute name="lkupValue" type="String" default=""/>
+    <!-- /Ruma-->
+    <aura:attribute name="imgurl" type="String"/>
+    <aura:attribute name="imgurl1" type="String"/>
+    <aura:attribute name="booleanvalue" type="boolean" default="false"/>
+    <aura:attribute name="booleanvalue1" type="boolean" default="false"/>
+    <aura:attribute name="booleanvalue2" type="boolean" default="false"/>
+    <aura:attribute name="booleanvalue3" type="boolean" default="false"/>
+    <aura:attribute name="booleanvalue4" type="boolean" default="false"/>
+    <aura:attribute name="TissRecoveryDate" type="Datetime" default="false"/>
+        <aura:attribute name="datetime" type="Datetime" />
+    <aura:attribute name="DonorCon" type="sObject" default="{}"/> 
+    <aura:attribute name="DonorCon1" type="sObject" default="{}"/>
+    <aura:attribute name="DonorCon2" type="sObject" default="{}"/>
+    <aura:attribute name="DonorCon3" type="sObject" default="{}"/>
+    <aura:attribute name="DonorCon4" type="sObject" default="{}"/>
+    <aura:attribute name="DonorCon5" type="sObject" default="{}"/>
+    <aura:attribute name="DonorCon6" type="sObject" default="{}"/>
+    <aura:attribute name="DonorCon7" type="sObject" default="{}"/>
+    <aura:attribute name="DonorCon8" type="sObject" default="{}"/>
+    <aura:attribute name="userInfo" type="user"/>
+    <aura:attribute name="tisEval" type="Tissue_Evaluation__c"/> 
+    <aura:attribute name="display" type="Boolean" default="false"/>
+    <aura:attribute name="display1" type="Boolean" default="false"/>
+    <aura:attribute name="display2" type="Boolean" default="false"/>
+    <aura:attribute name="display3" type="Boolean" default="false"/>
+    <aura:attribute name="display4" type="Boolean" default="false"/>
+    <aura:attribute name="display5" type="Boolean" default="false"/>
+    <aura:attribute name="display6" type="Boolean" default="false"/>
+    <aura:attribute name="display7" type="Boolean" default="false"/>
+    <aura:attribute name="display8" type="Boolean" default="false"/>
+    <aura:attribute name="display10" type="Boolean" default="false"/>
+    <!-- APPROVAL OUTCOME RENDERED ATTRIBUTES -->
+    <aura:attribute name="display9" type="Boolean" default="false"/>
+    <aura:attribute name="display11" type="Boolean" default="false"/>
+    <aura:attribute name="display12" type="Boolean" default="false"/>
+    <aura:attribute name="display13" type="Boolean" default="false"/>
+    <aura:attribute name="display14" type="Boolean" default="false"/>
+    <aura:attribute name="display15" type="Boolean" default="false"/>
+    <aura:attribute name="display16" type="Boolean" default="false"/>
+    <aura:attribute name="display17" type="Boolean" default="false"/>
+    <aura:attribute name="display18" type="Boolean" default="false"/>
+    <aura:attribute name="slough" type="Boolean" default="false"/>
+    <aura:attribute name="opaciti" type="Boolean" default="false"/>
+    <aura:attribute name="opaciti2" type="Boolean" default="false"/>
+    <aura:attribute name="fold" type="Boolean" default="false"/>
+    <aura:attribute name="spinner" type="Boolean" default="false"/>
+    <aura:attribute name="desc" type="Boolean" default="false"/>
+    <aura:attribute name="stressline" type="Boolean" default="false"/>
+    <aura:attribute name="ProcedureNo" type="Boolean" default="false"/>
+    <aura:attribute name="DebrisYes" type="Boolean" default="false"/>
+    <aura:attribute name="EndoDefectYes" type="Boolean" default="false"/>
+    
+    <aura:attribute name="fileNamespecEval" type="String" default="No File Selected.." />
+    <aura:attribute name="fileNamepostCut" type="String" default="No File Selected.." />
+    <aura:attribute name="firstimg" type="boolean" default="false"/>
+    <aura:attribute name="imageName" type="string"/>
+    <aura:attribute name="showLoadingSpinner" type="boolean" default="false" />
+    <aura:attribute name="fromNew" type="Boolean" default="false"/>
+    
+    <aura:attribute name="tissue" type="Tissue_Evaluation__c" default="{'sobjectType': 'Tissue_Evaluation__c'}"/>
+    <aura:attribute name="Recovery" type="Recovery__c"/>
+    <aura:registerEvent name="GetTissueDetail" type="c:GetTissueDetail"/>
+    <aura:method name="getDetails">
+        <aura:attribute name="DonorId" type="String"/>
+        <aura:attribute name="DonorName" type="String"/>
+        <aura:attribute name="DonorAge" type="String"/>
+        <aura:attribute name="DonorGender" type="String"/>
+        <aura:attribute name="DeathDateTime" type="Datetime"/>
+        <aura:attribute name="TissueImported" type="String"/>
+        <aura:attribute name="recoveryId" type="string"/>
+        <aura:attribute name="eyeType" type="string"/>
+        <aura:attribute name="tissueId" type="String"/>
+    </aura:method>
+    <aura:attribute name="DonorId" type="String"/>
+    <aura:attribute name="DonorName" type="String"/>
+    <aura:attribute name="DonorAge" type="String"/>
+    <aura:attribute name="DonorGender" type="String"/>
+ <!--   <aura:attribute name="recoveryintent" type="String"/> -->
+    <aura:attribute name="DeathDateTime" type="Datetime"/>
+    <aura:attribute name="TissueImported" type="String"/>
+    <aura:attribute name="recoveryId" type="string"/>
+    <aura:attribute name="eyeType" type="string"/>
+    <aura:attribute name="tissueId" type="String"/>
+    <aura:attribute name="recId" type="string"/>
+    <aura:attribute name="enabled" type="Boolean" default="false"/>
+    <aura:attribute name="Med" type="Medical_Review__c"/>
+    <aura:attribute name="Rec" type="Recovery__c"/>
+    <aura:attribute name="imageholding" type="blob"/>
+    <aura:attribute name="imageholding1" type="blob"/>
+    <aura:attribute name="attach" type="Attachment"/>
+    <aura:attribute name="lookupList" type="Map" default="{}"/>
+    <aura:attribute name="PreservationDateTime" type="Datetime"/>
+    <aura:attribute name="tissuetype" type="Boolean" default="true"/>
+    <aura:attribute name="DataLoad" type="Boolean" default="false"/>
+    <aura:attribute name="newTissueId" type="string"/>
+    <aura:attribute name="tissueIdValidate" type="Boolean" default="false"/>
+    <aura:attribute name="showSpinner" type="Boolean" default="false"/>
+    <aura:attribute name="DisableField" type="boolean" default="false"/>
+    
+    <!--<force:recordData aura:id="forceRecord"
+                      recordId="{!v.recordId}"
+                      targetFields="{!v.tisEval}"
+                      layoutType="FULL"
+                        mode="EDIT" />-->
+    <aura:handler event="c:Imagehandler" action="{!c.handleuploadedImage}" />
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <aura:if isTrue="{!v.spinner}">
+        <lightning:spinner alternativeText="Loading" size="large" />
+    </aura:if>  
+    
+    <!--LOOKUP TAB INDEX-->
+    <aura:handler name="oSelectedRecordEvent" event="c:selectedsObjectRecordEvent" action="{!c.focusToNextField}"/>
+    
+    <style>
+        .slds-template_default, html{
+        background:#fff!important;
+        
+        }
+        .slds-brand-band:after, .slds-brand-band:before{
+        background-image:none!important;
+        }
+        
+    </style>
+    <aura:if isTrue="{!v.DataLoad}">
+    <div class="slds-container--large slds-align_absolute-center">
+        <div class="slds-grid slds-wrap slds-size_1-of-1">
+            <div class="slds-size_1-of-1" style="background:#005fb2;color:#fff;">
+                
+                <lightning:layoutItem padding="horizontal-small">
+                    
+                    <div class="page-section page-header slds-p-around_x-small">
+                        <h1 class="slds-text-heading--label" style="color:#fff;">TISSUE EVALUATION : INFORMATION</h1>
+                        <h3 class="slds-text-heading--large"> Edit Tissue Evaluation</h3>
+                    </div> 
+                </lightning:layoutItem>
+            </div> 
+            
+            <!-- HEADER SECTION CONTAINING IMPORTANT INFORMATION -->           
+            <div class="slds-grid slds-size_1-of-1 slds-m-bottom_small slds-m-top_small" style="border-bottom:1px solid #ccc;background:#f3f3f2;padding:10px 0px;">
+                <div class="slds-col slds-size_3-of-12">
+                    <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                        <div class="slds-col slds-size_4-of-12 slds-text-align_right slds-p-around_none"><span>Donor ID</span>: </div>
+                        <div class="slds-col slds-size_8-of-12">   <ui:outputText value="{!v.DonorId}"/></div>
+                        
+                    </div></div>
+                <div class="slds-col slds-size_2-of-12">
+                    <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                        <div class="slds-col slds-size_4-of-12 slds-text-align_right slds-p-around_none"><span>Donor Name</span>: </div>
+                        <div class="slds-col slds-size_8-of-12">   <ui:outputText value="{!v.tisEval.Name_of_Donor_TissueEvalauation__c}"/></div>
+                        
+                    </div></div>
+                
+                <div class="slds-col slds-size_2-of-12">
+                    <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                        <div class="slds-col slds-size_4-of-12 slds-text-align_right slds-p-around_none"><span>Date/Time of Death</span><span style="color:#ff0000;font-weight:bold;">*</span>: </div>
+                        <div class="slds-col slds-size_6-of-12">   <ui:outputDateTime format="dd/MM/yyyy HH:mm:ss" aura:id="dt"
+                                                                                      value="{!v.tisEval.Date_Time_of_Death_TissueEvaluation__c}"/></div>
+                    </div></div>
+                
+                <div class="slds-col slds-size_1-of-12">
+                    <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                        <div class="slds-col slds-size_2-of-12 slds-text-align_right slds-p-around_none"><span>Age</span>: </div>
+                        <div class="slds-col slds-size_10-of-12">   <ui:outputText value="{!v.tisEval.Age__c}"/></div>
+                    </div></div>
+                
+                
+                <div class="slds-col slds-size_2-of-12">
+                    <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                        <div class="slds-col slds-size_3-of-12 slds-text-align_right slds-p-around_none"><span>Gender</span>: </div>
+                        <div class="slds-col slds-size_9-of-12">   <ui:outputText value="{!v.tisEval.Gender__c}"/></div>
+                    </div></div>
+                <div class="slds-col slds-size_2-of-12">
+                    <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                        <div class="slds-col slds-size_3-of-12 slds-text-align_right slds-p-around_none"><span>Branch</span>: </div>
+                        <div class="slds-col slds-size_9-of-12">   <ui:outputText value="{!v.tissue.Branch_Name__c}"/></div>
+                        
+                    </div></div>
+            </div>  
+            <!-- HEADER SECTION END -->
+            
+            
+            <div >
+                <div class="slds-grid slds-wrap">   
+                    
+                    <!-- TISSUE DETAILS -->
+                    <div class="slds-col slds-size_1-of-1">              
+                        <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.section01}">
+                            <section class="slds-clearfix">
+                                <div class="slds-float--left ">
+                                    <lightning:icon class="slds-show" aura:id="One" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                                    <lightning:icon class="slds-hide" aura:id="One" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                                </div>
+                                <div class="slds-m-left--large">Tissue Details</div>
+                            </section>
+                        </div>
+                        
+                        
+                        <div class="slds-hide slds-p-around--medium" aura:id="One">
+                            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                                <div class="slds-col slds-size_6-of-12">
+                                    
+                                    <div class="slds-form-element">
+                                        <lightning:Select aura:id="eye" label="Eye" value="{!v.tisEval.Eye__c}" disabled="true">
+                                            <option value="">...</option>
+                                            <option value="OD">OD</option>
+                                            <option value="OS">OS</option>
+                                        </lightning:Select>
+                                    </div> 
+                                    
+                                    <div class="slds-form-element">
+                                        <lightning:Select aura:id="tissueType" label="Tissue Type" required="true" value="{!v.tisEval.Tissue_Type__c}" onchange="{!c.ontissueTypePick}" > <!--disabled="{!v.tissuetype}"-->
+                                            <option value="...">...</option>
+                                            <option value="Cornea">Cornea</option>
+                                            <option value="Sclera">Sclera</option>
+                                            <option value="Whole Globe">Whole Globe</option>
+                                        </lightning:Select>
+                                    </div>          
+                                    <!-- added by sandeep-->
+                                    <aura:if isTrue="{!v.tisEval.Tissue_Type__c =='Sclera'}">
+                                             <div class="slds-form-element">
+                                        <lightning:Select aura:id="Quarter" label="Quarter" required="false" value="{!v.tisEval.Quarter__c}">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                           
+                                        </lightning:Select>
+                                    </div>   
+									</aura:if>
+                                    <div class="slds-form-element">
+                                        <lightning:Select aura:id="tissueSubType" label="Tissue Sub-Type" required="true" value="{!v.tisEval.Tissue_Sub_Type__c}" > <!--disabled="{!v.tissuetype}"-->
+                                            <option value="...">...</option>
+                                            <option value="Whole">Whole</option>
+                                            <option value="Half">Half</option>
+                                            <option value="Quarter">Quarter</option>
+                                            <option value="Part">Part</option>
+                                        </lightning:Select>
+                                    </div>           
+                                    
+                                    <div class="slds-form-element">
+                                        <lightning:Select aura:id="procedure" label="Procedures under LFH" value="{!v.tisEval.Was_cornea_processed_under_a_LFH__c}" onchange="{!c.onProcedurePick}">
+                                            <option value="None">None</option>
+                                            <option value="No">No</option>
+                                            <option value="Cornea processed under LFH">Cornea Processed under LFH</option>
+                                            <option value="Cornea shifted to another Media">Cornea Shifted to Another Media</option>
+                                            <option value="Other Open container procedures">Other Open Container Procedures</option>
+                                        </lightning:Select>
+                                    </div>  
+                                    
+                                    <div aura:id="TissueProcessedBy" class="slds-show">
+                                        <c:customLookup contactRole="specularTechTiss" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon4}" label="Tissue Processed By"  objName="contact"/>
+                                    </div>
+                                    
+                                    <div class="slds-form-element">
+                                        <lightning:Select aura:id="PreservMedium" label="Preservation Medium" value="{!v.tisEval.Preservation_Medium__c}" disabled="{!v.tisEval.Was_cornea_processed_under_a_LFH__c=='No'}" onchange="{!c.tissueExpiryCalc}">
+                                            <option value="None">None</option>
+                                            <option value="MK">MK</option>
+                                            <option value="Cornisol">Cornisol</option>
+                                            <option value="OptisolGS">OptisolGS</option>
+                                            <option value="Eusol-c">Eusol-c</option>
+                                            <option value="Life4c">Life4c</option>
+                                            <option value="100%EtOH">100%EtOH</option>
+                                            <option value="95%EtOH">95%EtOH</option>
+                                            <option value="70%EtOH">70%EtOH</option>
+                                            <option value="MoistChamber">MoistChamber</option>
+                                            <option value="Glycerin">Glycerin</option>
+                                        </lightning:Select>
+                                    </div> 
+                                    
+                                    <div class="slds-form-element ">
+                                        <lightning:input type="string" label="Media Lot #" value="{!v.tisEval.Media_Lot__c}" disabled="{!v.tisEval.Was_cornea_processed_under_a_LFH__c=='No'}"/>             
+                                    </div>
+                                    
+                                    <div class="slds-form-element ">
+                                        <lightning:input type="datetime" label="Media Expiry Date" value="{!v.tisEval.Media_Expiration_Date__c}" disabled="{!v.tisEval.Was_cornea_processed_under_a_LFH__c=='No'}"/>             
+                                    </div> 
+                                    
+                                    <div class="slds-form-element ">
+                                        <lightning:input aura:id="tissueExpiry" type="datetime" label="Tissue Expiry Date" value="{!v.tisEval.Tissue_Expiry_Date__c}" />             
+                                    </div> 
+                                    
+                                </div>
+                                
+                                
+                                <div class="slds-col slds-size_6-of-12">
+                                    
+                                    <div class="slds-form-element">
+                                        <lightning:input type="string" label="Donor ID" value="{!v.DonorId}" required="true" disabled="true"/>             
+                                    </div>
+                                    
+                                    <div class="slds-form-element ">
+                                        <lightning:input type="string" label="Tissue ID" value="{!v.tisEval.Name}" disabled="true"/>             
+                                    </div>
+                                    
+                                    <div class="slds-form-element">
+                                        
+                                    <!--   <lightning:input type="string" label="Recovery Intent" value="{!v.recoveryintent}" disabled= "true" /> -->
+                                  <lightning:Select label="Recovery Intent" value="{!v.tisEval.Recovery_Intent__c}" disabled="true"  >
+                                            <option value="">...</option> 
+                                            <option value="Transplant">Transplant</option>
+                                            <option value="Research">Research</option>
+                                            <option value="Training">Training</option>
+                                        </lightning:Select> 
+                                    </div>          
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div> </div>
+                    <!-- TISSUE DETAILS END -->
+                    
+                    
+                    <!-- SPECULAR EVALUATION -->
+                    <div class="slds-col slds-size_1-of-1"> 
+                        <div class="slds-page-header"  style="cursor: pointer;" onclick="{!c.section02}">
+                            <section class="slds-clearfix">
+                                <div class="slds-float--left"> 
+                                    <lightning:icon class="slds-show" aura:id="Two" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                                    <lightning:icon class="slds-hide" aura:id="Two" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                                </div>
+                                <div class="slds-m-left--large">Specular Evaluation</div>
+                            </section>
+                        </div>
+                        
+                        <div aura:id="Two" class="slds-hide slds-p-around--medium"> 
+                            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                                
+                                <div class="slds-col slds-size_1-of-1">   
+                                    <div class="slds-form-element" style="width:30%;">
+                                        <lightning:Select aura:id="SpecEval" value="{!v.tisEval.Specular_Evaluation_Done__c}" name="SpecEval" label="Specular Evaluation Done">
+                                            <option value="No">No</option>
+                                            <option value="Yes">Yes</option>
+                                        </lightning:Select>
+                                    </div>  </div> </div>
+                            
+                            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">      
+                                <aura:if isTrue="{!v.tisEval.Specular_Evaluation_Done__c=='Yes'}">
+                                    
+                                    <div class="slds-col slds-size_6-of-12">             
+                                        
+                                        
+                                        <div>
+                                            <c:customLookup contactRole="specularTech1" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon}" label="Specular Evaluation Done By"  objName="contact"/>
+                                        </div>
+                                        
+                                        <div class="slds-form-element ">
+                                            <lightning:input aura:id="SpecularEvaluationDateTime" type="datetime" label="Specular Evaluation Date/Time" value="{!v.tisEval.Specular_Evaluation_Date_Time__c}" onchange="{!c.TissRecDate}" />             
+                                            <aura:if isTrue="{!v.booleanvalue3}">
+                                                <div class="slds-text-color_error slds-p-left_x-small">
+                                                    Selected Date/Time Should be Greater than Specular Evaluation Date/Time.
+                                                </div>
+                                            </aura:if>                                        </div>  
+                                        
+                                        <div class="slds-grid">
+                                            <div class="slds-form-element">
+                                                
+                                                <label class="slds-form-element__label" for="inputName"><b>Upload Specular Image</b></label>
+                                                <!-- <c:ImageUploadcmp/>-->
+                                                <!--<c:fileUpload parentId="{!v.recordId}" firstimg="true" imageName="specEval"/>-->
+                                                <lightning:input aura:id="fileId" onchange="{!c.handleFilesChange}" type="file" name="specEval" label="Upload Attachment" multiple="false"/>
+                                                <div class="slds-text-body_small slds-text-color_brand">{!v.fileNamespecEval} </div>
+                                                <aura:if isTrue="{!v.fromNew == false}">
+                                                    <lightning:button variant="brand" label="Save Attachment" title="specEval Save" onclick="{!c.doSave}" name="specEvalSave"/>
+                                                </aura:if>
+                                            </div>
+                                            
+                                        </div> </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12">
+                                        
+                                        <div class="slds-form-element">
+                                            <lightning:input type="Integer" label="Cell Count (per mm2)" value="{!v.tisEval.Cell_Count_per_mm2__c}"/>             
+                                        </div>  
+                                        
+                                        <div class="slds-form-element ">
+                                            <lightning:input type="Integer" label="Number of Fields" value="{!v.tisEval.Number_of_Fields__c}"/>             
+                                        </div>  
+                                        
+                                        <div class="slds-form-element ">
+                                            <lightning:input type="Integer" name="Num" label="Pachymetry (microns)" value="{!v.tisEval.Pachymetry_microns__c}"/>             
+                                        </div>
+                                        <div class="imagecontainer slds-form-element" style="text-align: center;">
+                                                <img class="image" src="{!v.imgurl}" aura:id="imagePreview" />                                            
+                                            </div>
+                                    </div>
+                                    
+                                    
+                                </aura:if> </div>
+                            
+                        </div>
+                    </div>
+                    <!-- SPECULAR EVALUATION END -->
+                    
+                    
+                    <!-- SLIT LAMP EVALUATION -->
+                    <div class="slds-col slds-size_1-of-1">
+                        <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.section03}">
+                            <section class="slds-clearfix">
+                                <div class="slds-float--left">
+                                    <lightning:icon class="slds-show" aura:id="Three" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                                    <lightning:icon class="slds-hide" aura:id="Three" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                                </div>
+                                <div class="slds-m-left--large">Slit Lamp Evaluation</div>
+                            </section>
+                        </div> 
+                        
+                        <div class="slds-hide slds-p-around--medium" aura:id="Three">
+                            
+                            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">                   
+                                <div class="slds-col slds-size_1-of-1">
+                                    <div class="slds-form-element" style="width:30%;">
+                                        <lightning:Select aura:id="Slitval" value="{!v.tisEval.Slit_Lamp_Done__c}" name="Slitval" label="Slit Lamp Done">
+                                            <option value="No">No</option>
+                                            <option value="Yes">Yes</option>
+                                        </lightning:Select>
+                                    </div> 
+                                    
+                                    <aura:if isTrue="{!v.tisEval.Slit_Lamp_Done__c=='Yes'}">
+                                        
+                                        <!-- EPITHELIUM -->
+                                        <div class="slds-page-header"  style="cursor: pointer;" onclick="{!c.section04}">
+                                            <section class="slds-clearfix">
+                                                <div class="slds-float--left"> 
+                                                    <lightning:icon class="slds-show" aura:id="Four" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                                                    <lightning:icon class="slds-hide" aura:id="Four" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                                                </div>
+                                                <div class="slds-m-left--large">Epithelium</div>
+                                            </section>
+                                        </div>
+                                        
+                                        <div aura:id="Four" class="slds-hide slds-p-around--medium"> 
+                                            
+                                            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                                                <div class="slds-col slds-size_6-of-12">
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select aura:id="clearInt" value="{!v.tisEval.Clear_and_Intact__c}" name="clearInt" label="Clear and Intact" onchange="{!c.OnclearIntPick}">
+                                                            <option value="">...</option>-->
+                                                            <option value="No">No</option>
+                                                            <option value="Yes">Yes</option>
+                                                        </lightning:Select>
+                                                    </div> 
+                                                    
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select aura:id="haze" value="{!v.tisEval.Haze__c}" name="Haze" label="Haze" disabled="{!v.tisEval.Clear_and_Intact__c=='Yes'}">
+                                                            <option value="None">None</option>
+                                                            <option value="Mild">Mild</option>
+                                                        </lightning:Select>
+                                                    </div>     
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select aura:id="debris" value="{!v.tisEval.Debris__c}" name="Debris" label="Debris" >
+                                                            <option value="None">None</option>
+                                                            <option value="Yes">Yes</option>
+                                                            <option value="No">No</option>
+                                                        </lightning:Select>
+                                                    </div>            
+                                                    
+                                                    <aura:if isTrue="{!v.tisEval.Debris__c=='Yes'}">
+                                                        
+                                                        <div class="slds-form-element">
+                                                            <lightning:textarea type="string" label="If Yes, Describe" value="{!v.tisEval.If_Yes_Describe__c}"/>             
+                                                        </div> 
+                                                        
+                                                    </aura:if>
+                                                    
+                                                    <div class="slds-form-element ">
+                                                        <lightning:textarea type="string" label="Epithelium Comments" value="{!v.tisEval.Epithelium_Comments__c}" disabled="{!v.tisEval.Clear_and_Intact__c=='Yes'}"/>             
+                                                    </div>     
+                                                    
+                                                </div>
+                                                
+                                                
+                                                
+                                                
+                                                <div class="slds-col slds-size_6-of-12">
+                                                    
+                                                    <div class="slds-col slds-p-horizontal_medium">
+                                                        
+                                                        <div class="slds-form-element">
+                                                            <lightning:Select aura:id="exposure" value="{!v.tisEval.Exposure__c}" name="Exposure Keratitis" label="Exposure Keratitis" disabled="{!v.tisEval.Clear_and_Intact__c=='Yes'}">
+                                                                <option value="None">None</option>
+                                                                <option value="Mild">Mild</option>
+                                                                <option value="Mild-Moderate">Mild-Moderate</option>
+                                                                <option value="Moderate">Moderate</option>
+                                                                <option value="Moderate-Severe">Moderate-Severe</option>
+                                                                <option value="Severe">Severe</option>
+                                                            </lightning:Select>
+                                                        </div>             
+                                                        
+                                                        <div class="slds-form-element">
+                                                            <lightning:Select aura:id="exposureLoc" value="{!v.tisEval.Exposure_Location__c}" name="Exposure Location" label="Exposure Location" disabled="{!v.tisEval.Clear_and_Intact__c=='Yes'}">
+                                                                <option value="None">None</option>
+                                                                <option value="Central">Central</option>
+                                                                <option value="Para Central">Para Central</option>
+                                                                <option value="Peripheral">Peripheral</option>
+                                                                <option value="Mid-Peripheral">Mid-Peripheral</option>
+                                                                <option value="Diffuse">Diffuse</option>
+                                                                <option value="Band">Band</option>
+                                                            </lightning:Select>
+                                                        </div>         
+                                                        
+                                                        <div class="slds-form-element ">
+                                                            <lightning:input aura:id="exposureperc" type="integer" label="Exposure Percentage" value="{!v.tisEval.Exposure_Percentage__c}" disabled="{!v.tisEval.Clear_and_Intact__c=='Yes'}"/>             
+                                                        </div>             
+                                                        
+                                                        <div class="slds-form-element">
+                                                            <lightning:Select aura:id="sloughing" value="{!v.tisEval.Sloughing__c}" name="Sloughing" label="Sloughing" disabled="{!v.tisEval.Clear_and_Intact__c=='Yes'}">
+                                                                <option value="None">None</option>
+                                                                <option value="Central">Central</option>
+                                                                <option value="Para Central">Para Central</option>
+                                                                <option value="Peripheral">Peripheral</option>
+                                                                <option value="Mid-Peripheral">Mid-Peripheral</option>
+                                                                <option value="Diffuse">Diffuse</option>
+                                                            </lightning:Select>
+                                                        </div>            
+                                                        <aura:if isTrue="{!v.tisEval.Sloughing__c!='None'}">
+                                                            <div class="slds-form-element ">
+                                                                <lightning:input aura:id="pertotalcornea" type="integer" label="Area (% of Total Cornea)" value="{!v.tisEval.Percent_of_Total_Cornea__c}" disabled="{!v.tisEval.Clear_and_Intact__c=='Yes'}"/>             
+                                                            </div>              
+                                                        </aura:if>
+                                                    </div>  
+                                                    
+                                                </div> 
+                                            </div>  </div>
+                                        <!-- EPITHELIUM END --> 
+                                        
+                                        
+                                        <!-- STROMA -->
+                                        <div class="slds-page-header"  style="cursor: pointer;" onclick="{!c.section05}">
+                                            <section class="slds-clearfix">
+                                                <div class="slds-float--left"> 
+                                                    <lightning:icon class="slds-show" aura:id="Five" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                                                    <lightning:icon class="slds-hide" aura:id="Five" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                                                </div>
+                                                <div class="slds-m-left--large">Stroma</div>
+                                            </section>
+                                        </div>
+                                        
+                                        <div aura:id="Five" class="slds-hide slds-p-around--medium"> 
+                                            
+                                            
+                                            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                                                <div class="slds-col slds-size_6-of-12">
+                                                    
+                                                    
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select label="Clear and Compact"  value="{!v.tisEval.Clear_and_Compact__c}">
+                                                            <option value="">...</option>-->
+                                                            <option value="Clear Only">Clear Only</option>
+                                                            <option value="Compact Only">Compact Only</option>
+                                                            <option value="Clear and Compact">Clear and Compact</option>
+                                                            <option value="Neither">Neither</option>
+                                                        </lightning:Select>
+                                                    </div>            
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select label="Edema"  value="{!v.tisEval.Edema__c}">
+                                                            <option value="None">None</option>
+                                                            <option value="Mild">Mild</option>
+                                                            <option value="Mild-Moderate">Mild-Moderate</option>
+                                                            <option value="Moderate">Moderate</option>
+                                                            <option value="Moderate-Severe">Moderate-Severe</option>
+                                                            <option value="Severe">Severe</option>
+                                                        </lightning:Select>
+                                                    </div>            
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select  label="Edema : Location"  value="{!v.tisEval.Edema_Location__c}">
+                                                            <option value="None">None</option>
+                                                            <option value="Central">Central</option>
+                                                            <option value="Para Central">Para Central</option>
+                                                            <option value="Peripheral">Peripheral</option>
+                                                            <option value="Mid-Peripheral">Mid-Peripheral</option>
+                                                            <option value="Diffuse">Diffuse</option>
+                                                        </lightning:Select>
+                                                    </div>      
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select label="Striae" value="{!v.tisEval.Striae__c}">
+                                                            <option value="None">None</option>
+                                                            <option value="Yes">Yes</option>
+                                                            <option value="No">No</option>
+                                                        </lightning:Select>
+                                                    </div>   
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select label="Striae : Location"  value="{!v.tisEval.Striae_Location__c}" disabled="{!v.tisEval.Striae__c=='No'}">
+                                                            <option value="None">None</option>
+                                                            <option value="Central">Central</option>
+                                                            <option value="Para Central">Para Central</option>
+                                                            <option value="Peripheral">Peripheral</option>
+                                                            <option value="Mid-Peripheral">Mid-Peripheral</option>
+                                                            <option value="Diffuse">Diffuse</option>
+                                                        </lightning:Select>
+                                                    </div>                                                          
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select label="Relative Number of Striae"  value="{!v.tisEval.Relative_number_of_Striae__c}" disabled="{!v.tisEval.Striae__c=='No'}">
+                                                            <option value="None">None</option>
+                                                            <option value="Few">Few</option>
+                                                            <option value="Few-Several">Few-Several</option>
+                                                            <option value="Several">Several</option>
+                                                            <option value="Several-Numerous">Several-Numerous</option>
+                                                            <option value="Numerous">Numerous</option>
+                                                        </lightning:Select>
+                                                    </div>       
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select aura:id="opacity" label="Opacities 1"  value="{!v.tisEval.Opacities_1__c}" onchange="{!c.opacities}" >
+                                                            <option value="None">None</option>
+                                                            <option value="Surgical (IOL)">Surgical (IOL)</option>
+                                                            <option value="Lasik">Lasik</option>
+                                                            <option value="Other">Other</option>
+                                                        </lightning:Select>
+                                                    </div> 
+                                                    <aura:if isTrue="{!v.tisEval.Opacities_1__c!='None'}">
+                                                        <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap" >
+                                                            <div class="slds-col slds-size_4-of-12">
+                                                                <div class="slds-form-element" style="padding-top:18px;">
+                                                                    <lightning:input  type="string" label="Length" name="leng" value="{!v.tisEval.Opacities1_Length_Diameter__c}" style="margin-top:21px;"/>   
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-col slds-size_4-of-12" >
+                                                                <div class="slds-form-element" style="padding-top:18px;">
+                                                                    <lightning:input  type="string" label="Location at" name="Result1" value="{!v.tisEval.Opacities1_Location_at__c}" style="margin-top:21px;"/>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-col slds-size_4-of-12">
+                                                                <div class="slds-form-element" style="padding-top:18px;" >
+                                                                    <lightning:input tabindex="3" type="string" label=" Depth" name="Units1" value="{!v.tisEval.Opacities1_mm_on_Button_From_LimbusDepth__c}" style="margin-top:21px;" />
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </aura:if>
+                                                </div>
+                                                
+                                                
+                                                <div class="slds-col slds-size_6-of-12">
+                                                    
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select label="Arcus"  value="{!v.tisEval.Arcus__c}">
+                                                            <option value="None">None</option>
+                                                            <option value="Mild">Mild</option>
+                                                            <option value="Mild-Moderate">Mild-Moderate</option>
+                                                            <option value="Moderate">Moderate</option>
+                                                            <option value="Moderate-Severe">Moderate-Severe</option>
+                                                            <option value="Severe">Severe</option>
+                                                        </lightning:Select>
+                                                    </div>          
+                                                    
+                                                    <div class="slds-form-element ">
+                                                        <lightning:input type="string" label="Clear Zone" value="{!v.tisEval.Clear_Zone__c}"/>             
+                                                    </div>         
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select label="Infiltrate" value="{!v.tisEval.Infiltrate__c}">
+                                                            <option value="None">None</option>
+                                                            <option value="Yes">Yes</option>
+                                                            <option value="No">No</option>
+                                                        </lightning:Select>
+                                                    </div>         
+                                                    
+                                                    <div class="slds-form-element ">
+                                                        <lightning:textarea type="string" label="Stroma Comments" value="{!v.tisEval.Stroma_Comments__c}"/>             
+                                                    </div>        
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select aura:id="opacity2" label="Opacities 2"  value="{!v.tisEval.Opacities_2__c}" >
+                                                            <option value="None">None</option>
+                                                            <option value="Surgical (IOL)">Surgical (IOL)</option>
+                                                            <option value="Lasik">Lasik</option>
+                                                            <option value="Other">Other</option>
+                                                        </lightning:Select>
+                                                    </div> 
+                                                    <aura:if isTrue="{!v.tisEval.Opacities_2__c!='None'}">
+                                                        <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap" style="margin-top:15px;">
+                                                            <div class="slds-col slds-size_4-of-12">
+                                                                <div class="slds-form-element" style="padding-top:20px;">
+                                                                    <lightning:input  type="string" label="Length" value="{!v.tisEval.Opacities2_Length_Diameter__c}" name="leng"  />   
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-col slds-size_4-of-12" >
+                                                                <div class="slds-form-element" style="padding-top:20px;">
+                                                                    <lightning:input  type="string" label="Location at" value="{!v.tisEval.Opacities2_Location_at__c}" name="Result1" />
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-col slds-size_4-of-12">
+                                                                <div class="slds-form-element" style="padding-top:18px;" >
+                                                                    <lightning:input tabindex="3" type="string" label=" Depth" value="{!v.tisEval.Opacities2_mm_on_Button_From_LimbusDept__c}" name="Units1"   />
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </aura:if>
+                                                </div> 
+                                            </div>                                   
+                                        </div>
+                                        <!-- STROMA END --> 
+                                        
+                                        
+                                        <!-- DESCEMET's -->
+                                        <div class="slds-page-header"  style="cursor: pointer;" onclick="{!c.section06}">
+                                            <section class="slds-clearfix">
+                                                <div class="slds-float--left"> 
+                                                    <lightning:icon class="slds-show" aura:id="Six" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                                                    <lightning:icon class="slds-hide" aura:id="Six" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                                                </div>
+                                                <div class="slds-m-left--large">Descemet's</div>
+                                            </section>
+                                        </div>
+                                        
+                                        <div aura:id="Six" class="slds-hide slds-p-around--medium">                                  
+                                            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                                                <div class="slds-col slds-size_6-of-12">                
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select aura:id="fol" label="Folds" value="{!v.tisEval.Folds__c}" >
+                                                            <option value="None">None</option>
+                                                            <option value="Mild">Mild</option>
+                                                            <option value="Mild-Moderate">Mild-Moderate</option>
+                                                            <option value="Moderate">Moderate</option>
+                                                            <option value="Moderate-severe">Moderate-severe</option>
+                                                            <option value="Severe">Severe</option>
+                                                        </lightning:Select>
+                                                    </div>             
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select label="Relative Number of Folds"  value="{!v.tisEval.Relative_number_of_folds__c}" disabled="{!v.tisEval.Folds__c=='None'}">
+                                                            <option value="None">None</option>
+                                                            <option value="Few">Few</option>
+                                                            <option value="Few-Several">Few-Several</option>
+                                                            <option value="Several">Several</option>
+                                                            <option value="Several-Numerous">Several-Numerous</option>
+                                                            <option value="Numerous">Numerous</option>
+                                                        </lightning:Select>
+                                                    </div>                       
+                                                    
+                                                    <div class="slds-form-element ">
+                                                        
+                                                        <lightning:Select aura:id="descr" name="tlc" label="Defects" value="{!v.tisEval.Defects__c}">
+                                                            <option value="None">None</option>
+                                                            <option value="Descemets Tears">Descemets Tears</option>
+                                                            <option value="Defect at IOL Scar">Defect at IOL Scar</option>
+                                                        </lightning:Select>
+                                                    </div> 
+                                                    <aura:if isTrue="{!v.tisEval.Defects__c=='None'}">
+                                                        <div class="slds-form-element" >
+                                                            <lightning:textarea  type="string" label="Describe" name="desc" value="{!v.tisEval.Defects_Describe__c}" style="margin-top:21px;"/>
+                                                        </div>
+                                                    </aura:if>    
+                                                </div>
+                                                
+                                                <div class="slds-col slds-size_6-of-12">
+                                                    
+                                                    
+                                                    <div class="slds-form-element ">
+                                                        <lightning:textarea type="string" label="Descemet Comments" value="{!v.tisEval.Descemet_Comments__c}"/>             
+                                                    </div>                    
+                                                    
+                                                    
+                                                </div>
+                                                
+                                            </div> 
+                                        </div>
+                                        <!-- DESCEMET's END --> 
+                                        
+                                        
+                                        <!-- ENDOTHELIUM -->
+                                        <div class="slds-page-header"  style="cursor: pointer;" onclick="{!c.section07}">
+                                            <section class="slds-clearfix">
+                                                <div class="slds-float--left"> 
+                                                    <lightning:icon class="slds-show" aura:id="Seven" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                                                    <lightning:icon class="slds-hide" aura:id="Seven" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                                                </div>
+                                                <div class="slds-m-left--large">Endothelium</div>
+                                            </section>
+                                        </div>
+                                        
+                                        <div aura:id="Seven" class="slds-hide slds-p-around--medium"> 
+                                            
+                                            
+                                            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                                                <div class="slds-col slds-size_6-of-12">
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select aura:id="sline" label="Stress Lines" value="{!v.tisEval.Stress_Lines__c}" >
+                                                            <option value="None">None</option>
+                                                            <option value="No">No</option>
+                                                            <option value="Yes">Yes</option>
+                                                        </lightning:Select>
+                                                    </div> 
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select label="Relative Number of Stress Lines"  value="{!v.tisEval.Relative_Number_of_Stress_Lines__c}" disabled="{!v.tisEval.Stress_Lines__c=='No'}">
+                                                            <option value="None">None</option>
+                                                            <option value="Few">Few</option>
+                                                            <option value="Few-Several">Few-Several</option>
+                                                            <option value="Several">Several</option>
+                                                            <option value="Several-Numerous">Several-Numerous</option>
+                                                            <option value="Numerous">Numerous</option>
+                                                        </lightning:Select>
+                                                    </div> 
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select label="Stress Lines : Location" value="{!v.tisEval.Stress_Lines_Location__c}" disabled="{!v.tisEval.Stress_Lines__c=='No'}">
+                                                            <option value="None">None</option>
+                                                            <option value="Central">Central</option>
+                                                            <option value="Para Central">Para Central</option>
+                                                            <option value="Peripheral">Peripheral</option>
+                                                            <option value="Mid-Peripheral">Mid-Peripheral</option>
+                                                            <option value="Diffuse">Diffuse</option>
+                                                        </lightning:Select>
+                                                    </div>     
+                                                    
+                                                    
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select label="Cell Dropouts" value="{!v.tisEval.Cell_Dropouts__c}">
+                                                            <option value="None">None</option>
+                                                            <option value="Mild">Mild</option>
+                                                            <option value="Mild-Moderate">Mild-Moderate</option>
+                                                            <option value="Moderate">Moderate</option>
+                                                            <option value="Moderate-severe">Moderate-severe</option>
+                                                            <option value="Severe">Severe</option>
+                                                        </lightning:Select>
+                                                    </div>                  
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select label="Cell Dropout Location" value="{!v.tisEval.Cell_Dropout_Location__c}" disabled="{!v.tisEval.Cell_Dropouts__c=='None'}">
+                                                            <option value="None">None</option>
+                                                            <option value="Central">Central</option>
+                                                            <option value="Para Central">Para Central</option>
+                                                            <option value="Peripheral">Peripheral</option>
+                                                            <option value="Mid-Peripheral">Mid-Peripheral</option>
+                                                            <option value="Diffuse">Diffuse</option>
+                                                        </lightning:Select>
+                                                    </div>                    
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select label="Polymegathism" value="{!v.tisEval.Polymegathism__c}">
+                                                            <option value="None">None</option>
+                                                            <option value="Mild">Mild</option>
+                                                            <option value="Mild-Moderate">Mild-Moderate</option>
+                                                            <option value="Moderate">Moderate</option>
+                                                            <option value="Moderate-severe">Moderate-severe</option>
+                                                            <option value="Severe">Severe</option>
+                                                        </lightning:Select>
+                                                    </div>                                  
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select label="Pleomorphism" value="{!v.tisEval.Pleomorphism__c}">
+                                                            <option value="None">None</option>
+                                                            <option value="Mild">Mild</option>
+                                                            <option value="Mild-Moderate">Mild-Moderate</option>
+                                                            <option value="Moderate">Moderate</option>
+                                                            <option value="Moderate-severe">Moderate-severe</option>
+                                                            <option value="Severe">Severe</option>
+                                                        </lightning:Select>
+                                                    </div>                             
+                                                    
+                                                    
+                                                </div>
+                                                
+                                                <div class="slds-col slds-size_6-of-12">
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select aura:id="EndoDefects" value="{!v.tisEval.Endothelium_Defects__c}" name="Endothelium : Defects" label="Endothelium : Defects">
+                                                            <option value="None">None</option>
+                                                            <option value="No">No</option>
+                                                            <option value="Yes">Yes</option>
+                                                        </lightning:Select>
+                                                    </div>                 
+                                                    <aura:if isTrue="{!v.tisEval.Endothelium_Defects__c=='Yes'}">
+                                                        
+                                                        <div class="slds-form-element ">
+                                                            <lightning:textarea type="string" label="If Yes, Describe" value="{!v.tisEval.Endothelium_If_Yes_Describe__c}"/>             
+                                                        </div>
+                                                        
+                                                    </aura:if>
+                                                    
+                                                    <div class="slds-form-element ">
+                                                        <lightning:textarea type="string" label="Endothelium Comments" value="{!v.tisEval.Endothelium_Comments__c}"/>             
+                                                    </div>                                                          
+                                                </div> 
+                                            </div>                                                                         
+                                        </div> 
+                                        <!-- ENDOTHELIUM END -->
+                                        
+                                        
+                                    </aura:if>
+                                </div>
+                                
+                            </div>                    
+                        </div>   
+                    </div>
+                    <!-- SLIT LAMP EVALUATION END -->  
+                    
+                    
+                    <!-- ADDITIONAL INFORMATION -->
+                    <div class="slds-col slds-size_1-of-1">
+                        <div class="slds-page-header"  style="cursor: pointer;" onclick="{!c.section08}">
+                            <section class="slds-clearfix">
+                                <div class="slds-float--left"> 
+                                    <lightning:icon class="slds-show" aura:id="Eight" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                                    <lightning:icon class="slds-hide" aura:id="Eight" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                                </div>
+                                <div class="slds-m-left--large">Additional Information</div>
+                            </section>
+                        </div>
+                        
+                        <div aura:id="Eight" class="slds-hide slds-p-around--medium"> 
+                            
+                            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <div class="slds-form-element">
+                                        <lightning:Select label="Jaundice" value="{!v.tisEval.Jaundice__c}">
+                                            <option value="None">None</option>
+                                            <option value="Mild">Mild</option>
+                                            <option value="Mild-Moderate">Mild-Moderate</option>
+                                            <option value="Moderate">Moderate</option>
+                                            <option value="Moderate-severe">Moderate-severe</option>
+                                            <option value="Severe">Severe</option>
+                                        </lightning:Select>
+                                    </div>      
+                                    
+                                    <div class="slds-form-element">
+                                        <lightning:Select label="Lens" value="{!v.tisEval.Lens__c}">
+                                            <option value="">...</option>-->
+                                            <option value="Phakic">Phakic</option>
+                                            <option value="Pseudophakic">Pseudophakic</option>
+                                            <option value="Aphakic">Aphakic</option>
+                                        </lightning:Select>
+                                    </div>      
+                                    
+                                    <div class="slds-form-element">
+                                        <lightning:Select label="Scleral Rim Information" value="{!v.tisEval.Scleral_Rim_Information__c}">
+                                            <option value="">...</option>-->
+                                            <option value="Regular">Regular</option>
+                                            <option value="Irregular">Irregular</option>
+                                        </lightning:Select>
+                                    </div>      
+                                    
+                                    <div class="slds-form-element">
+                                        <lightning:Select aura:id="Sclerl" value="{!v.tisEval.Scleral_Rim_2mm_or_greater_circumferen__c}" name="Sclerl" label="Scleral Rim 2mm or Greater Circumferentially?">
+                                            <option value="None">None</option>
+                                            <option value="No">No</option>
+                                            <option value="Yes">Yes</option>
+                                        </lightning:Select>
+                                    </div>      
+                                    
+                                    <aura:if isTrue="{!v.tisEval.Scleral_Rim_2mm_or_greater_circumferen__c=='No'}">
+                                        
+                                        <div class="slds-form-element ">
+                                            <lightning:textarea type="string" label="If No, Describe" value="{!v.tisEval.Scleral_rim_is_greater_than_2mm_Describe__c}"/>             
+                                        </div>                              
+                                        
+                                    </aura:if>                                            
+                                </div>
+                                
+                                <div class="slds-col slds-size_6-of-12 slds-align_absolute-center" style="min-height:200px;">
+                                    If you select aphakic or pseudo-phakic, check for Opacities. 
+                                    
+                                    
+                                </div>
+                                
+                            </div>
+                        </div></div> 
+                    <!-- ADDITIONAL INFORMATION END -->
+                    
+                    
+                    <!-- PRE-CUT/POST-CUT EVALUATION -->
+                    <div class="slds-col slds-size_1-of-1">
+                        <div class="slds-page-header"  style="cursor: pointer;" onclick="{!c.section09}">
+                            <section class="slds-clearfix">
+                                <div class="slds-float--left"> 
+                                    <lightning:icon class="slds-show" aura:id="Nine" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                                    <lightning:icon class="slds-hide" aura:id="Nine" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                                </div>
+                                <div class="slds-m-left--large">Pre-Cut/Post-Cut Evaluation</div>
+                            </section>
+                        </div>
+                        
+                        <div aura:id="Nine" class="slds-hide slds-p-around--medium"> 
+                            
+                            
+                            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                                <div class="slds-col slds-size_6-of-12">   
+                                    
+                                    <div class="slds-form-element">
+                                        <lightning:Select aura:id="PreCutVal" value="{!v.tisEval.Pre_Cut__c}" onchange="{!c.OnPreCutPick}" name="PreCutVal" label="Pre-Cut">
+                                            <option value="">...</option>
+                                            <option value="No">No</option>
+                                            <option value="Yes">Yes</option>
+                                        </lightning:Select>
+                                    </div>   </div> 
+                                
+                                <div class="slds-col slds-size_6-of-12"></div>
+                                
+                                <aura:if isTrue="{!v.tisEval.Pre_Cut__c=='Yes'}">
+                                    <div class="slds-col slds-size_6-of-12">     
+                                        <div class="slds-form-element">
+                                            <lightning:input value="{!v.tisEval.Cut_Type__c}"  label="Cut Type"    disabled="true"/>
+                                        </div>                
+                                        
+                                        <div class="slds-form-element ">
+                                            <lightning:input type="string" label="Cut Parameters"  value="{!v.tisEval.Cut_Parameters__c}" />             
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <!-- PRE-CUT EVALUATION -->
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <div class="slds-page-header"  style="cursor: pointer;" onclick="{!c.section10}">
+                                            <section class="slds-clearfix">
+                                                <div class="slds-float--left"> 
+                                                    <lightning:icon class="slds-show" aura:id="Ten" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                                                    <lightning:icon class="slds-hide" aura:id="Ten" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                                                </div>
+                                                <div class="slds-m-left--large">Pre-Cut Evaluation</div>
+                                            </section>
+                                        </div>
+                                        
+                                        <div aura:id="Ten" class="slds-hide slds-p-around--medium"> 
+                                            
+                                            
+                                            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                                                <div class="slds-col slds-size_6-of-12">
+                                                    
+                                                    <div class="slds-form-element ">
+                                                        <lightning:input value="{!v.tisEval.Tissue_Processed_for__c}" label="Tissue Processed For" disabled="true"/>
+                                                    </div>        
+                                                    
+                                                    <div class="slds-form-element ">
+                                                        <lightning:input type="datetime" aura:id="TissueProcessed" label="Date/Time Processed"  value="{!v.datetime}" />             
+                                                    </div>       
+                                                    
+                                                    <div class="slds-form-element ">
+                                                        <lightning:input type="integer" label="Graft Thickness (microns)"  value="{!v.tisEval.Graft_Thickness_microns__c}" />             
+                                                    </div>      
+                                                    
+                                                    <div class="slds-form-element ">
+                                                        <lightning:input type="integer" label="Graft Diameter (mm)"  value="{!v.tisEval.Graft_Diameter_mm__c}" />             
+                                                    </div>                                 
+                                                    
+                                                </div>
+                                                
+                                                <div class="slds-col slds-size_6-of-12">                                          
+                                                    <div class="slds-form-element ">
+                                                        <lightning:input type="string" label="Comments - Post - Cut"  value="{!v.tisEval.Comments_Post_Cut__c}" />             
+                                                    </div>                                                               
+                                                </div>    
+                                                
+                                            </div> 
+                                        </div> </div>
+                                    <!-- PRE-CUT EVALUATION END -->
+                                    
+                                    
+                                    <!-- POST-CUT EVALUATION -->
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <div class="slds-page-header"  style="cursor: pointer;" onclick="{!c.section11}">
+                                            <section class="slds-clearfix">
+                                                <div class="slds-float--left"> 
+                                                    <lightning:icon class="slds-show" aura:id="Eleven" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                                                    <lightning:icon class="slds-hide" aura:id="Eleven" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                                                </div>
+                                                <div class="slds-m-left--large">Post-Cut Evaluation</div>
+                                            </section>
+                                        </div> 
+                                        
+                                        <div aura:id="Eleven" class="slds-hide slds-p-around--medium"> 
+                                            
+                                            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                                                <div class="slds-col slds-size_6-of-12">                                          
+                                                    <div class="slds-form-element ">
+                                                        <lightning:input type="integer" label="Endothelial Cell Density (mm2)"  value="{!v.tisEval.Endothelial_Cell_Density_mm2__c}" />             
+                                                    </div>                         
+                                                    
+                                                    <div class="slds-form-element " style="margin-top:30px;">
+                                                        <lightning:input type="string" label="Post Cut Epithelium"  value="{!v.tisEval.Post_Cut_Epithelium__c}" />             
+                                                    </div>                          
+                                                    
+                                                    
+                                                    
+                                                    <div class="slds-form-element" style="margin-top:12px;">
+                                                        <lightning:input type="string" label="Anterior Stroma"  value="{!v.tisEval.Anterior_Stroma__c}" />             
+                                                    </div>                          
+                                                    
+                                                    <div class="slds-form-element " style="margin-top:28px;">
+                                                        <lightning:input type="string" label="Posterior Stroma"  value="{!v.tisEval.Posterior_Stroma__c}" />             
+                                                    </div>                            
+                                                    
+                                                    <div class="slds-form-element " style="margin-top:12px;">
+                                                        <lightning:input type="string" label="Descemet's"  value="{!v.tisEval.Descemet_s__c}" />             
+                                                    </div>                           
+                                                    
+                                                    <div class="slds-form-element " style="margin-top:8px;">
+                                                        <lightning:input type="string" label="Post Cut Endothelium"  value="{!v.tisEval.Post_Cut_Endothelium__c}" />             
+                                                    </div> 
+                                                    
+                                                    <div class="slds-form-element">
+                                                        <lightning:Select label="Post Cut Preservation Medium" value="{!v.tisEval.Post_Cut_Preservation_Medium__c}">
+                                                            <option value="">...</option>
+                                                            <option value="MK">MK</option>
+                                                            <option value="Cornisol">Cornisol</option>
+                                                            <option value="OptisolGS">OptisolGS</option>
+                                                            <option value="Eusol-c">Eusol-c</option>
+                                                            <option value="Life4c">Life4c</option>
+                                                            <option value="100%EtOH">100%EtOH</option>
+                                                            <option value="95%EtOH">95%EtOH</option>
+                                                            <option value="70%EtOH">70%EtOH</option>
+                                                            <option value="MoistChamber">MoistChamber</option>
+                                                            <option value="Formalin">Formalin</option>
+                                                            <option value="Tobramycin">Tobramycin</option>
+                                                            <option value="Glycerin">Glycerin</option>
+                                                            <option value="Other Antibiotic">Other Antibiotic</option>
+                                                            <option value="Other Fixative">Other Fixative</option>
+                                                            <option value="N/A">N/A</option>
+                                                        </lightning:Select>
+                                                    </div>
+                                                    
+                                                    <div class="slds-form-element ">
+                                                        <lightning:input type="string" label="Post Cut Media lot #"  value="{!v.tisEval.Post_Cut_Media_lot__c}" />             
+                                                    </div>  
+                                                    <div class="slds-form-element ">
+                                                        <lightning:input type="datetime" label="Post Cut Media Expiration Date/Time"  value="{!v.tisEval.Post_Cut_Media_Expiration_Date_Time__c}" />             
+                                                    </div> 
+                                                    
+                                                    
+                                                </div>                                      
+                                                <div class="slds-col slds-size_6-of-12">
+                                                    <div>
+                                                        <c:customLookup contactRole="slitLampTech" objectAPIName="contact" IconName="standard:contact" selectedRecord="{!v.DonorCon5}" label="Slit Lamp Technician" objName="contact"/>
+                                                    </div>                          
+                                                    
+                                                    
+                                                    <div class="slds-form-element ">
+                                                        <lightning:input aura:id="slitlampdatetime" type="datetime" label="Slit Lamp Date/Time"  value="{!v.tisEval.Slit_Lamp_Date_Time__c}" onblur="{!c.sldate}"/>             
+                                                        <aura:if isTrue="{!v.booleanvalue}">
+                                                            <div class="slds-text-color_error slds-p-left_x-small">
+                                                                Selected Date/Time Should be Greater than Tissue Processed Date/Time.
+                                                            </div>
+                                                        </aura:if>                                                    </div>                          
+                                                    
+                                                    <div>
+                                                        <c:customLookup contactRole="specularTech" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon6}" label="Specular Technician"  objName="contact"/>
+                                                    </div>
+                                                    
+                                                    <div class="slds-form-element ">
+                                                        <lightning:input aura:id="speculardatetime" type="datetime" label="Specular Date/Time"  value="{!v.tisEval.Specular_Date_Time__c}" onblur="{!c.stdate}"/>             
+                                                        <aura:if isTrue="{!v.booleanvalue1}">
+                                                            <div class="slds-text-color_error slds-p-left_x-small">
+                                                                Selected Date/Time Should be Greater than Tissue Processes Date/Time.
+                                                            </div>
+                                                        </aura:if>                                                    </div>                           
+                                                    
+                                                    <div>
+                                                        <c:customLookup contactRole="ekTech" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon7}" label="EK-Tech"  objName="contact"/>
+                                                    </div>
+                                                    
+                                                    <div>
+                                                        <c:customLookup contactRole="ekCirculator" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon8}" label="Circulator"  objName="contact"/>
+                                                    </div>
+                                                    
+                                                    <div class="slds-form-element ">
+                                                        <lightning:input aura:id="additional" type="string" label="Additional"  value="{!v.tisEval.Additional__c}" />             
+                                                    </div> 
+                                                   		
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="inputName"><b>Upload Specular Image</b></label>
+                                                            <!-- <c:ImageUploadcmp/>-->
+                                                            <!--<c:fileUpload parentId="{!v.recordId}" firstimg="false" imageName="postCut"/>-->
+                                                            <lightning:input aura:id="fileId1" onchange="{!c.handleFilesChange}" type="file" name="postCut" label="Upload Attachment" multiple="false"/>
+                                                            <div class="slds-text-body_small slds-text-color_brand">{!v.fileNamepostCut} </div>
+                                                            <aura:if isTrue="{!v.fromNew == false}">
+                                                                <lightning:button variant="brand" label="Save Attachment" title="postCut Save" onclick="{!c.doSave}" name="postCutSave"/>
+                                                            </aura:if>
+                                                        </div>
+                                                        <div class="imagecontainer" style="text-align: center;">
+                                                            <img class="image" src="{!v.imgurl1}" aura:id="imagePreview1"/>                                            
+                                                        </div>
+                                                  
+                                                </div>
+                                                
+                                            </div>                                       
+                                        </div>  
+                                        
+                                    </div> 
+                                    <!-- POST-CUT EVALUATION END -->
+                                    
+                                    
+                                </aura:if>                                       
+                            </div>                 
+                        </div>  </div>
+                    <!-- PRE-CUT/POST-CUT EVALUATION END -->
+                    
+                    
+                    <!-- CONSULT -->
+                    <div class="slds-col slds-size_1-of-1">
+                        <div class="slds-page-header"  style="cursor: pointer;" onclick="{!c.section12}">
+                            <section class="slds-clearfix">
+                                <div class="slds-float--left"> 
+                                    <lightning:icon class="slds-show" aura:id="Twelve" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                                    <lightning:icon class="slds-hide" aura:id="Twelve" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                                </div>
+                                <div class="slds-m-left--large">Consult</div>
+                            </section>
+                        </div> 
+                        
+                        <div aura:id="Twelve" class="slds-hide slds-p-around--medium">                   
+                            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">                   
+                                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th class="slds-text-title_caps" scope="col">
+                                                <div class="slds-truncate" title="Person Consulted">Person Consulted</div>
+                                            </th>
+                                            <th class="slds-text-title_caps" scope="col">
+                                                <div class="slds-truncate" title="Date/Time">Date/Time</div>
+                                            </th>
+                                            <th class="slds-text-title_caps" scope="col">
+                                                <div class="slds-truncate" title="Topic">Topic/Subject</div>
+                                            </th>
+                                            <th class="slds-text-title_caps" scope="col">
+                                                <div class="slds-truncate" title="Topic">Discussion</div>
+                                            </th>
+                                        </tr>
+                                        
+                                    </thead> 
+                                    
+                                </table>
+                                <br/>
+                                <div>
+                                    <p>To enable this content, Create the record.</p>
+                                </div>                     
+                            </div>                                    
+                        </div>   </div> 
+                    <!-- CONSULT END -->
+                    
+                    
+                    <!-- OUTCOME : DECISION POINT IN THE PROCESS -->
+                    <div class="slds-col slds-size_1-of-1"> 
+                        <div class="slds-page-header"  style="cursor: pointer;" onclick="{!c.section13}">
+                            <section class="slds-clearfix">
+                                <div class="slds-float--left"> 
+                                    <lightning:icon class="slds-show" aura:id="Thirteen"  iconName="utility:add" size="x-small"  alternativeText="Indicates add"/>
+                                    <lightning:icon class="slds-hide" aura:id="Thirteen"  iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                                </div>
+                                <div class="slds-m-left--large">Outcome: Decision Point in the Process</div>
+                            </section>
+                        </div>
+                        
+                        <div aura:id="Thirteen" class="slds-hide slds-p-around--medium"> 
+                            
+                            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <div class="slds-form-element">
+                                        <lightning:Select aura:id="TisSuit" value="{!v.tisEval.Tissue_Suitability__c}" onchange="{!c.OnTisSuitPick}" name="TisSuit" label="Tissue Suitability">
+                                            <option value="">...</option>
+                                            <option value="Suitable">Suitable</option>
+                                            <option value="NSFT">NSFT</option>
+                                        </lightning:Select>
+                                    </div> 
+                                    
+                                    <aura:if isTrue="{!v.tisEval.Tissue_Suitability__c=='Suitable'}">
+                                        <lightning:layout>                                  
+                                            <div class="slds-col slds-size_6-of-12">
+                                                
+                                                
+                                                <div class="slds-form-element">
+                                                    <lightning:Select label="PK" value="{!v.tisEval.PK__c}">
+                                                        <option value="No">No</option>
+                                                        <option value="Yes">Yes</option>
+                                                    </lightning:Select>
+                                                </div>    
+                                                
+                                                <div class="slds-form-element">
+                                                    <lightning:Select label="EK" value="{!v.tisEval.EK__c}">
+                                                        <option value="No">No</option>
+                                                        <option value="Yes">Yes</option>
+                                                    </lightning:Select>
+                                                </div>    
+                                                
+                                                <div class="slds-form-element">
+                                                    <lightning:Select label="KLA" value="{!v.tisEval.KLA__c}">
+                                                        <option value="No">No</option>
+                                                        <option value="Yes">Yes</option>
+                                                    </lightning:Select>
+                                                </div>    
+                                                
+                                                <div class="slds-form-element">
+                                                    <lightning:Select label="Tectonic/Therapeutic" value="{!v.tisEval.Tectonic_Therapeutic__c}">
+                                                        <option value="No">No</option>
+                                                        <option value="Yes">Yes</option>
+                                                    </lightning:Select>
+                                                </div>    
+                                            </div>  
+                                            
+                                            
+                                            <div class="slds-col slds-size_6-of-12">
+                                                
+                                                <div class="slds-form-element">
+                                                    <lightning:Select label="ALK" value="{!v.tisEval.ALK__c}">
+                                                        <option value="No">No</option>
+                                                        <option value="Yes">Yes</option>
+                                                    </lightning:Select>
+                                                </div>  
+                                                
+                                                <div class="slds-form-element">
+                                                    <lightning:Select label="K-Pro" value="{!v.tisEval.K_Pro__c}">
+                                                        <option value="No">No</option>
+                                                        <option value="Yes">Yes</option>
+                                                    </lightning:Select>
+                                                </div>     
+                                                
+                                            </div>
+                                            
+                                        </lightning:layout>                           
+                                    </aura:if>  
+                                    
+                                    <aura:if isTrue="{!v.tisEval.Tissue_Suitability__c=='NSFT'}">
+                                        
+                                        <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <div class="slds-form-element">
+                                                    <lightning:Select aura:id="StromaPick" label="Stroma" value="{!v.tisEval.Stroma__c}" name="StromaPick">
+                                                        <option value="No">No</option>
+                                                        <option value="Yes">Yes</option>
+                                                    </lightning:Select>
+                                                </div>   
+                                            </div>
+                                            
+                                            <div class="slds-col slds-size_6-of-12"> 
+                                                <div class="slds-form-element">
+                                                    <lightning:Select label="Epithelium" value="{!v.tisEval.Epithelium__c}">
+                                                        <option value="No">No</option>
+                                                        <option value="Yes">Yes</option>
+                                                    </lightning:Select>
+                                                </div>                                      
+                                            </div>
+                                            
+                                            
+                                            
+                                            <aura:if isTrue="{!v.tisEval.Stroma__c=='Yes'}">
+                                                
+                                                <div class="slds-grid slds-col slds-size_1-of-1">
+                                                    <div class="slds-col slds-size_6-of-12">
+                                                        <div class="slds-form-element">
+                                                            <lightning:Select label="Prior Refractive Surgery" value="{!v.tisEval.Prior_Refractive_Surgery__c}">
+                                                                <option value="No">No</option>
+                                                                <option value="Yes">Yes</option>
+                                                            </lightning:Select>
+                                                        </div>     
+                                                        
+                                                        <div class="slds-form-element">
+                                                            <lightning:Select label="Stromal Infiltrate" value="{!v.tisEval.Stroma_Infractive__c}">
+                                                                <option value="No">No</option>
+                                                                <option value="Yes">Yes</option>
+                                                            </lightning:Select>
+                                                        </div>     
+                                                        
+                                                        <div class="slds-form-element">
+                                                            <lightning:Select label="Other " value="{!v.tisEval.Other__c}">
+                                                                <option value="No">No</option>
+                                                                <option value="Yes">Yes</option>
+                                                            </lightning:Select>
+                                                        </div>                                                
+                                                    </div>
+                                                    
+                                                    
+                                                    <div class="slds-col slds-size_6-of-12">
+                                                        <div class="slds-form-element">
+                                                            <lightning:Select label="Scar" value="{!v.tisEval.Scar__c}">
+                                                                <option value="No">No</option>
+                                                                <option value="Yes">Yes</option>
+                                                            </lightning:Select>
+                                                        </div>     
+                                                        
+                                                        <div class="slds-form-element">
+                                                            <lightning:Select label="Foreign Body" value="{!v.tisEval.Foreign_Body__c}">
+                                                                <option value="No">No</option>
+                                                                <option value="Yes">Yes</option>
+                                                            </lightning:Select>
+                                                        </div>     
+                                                        
+                                                        <div class="slds-form-element ">
+                                                            <lightning:input type="string" label="If Other" value="{!v.tisEval.If_Other__c}"/>             
+                                                        </div>  
+                                                    </div>  </div>                                             
+                                            </aura:if>
+                                            
+                                            
+                                            
+                                            <div class="slds-col slds-size_6-of-12"> 
+                                                <div class="slds-form-element">
+                                                    <lightning:Select label="Descemet's Membrane" value="{!v.tisEval.Descemet_s_Membrane__c}">
+                                                        <option value="No">No</option>
+                                                        <option value="Yes">Yes</option>
+                                                    </lightning:Select>
+                                                </div>  
+                                            </div>
+                                            
+                                            <div class="slds-col slds-size_6-of-12"> 
+                                                <div class="slds-form-element">
+                                                    <lightning:Select label="Endothelium" value="{!v.tisEval.Endothelium__c}">
+                                                        <option value="No">No</option>
+                                                        <option value="Yes">Yes</option>
+                                                    </lightning:Select>
+                                                </div>  </div>                                  
+                                        </div>   
+                                        
+                                    </aura:if>
+                                    
+                                    <div aura:id="slitlampeval" class="slds-form-element slds-show">
+                                        <lightning:Select label="Slit Lamp Evaluation" value="{!v.tisEval.Slit_Lamp_Evaluation__c}">
+                                            <option value="No">No</option>
+                                            <option value="Yes">Yes</option>
+                                        </lightning:Select>
+                                    </div>       
+                                    
+                                    <div aura:id="speculareval" class="slds-form-element slds-show">
+                                        <lightning:Select label="Specular Evaluation" value="{!v.tisEval.Specular_Evaluation__c}">
+                                            <option value="No">No</option>
+                                            <option value="Yes">Yes</option>
+                                        </lightning:Select>
+                                    </div>           
+                                    
+                                    <div>
+                                        <c:customLookup contactRole="slitLampTech1" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon1}" label="Cornea Suitability Determined By"  objName="contact"/>
+                                    </div>
+                                    
+                                    <div class="slds-form-element ">
+                                        <lightning:input aura:id="EvaluationsComments" type="string" label="Evaluations/Comments" name="Evaluations/Comments" value="{!v.tisEval.Evaluations_Comments__c}"/>             
+                                    </div>                          
+                                </div>
+                                
+                                
+                                
+                                <div class="slds-col slds-size_6-of-12">                       
+                                    <div class="slds-form-element">
+                                        <lightning:Select label="Tissue Returned?" value="{!v.tisEval.Tissue_Returned__c}">
+                                            <option value="No">No</option>
+                                            <option value="Yes">Yes</option>
+                                        </lightning:Select>
+                                    </div>           
+                                    
+                                    
+                                    <div aura:id="sterilitycompromise" class="slds-form-element slds-show">
+                                        <lightning:Select label="Sterility Compromise" value="{!v.tisEval.Sterility_Compromise__c}">
+                                            <option value="No">No</option>
+                                            <option value="Yes">Yes</option>
+                                        </lightning:Select>
+                                    </div>           
+                                    
+                                    <div aura:id="IssuesTransportlog" class="slds-form-element slds-show">
+                                        <lightning:Select label="Issues in Transportation and Logistics" value="{!v.tisEval.Issues_in_Transportation_Logistics__c}">
+                                            <option value="No">No</option>
+                                            <option value="Yes">Yes</option>
+                                        </lightning:Select>
+                                    </div>  
+                                    
+                                    
+                                    <div class="slds-form-element ">
+                                        <lightning:input type="datetime" aura:id="OutcomeSlit" name="date" label="Slit Lamp Date/Time" value="{!v.tisEval.Outcome_Slit_Lamp_Date_Time__c}" />             
+                                    </div>
+                                    
+                                    <div>
+                                        <c:customLookup contactRole="slitLampTech1" objectAPIName="contact" IconName="standard:contact" selectedRecord="{!v.DonorCon2}" label="Slit Lamp Eval Performed By" objName = "contact"/>
+                                    </div>
+                                    
+                                </div>
+                                
+                            </div> </div> </div>
+                    <!-- OUTCOME : DECISION POINT IN THE PROCESS END -->
+                    
+                    
+                    <!-- APPROVAL OUTCOME -->
+                    <div class="slds-col slds-size_1-of-1">
+                        <div class="slds-page-header"  style="cursor: pointer;" onclick="{!c.section14}">
+                            <section class="slds-clearfix">
+                                <div class="slds-float--left"> 
+                                    <lightning:icon class="slds-show" aura:id="Fourteen" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                                    <lightning:icon class="slds-hide" aura:id="Fourteen" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                                </div>
+                                <div class="slds-m-left--large">Approval Outcome</div>
+                            </section>
+                        </div>
+                        
+                        <div aura:id="Fourteen" class="slds-hide slds-p-around--medium"> 
+                            
+                            <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                                <div class="slds-col slds-size_6-of-12">
+                                    
+                                    
+                                    <div class="slds-form-element">
+                                        <lightning:Select aura:id="ApprovalOutcome" label="Approval Outcome" value="{!v.tisEval.Approval_Outcome__c}" disabled="{!v.DisableField}">
+                                            <option value="">None</option>
+                                            <option value="Transplant">Transplant</option>
+                                            <option value="Research">Research</option>
+                                            <option value="Training">Training</option>
+                                            <option value="Quarantine">Quarantine</option>
+                                            <option value="Discard">Discard</option>
+                                            <option value="Placed">Placed</option>
+                                            <option value="Returned">Returned</option>
+                                        </lightning:Select>
+                                    </div>           
+                                    
+                                    <div class="slds-form-element" style="margin-top:30px;">
+                                        <lightning:Select aura:id="TisDisp" label="Tissue Disposition" value="{!v.tisEval.Tissue_Disposition__c}" onchange="{!c.OnTisDispPick}" name="TisDisp" disabled="{!v.DisableField}"><br/><br/>
+                                            <option value="">...</option>
+                                            <option value="In Progress">In Progress</option>
+                                            <option value="Placed: Transplant">Placed: Transplant</option>
+                                            <option value="Placed: Research">Placed: Research</option>
+                                            <option value="Placed: Training">Placed: Training</option>
+                                            <option value="Discarded">Discarded</option>
+                                            <option value="Returned">Returned</option>
+                                        </lightning:Select>
+                                    </div>           
+                                    <aura:if isTrue="{!v.tisEval.Tissue_Disposition__c=='Discarded'}">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" for="inputName"><b>Discard Reason</b></label>
+                                            <lightning:Select aura:id="Categ" label="Category" value="{!v.tisEval.Category__c}" name="Categ" >
+                                                <option value="">...</option>
+                                                <option value="Medical Review">Medical Review</option>
+                                                <option value="Slit Lamp">Slit Lamp</option>
+                                                <option value="Serology and Blood Sample Issue">Serology and Blood Sample Issue</option>
+                                                <option value="Other Reasons">Other Reasons</option>
+                                            </lightning:Select>
+                                        </div>   
+                                        
+                                        <div class="slds-form-element">
+                                            
+                                            <aura:if isTrue="{!v.tisEval.Category__c=='Other Reasons'}">
+                                                <div class="slds-form-element">
+                                                    
+                                                    <lightning:Select aura:id="otherReason" label="Other Reasons" value="{!v.tisEval.Other_Reasons__c}" name="otherReason" >
+                                                        <option value="--None--">...</option>
+                                                        <option value="Sterility Compromise">Sterility Compromise</option>
+                                                        <option value="Media Issue">Media Issue</option>
+                                                        <option value="Tissue Damage Due to Transportation/Logistics">Tissue Damage Due to Transportation/Logistics</option>
+                                                        <option value="Cold Chain Break">Cold Chain Break</option>
+                                                        <option value="Preservation Issue">Preservation Issue</option>
+                                                        <option value="Surgeon Issue">Surgeon Issue</option>
+                                                        <option value="Tissue Damage During Tissue Preparation">Tissue Damage During Tissue Preparation</option>
+                                                        <option value="Post Distribution Issues">Post Distribution Issues</option>
+                                                        <option value="Tissue Expiry">Tissue Expiry</option>
+                                                    </lightning:Select>
+                                                </div>    
+                                                
+                                            </aura:if>
+                                            <aura:if isTrue="{!v.tisEval.Other_Reasons__c=='Sterility Compromise'}">
+                                                <div class="slds-form-element ">
+                                                    <lightning:textarea type="string" label="Comments for Sterility Compromise" value="{!v.tisEval.Category_Comments__c}" placeholder="Enter a Comment" />             
+                                                </div> 
+                                            </aura:if>
+                                            <aura:if isTrue="{!v.tisEval.Other_Reasons__c=='Media Issue'}">
+                                                <div class="slds-form-element ">
+                                                    <lightning:textarea type="string" label="Comments for Media Issue" value="{!v.tisEval.Comments_for_Media_Issue__c}" placeholder="Enter a Comment"/>             
+                                                </div> 
+                                            </aura:if>
+                                            <aura:if isTrue="{!v.tisEval.Other_Reasons__c=='Tissue Damage Due to Transportation/Logistics'}">
+                                                <div class="slds-form-element ">
+                                                    <lightning:textarea type="string" label="Comments for Tissue Damage Due to Transportation/Logistics" value="{!v.tisEval.Comments_for_Tissue_Damage_Transport_Log__c}" placeholder="Enter a Comment"/>             
+                                                </div> 
+                                            </aura:if>
+                                            <aura:if isTrue="{!v.tisEval.Other_Reasons__c=='Cold Chain Break'}">
+                                                <div class="slds-form-element ">
+                                                    <lightning:textarea type="string" label="Comments for Cold Chain Break" value="{!v.tisEval.Comments_for_Cold_Chain_Break__c}" placeholder="Enter a Comment"/>             
+                                                </div> 
+                                            </aura:if>
+                                            <aura:if isTrue="{!v.tisEval.Other_Reasons__c=='Preservation Issue'}">
+                                                <div class="slds-form-element ">
+                                                    <lightning:textarea type="string" label="Comments for Preservation Issue" value="{!v.tisEval.Comments_for_Preservation_Issue__c}" placeholder="Enter a Comment"/>             
+                                                </div> 
+                                            </aura:if>
+                                            <aura:if isTrue="{!v.tisEval.Other_Reasons__c=='Surgeon Issue'}">
+                                                <div class="slds-form-element ">
+                                                    <lightning:textarea type="string" label="Comments for Surgeon Issue" value="{!v.tisEval.Comments_for_Surgeon_Issue__c}" placeholder="Enter a Comment"/>             
+                                                </div> 
+                                            </aura:if>
+                                            <aura:if isTrue="{!v.tisEval.Other_Reasons__c=='Tissue Damage During Tissue Preparation'}">
+                                                <div class="slds-form-element ">
+                                                    <lightning:textarea type="string" label="Comments for Tissue Damage During Tissue Preparation" value="{!v.tisEval.Comments_for_Damage_During_Preparation__c}" placeholder="Enter a Comment"/>             
+                                                </div> 
+                                            </aura:if>
+                                            <aura:if isTrue="{!v.tisEval.Other_Reasons__c=='Post Distribution Issues'}">
+                                                <div class="slds-form-element ">
+                                                    <lightning:textarea type="string" label="Comments for Post Distribution Issues" value="{!v.tisEval.Comments_for_Post_Distribution_Issues__c}" placeholder="Enter a Comment"/>             
+                                                </div> 
+                                            </aura:if>
+                                            <aura:if isTrue="{!v.tisEval.Other_Reasons__c=='Tissue Expiry'}">
+                                                <div class="slds-form-element ">
+                                                    <lightning:textarea type="string" label="Comments for Tissue Expiry" value="{!v.tisEval.Comments_for_Tissue_Expiry__c}" placeholder="Enter a Comment"/>             
+                                                </div> 
+                                            </aura:if><br/>
+                                            <label class="slds-form-element__label" for="inputName"><b>Sub-Categories</b></label>
+                                            <div class="slds-form-element ">
+                                                <lightning:input type="string" label="Sub-Category" value="{!v.tisEval.Sub_Category__c}" />             
+                                            </div>  
+                                            
+                                            
+                                        </div>                                     
+                                    </aura:if>
+                                    
+                                    
+                                </div>
+                                
+                                
+                                
+                                <div class="slds-col slds-size_6-of-12">
+                                    
+                                    <!--<div style="{!v.DisableField == true ? 'pointer-events: none;opacity: 0.5;' : 'display:block'}">
+                                        <c:customLookup contactRole="EyebankAndQA1" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.userInfo}" label="Final Review and Approval Done By"  objName="contact"/>
+                                    </div>-->
+                                    <div style="{!v.DisableField == true ? 'pointer-events: none;opacity: 0.5;' : 'display:block'}">
+                                        <aura:if isTrue="{!v.userInfo == 'mohsineyebank@lvpei.org.uat'}">
+                                        	<c:customLookup contactRole="FinalReview7" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon3}" label="Final Review and Approval Done By"  objName="contact"/>
+                                           
+                                        </aura:if>
+                                        
+                                        <aura:if isTrue="{!v.userInfo == 'mtc-drushtidaan@lvpei.org.uat'}">
+                                        	<!--<c:customLookup contactRole="EyebankAndQA1" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon3}" label="Final Review and Approval Done By"  objName="contact"/>-->
+                                            <c:customLookup contactRole="FinalReview6" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon3}" label="Final Review and Approval Done By"  objName="contact"/>
+                                            
+                                        </aura:if>
+                                        
+                                        <aura:if isTrue="{!v.userInfo == 'team@megnity.com'}">
+                                        	<!--<c:customLookup contactRole="EyebankAndQA1" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon3}" label="Final Review and Approval Done By"  objName="contact"/>-->
+                                            <c:customLookup contactRole="FinalReview" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon3}" label="Final Review and Approval Done By"  objName="contact"/>
+                                            
+                                        </aura:if>
+                                        
+                                        <aura:if isTrue="{!v.userInfo == 'srinivas.rieb@lvpei.org.uat'}">
+                                        	<c:customLookup contactRole="FinalReview2" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon3}" label="Final Review and Approval Done By"  objName="contact"/>
+                                            
+                                        </aura:if>
+                                        
+                                        <aura:if isTrue="{!v.userInfo == 'venkataswamy@lvpei.org.uat'}">
+                                        	<c:customLookup contactRole="FinalReview3" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon3}" label="Final Review and Approval Done By"  objName="contact"/>
+                                             </aura:if>
+                                        
+                                        <aura:if isTrue="{!v.userInfo == 'tkeb@lvpei.org.uat'}">
+                                        	<c:customLookup contactRole="FinalReview4" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon3}" label="Final Review and Approval Done By"  objName="contact"/>
+                                            
+                                        </aura:if>
+                                        
+                                        <aura:if isTrue="{!v.userInfo == 'kbsrinivas@lvpei.org.uat'}">
+                                        	<c:customLookup contactRole="FinalReview" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon3}" label="Final Review and Approval Done By"  objName="contact"/>
+                                        </aura:if>
+                                     <!--    <aura:if isTrue="{(!v.userInfo != 'mtc-drushtidaan@lvpei.org.uat')}"> -->
+                                       
+                                   <!--      <aura:if isTrue="{!and(v.userInfo != 'kbsrinivas@lvpei.org.uat',v.userInfo != 'gangadharkatam@lvpei.org',v.userInfo != 'venkataswamy@lvpei.org',v.userInfo != 'srinivas.rieb@lvpei.org')}">   -->
+                                      <!--  	<c:customLookup contactRole="FinalReview5" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon3}" label="Final Review and Approval Done By"  objName="contact"/>
+                                            
+                                        </aura:if> -->
+                                         <aura:if isTrue="{(!v.userInfo != 'kbsrinivas@lvpei.org.uat')}"> 
+                                        	<c:customLookup contactRole="FinalReview5" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon3}" label="Final Review and Approval Done By"  objName="contact"/>
+                                           
+                                        </aura:if>
+                                        <aura:if isTrue="{(!v.userInfo != 'venkataswamy@lvpei.org.uat')}"> 
+                                        	<c:customLookup contactRole="FinalReview5" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon3}" label="Final Review and Approval Done By"  objName="contact"/>
+                                           
+                                        </aura:if>
+                                         <aura:if isTrue="{(!v.userInfo != 'mtc-drushtidaan@lvpei.org.uat')}"> 
+                                        	<c:customLookup contactRole="FinalReview5" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon3}" label="Final Review and Approval Done By"  objName="contact"/>
+                                           
+                                        </aura:if>
+                                         <aura:if isTrue="{(!v.userInfo != 'srinivas.rieb@lvpei.org.uat')}"> 
+                                        	<c:customLookup contactRole="FinalReview5" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon3}" label="Final Review and Approval Done By"  objName="contact"/>
+                                           
+                                        </aura:if> 
+                                        <aura:if isTrue="{(!v.userInfo != 'tkeb@lvpei.org.uat')}"> 
+                                        	<c:customLookup contactRole="FinalReview5" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon3}" label="Final Review and Approval Done By"  objName="contact"/>
+                                           
+                                        </aura:if> 
+                                        <aura:if isTrue="{(!v.userInfo != 'mohsineyebank@lvpei.org.uat')}"> 
+                                            <c:customLookup contactRole="FinalReview5" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.DonorCon3}" label="Final Review and Approval Done By"  objName="contact"/>
+                                            
+                                        </aura:if>
+                                    </div>
+                                    
+                                    <!-- Ruma -->
+                                    <aura:if isTrue="{!v.DisableField}">
+                                       <lightning:input type="text" value="{!v.lkupValue}" label="Final Review and Approval Done By" disabled="{!v.DisableField}" />
+                                    </aura:if>
+                                    <!-- /Ruma -->
+                                    
+                                    <div class="slds-form-element ">
+                                        <lightning:input aura:id="DateTimeofFinalReviewApproval" type="datetime" name="date" label="Date/Time of Final Review/Approval" value="{!v.tisEval.Date_Time_of_Final_Review_Approval__c}" onblur="{!c.outcome}" disabled="{!v.DisableField}"/>             
+                                        <aura:if isTrue="{!v.booleanvalue2}">
+                                            <div class="slds-text-color_error slds-p-left_x-small">
+                                                Selected Date/Time Should be Greater than Slitlamp Date/Time.
+                                            </div>
+                                        </aura:if>
+                                    </div>              
+                                    
+                                </div>
+                            </div></div>
+                    </div>
+                    <!-- APPROVAL OUTCOME END -->
+                    
+                    
+                    <div class="slds-col slds-size_1-of-1 slds-align_absolute-center slds-p-bottom_large">
+                        <lightning:button aura:id="disablebuttonid" class="save-btn" variant="brand" label="Save" onclick="{!c.SaveTissueEval}"/>
+                        <!--<lightning:button  class="save-btn" variant="brand" label="Save" onclick="{!c.SaveTissueEval}"/>-->
+                        <lightning:button class="save-btn" variant="brand" label="Print Label" onclick="{!c.printLabel}"/> 
+                        <lightning:button variant="brand" label="Tissue Detail Form" onclick="{!c.downloadpdf}" class="tissuefomr-btn"/> 
+                        
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-align_absolute-center" style="padding-top:10px;">
+                          	<lightning:button variant="brand" label="Post Cut Evaluation Form Print" onclick="{!c.downloadPostCutPdf}"/>
+                    </div> 
+                    
+                </div> 
+            </div> 
+        </div> 
+    </div>
+        <div role="dialog" tabindex="-1" aria-labelledby="header43" aura:id="Modalbox" class="slds-modal slds-modal_small">
+            <aura:if isTrue="{!v.showSpinner}">
+                <lightning:spinner variant="brand"/>
+            </aura:if>
+            <div class="slds-modal__container" style="width:30%;">
+                <div class="slds-modal__header">
+                    Please select Quater to create child record
+                </div>
+                <div class="slds-modal__content slds-p-around--medium">
+                    <!--FIRSTSECTION-->
+                    <div class="slds-p-left_xx-large slds-p-right_xx-large">
+                        <div class="slds-page-header slds-p-around_large">
+                            <ui:inputSelect label="Quater" aura:id="quater" value="{!v.tisEval.Quarter__c}" change="{!c.onChangeQuater}">
+                                <ui:inputSelectOption text="1" label="1"/>
+                                <ui:inputSelectOption text="2" label="2"/>
+                                <ui:inputSelectOption text="3" label="3"/>
+                                <ui:inputSelectOption text="4" label="4"/>
+                                <ui:inputSelectOption text="5" label="5"/>
+                                <ui:inputSelectOption text="6" label="6"/>
+                                <ui:inputSelectOption text="7" label="7"/>
+                                <ui:inputSelectOption text="8" label="8"/>
+                            </ui:inputSelect>
+                            <lightning:input type="text" name="tissueId" label="New Tissue Id" disabled="true" value="{!v.newTissueId}"/>
+                        </div>
+                    </div>    
+                </div>
+                <div class="slds-modal__footer">
+                    <lightning:button label="validate" variant="brand" onclick="{!c.validateTissueId}"/>
+                    <lightning:button label="create" variant="brand" onclick="{!c.createChildRec}"/>
+                    <lightning:button label="Cancel" variant="brand" onclick="{!c.closeModal}"/>
+                </div>
+            </div>
+        </div>
+        <div class="slds-backdrop " aura:id="Modalbackdrop"/>
+    </aura:if>
+</aura:component>

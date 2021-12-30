@@ -1,0 +1,126 @@
+<aura:component controller="RequestCalenderCtrl" implements="force:appHostable,force:lightningQuickAction,force:hasRecordId,force:lightningQuickAction">
+    
+    <!-- attributes -->
+    <aura:attribute name="spinner" type="Boolean" default="false"/>
+    <aura:attribute name="statusCount" type="object" />
+    <aura:attribute name="dataMap" type="Map" />
+    <aura:attribute name="selectedValue" type="object" />
+    <aura:attribute name="show" type="Boolean" />
+    <aura:attribute name="columns" type="List" />
+    <aura:attribute name="pageSize" type="Integer"/>
+    <aura:attribute name="columnsData" type="List" />
+    <aura:attribute name="PaginationListCol" type="List" />
+    <aura:attribute name="PaginationList" type="List" />
+    <aura:attribute name="surgenRecords" type="object" />
+    <aura:attribute name="allRecords" type="List"  />
+    <aura:attribute name="togglehover" type="Boolean" default="false"/>
+    <aura:attribute name="TissueId" type="String" />
+    <aura:attribute name="MRNumber" type="String" />
+    <aura:attribute name="hoverRow" type="Integer" default="-1" />
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="mouseHoverData" type="object" /> 
+    <aura:attribute name="selecteddate" type="Boolean" default="false" /> 
+    <aura:attribute name="fulfilledcount" type="String" default="Placed/Fulfilled - 0" />
+    <aura:attribute name="inProgresscount" type="String" default="New/InProgress - 0" />
+    <aura:attribute name="returnedcount" type="String" default="Returned - 0" />
+    <aura:attribute name="cancelledcount" type="String" default="Cancelled - 0" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!--spinner functionality -->
+    <aura:if isTrue="{!v.spinner}">
+        <lightning:spinner alternativeText="Loading" size="large" />
+    </aura:if>
+    
+    <!--Component body-->
+    <div class="slds-grid slds-wrap">
+        
+        <!--From Date and To Date -->
+        <div class="slds-m-left_small">           
+            <lightning:input type="date"  aura:id="fromDate" placeholder="From Date" dateStyle="short" timeZone="India/delhi" class="slds-size_2-of-1 slds-float_left slds-p-right_xxx-small" style="width:130px;" />
+            <lightning:input type="date" aura:id="toDate" placeholder="To Date" dateStyle="short" class="slds-size_2-of-1 slds-float_left slds-p-right_xxx-small" style="width:130px;" onchange="{!c.selectDate}"/>
+        </div>
+        
+        <!-- lightning Buttons-->
+        <div class="slds-m-left_small buttonmargin">
+            <lightning:button class="cus1_button" value="ALL"  variant="neutral" label="All" name = "ALL" onclick="{!c.requestedData}"/>
+            <lightning:button class="cus1_button" value="New/In Progress"  variant="neutral" label="{!v.inProgresscount}" name = "New/In Progress" onclick="{!c.requestedData}"/>
+            <lightning:button class="cus2_button" value="Fulfilled"  variant="neutral" label="{!v.fulfilledcount}" name = "Fulfilled" onclick="{!c.requestedData}"/>
+            <lightning:button class="cus4_button" value="Cancelled"  variant="neutral" label="{!v.cancelledcount}" name = "Cancelled" onclick="{!c.requestedData}"/>
+            <lightning:button class="cus3_button" value="Returned"  variant="neutral" label="{!v.returnedcount}" name = "Returned" onclick="{!c.requestedData}"/>
+            <!--  <aura:iteration items="{!v.statusCount}" var="recordcount">
+                <lightning:button   value="{!recordcount.status}"  variant="neutral" label="{!recordcount.status +' - '+ recordcount.count}" name = "{!recordcount.status}" onclick="{!c.requestedData}" /> 
+            </aura:iteration>-->
+        </div>
+    </div>
+    
+    <!-- Surgeon Data UI respecitve to selected dates -->
+    <div class="slds-float_center custom-background slds-p-top_small">           
+        <aura:if isTrue="{!v.show}">
+            <div style="width:100%;height:27rem">
+                <div class="slds-scrollable" style="height:100%;">                             
+                    <table class="slds-table slds-table_bordered"> 
+                        <thead>    
+                            <tr>   
+                                <!-- Request Status Values-->
+                                <aura:iteration items="{!v.selectedValue}" var="mapKey" indexVar="key">                                         
+                                    <th class="slds-truncate stickheader" >   
+                                        <lightning:select aura:id="select" name="{!mapKey.key}" label="" onchange="{!c.onControllerFieldChange}" > 
+                                            <option value="">--None--</option>
+                                            <aura:iteration items="{!mapKey.value}" var="mapValue"  >                    
+                                                <option text="{!mapValue.label}"  value="{!mapValue.value}" data-record="{!mapKey.key}" />
+                                            </aura:iteration>  
+                                        </lightning:select>
+                                    </th>
+                                </aura:iteration>                                     
+                            </tr>
+                            <tr class="slds-line-height_reset">
+                                <aura:iteration items="{!v.PaginationListCol}" var="dateVar" >                    
+                                    <th class="stickheader2" scope="col" style="text-align:">
+                                        <br/> {!dateVar} <br/> SurgeonName &nbsp;&nbsp;&nbsp; SurgeryType &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Age
+                                    </th>
+                                </aura:iteration>
+                            </tr>
+                        </thead>
+                        <tbody>                                
+                            <tr>  
+                                <aura:iteration items="{!v.surgenRecords}"  var="mapKey" indexVar="key">  
+                                    <td style="vertical-align: top;" >                                            
+                                        <aura:iteration items="{!mapKey.value}" var="mapValue" indexVar="index">                                                
+                                            <tr class="{!mapValue.Request_Status__c eq 'Inprogress' ? ' tier-one ' : 
+                                                       mapValue.Request_Status__c eq 'Cancelled' ? ' tier-two   ' :
+                                                       mapValue.Request_Status__c eq 'Fulfilled' ? ' tier-three   ' : 
+                                                       mapValue.Request_Status__c eq 'Returned'  ? ' tier-four   ' : '' }" >                                                    
+                                                <td data-label="SurgeonName" style="background-color: transparent;width: 100px;text-align:center;">
+                                                    <div class="tooltip" data-value="{!mapKey.key}" id="{!mapValue.Id}" onmouseenter="{!c.handleMouseHover}" onmouseout="{!c.handleMouseOut}" data-index="{!index}" tabindex="-1" >
+                                                        {!mapValue.Requesting_Surgeon__r.Name}
+                                                        <aura:if isTrue="{!v.mouseHoverData.mhData==mapKey.key}">                                                                
+                                                            <aura:if isTrue="{!v.hoverRow==index}">
+                                                                <aura:if isTrue="{!v.togglehover==true}">
+                                                                    <div class="slds-popover slds-nubbin_bottom-left" 
+                                                                         role="tooltip" id="help" style="position: absolute;background-color:blue;color:white; right: -140px; bottom: 100%; width: 13rem; padding: inherit;">
+                                                                        Tissue Id: {!v.mouseHoverData.TissueId}<br/>
+                                                                        MR Number: {!v.mouseHoverData.MRNum}<br/>
+                                                                    </div>
+                                                                </aura:if>
+                                                            </aura:if>
+                                                        </aura:if>
+                                                    </div>                                                        
+                                                </td>
+                                                <td data-label="SurgeryType" style="background-color: transparent;width: 600px;text-align:center;" >
+                                                    <div class=""  data-dt="{!mapKey.key}" id="{!mapValue.Id}" onmouseenter="{!c.handleMouseHover}" onmouseout="{!c.handleMouseOut}" data-index="{!index}" tabindex="-1">{!mapValue.Surgery__c}</div>
+                                                </td>
+                                                <td data-label="Age" style="background-color: transparent;width: 5px;text-align:left;"  data-dt="{!mapKey.key}" id="{!mapValue.Id}" onmouseenter="{!c.handleMouseHover}" onmouseout="{!c.handleMouseOut}" data-index="{!index}" tabindex="-1">
+                                                    <p><lightning:formattedNumber value="{!mapValue.Age__c}"/></p>  
+                                                </td>
+                                            </tr>
+                                        </aura:iteration>
+                                    </td>    
+                                </aura:iteration> 
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>                    
+            </div>
+        </aura:if>
+    </div>
+</aura:component>

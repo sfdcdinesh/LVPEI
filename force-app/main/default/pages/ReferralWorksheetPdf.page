@@ -1,0 +1,484 @@
+<apex:page controller="ReferralWorksheetPdfController" renderAs="PDF"  applyHtmlTag="false" cache="true" showheader="false" sidebar="false" docType="html-5.0" standardStylesheets="false" >
+   <head>
+     <style>
+                
+                @page :left {
+                margin-left: 0.5cm;
+                margin-right: 0.5cm;
+                }
+                
+                @page :right {
+                margin-left: 0.5cm;
+                margin-right: 0.5cm;
+                }  
+                @page {
+                margin-top: 0.5cm;
+                margin-bottom: 0cm;
+                
+                }  
+               
+                
+                
+                @page {
+                @import url('https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i');
+                
+                }
+            </style>   
+    </head>
+    <body style="margin:0px!important;padding:0px!important;font-family: 'Lato', sans-serif;font-size:12px;font-weight:400;">      
+        <div style="margin:0;padding:0;">   
+            <div style="width:100%;float:left;">
+                <div  style="text-align:left;padding-bottom:20px;width:20%;float:left;">
+                    <apex:variable var="imageVar" value="{!branch.LogoName__c}"/> 
+                    <apex:image alt="cloud" title="cloud" url="{!URLFOR($Resource.LVPEI_Logos, imageVar)}"/>
+                     <!-- <img src="{!$Resource.LVPEI_Logos/LVPEI/LVPEI_Logos/MEB}" style="width:75%;text-align:left"/> -->
+                </div>
+                <!-- <div style="width:30%;float:right;font-size:13px;">
+                    Ramayamma International Eye Bank,<br/>
+                    Kallam Anji Reddy Campus,<br/>
+                    L V Prasad Marg,<br/>
+                    Hyderabad, 500034,<br/>
+                    +91 040 68102514,<br/>
+                    Telangana.
+                </div> -->
+                <div style="width:30%;float:right;font-size:13px;">
+                    <div>{!branch.Address__c}</div>
+                </div>
+                <div style="width:30%;float:right;font-size:13px;">
+                    <div><b>Referral# :</b> {!referral.Name} </div>
+                <div><b>Donor# :</b> {!referral.Donor_ID__c} </div></div>
+                
+            </div>   
+            <table style="width:100%;float:left;margin-top:0px;border:1px solid #000;">       
+                <tbody>
+                    <tr style="border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;font-size:14px;">
+                        <th colspan="4" style="text-align: center;font-family: sans-serif;" >
+                            <b>REFERRAL WORKSHEET</b>     
+                        </th>
+                    </tr>
+                    <tr style="color:white;background:black;">
+                        <th colspan="4" style="text-align: center;font-size:13px; font-family: sans-serif;padding:4px 0px;" >
+                            <b>REFERRAL INFORMATION</b>
+                        </th>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td width="30%" align="left" valign="top" style="font-size:12px;padding-top:5px;">
+                            <b>Referral Taken By :</b>
+                        </td>
+                        <td width="19%" style="font-size:12px;padding-top:5px;"  valign="top">
+                            {!referral.CreatedBy.Name}
+                        </td>
+                        <td width="29%" align="left" style="font-size:12px;padding-top:5px;" >
+                            <b>Death / Consignment Notification (Date-Time) :</b>
+                        </td>
+                        <td width="22%" style="font-size:12px;padding-top:5px;" valign="bottom">
+                            <apex:outputText value="{0,date,dd/MM/yyyy HH:mm }">
+                                <apex:param value="{!referral.Death_Notification_Consignment_Date_Time__c+offset}"/>
+                            </apex:outputText>    
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            <b>Referral Method :</b>
+                        </td>
+                        <td style="font-size:12px;">
+                            {!referral.Referral_Method__c}
+                        </td>
+                        <td align="left" style="font-size:12px;">
+                            <b>Donation Counselor :</b>
+                        </td>
+                        <td style="font-size:12px;">
+                            {!referral.Donation_Counselor_Volunteer__r.Name}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            <b>Caller First / Family Name :</b>
+                        </td>
+                        <td style="font-size:12px;">
+                            {!referral.Caller_First_Name__c}
+                        </td>
+                        <td align="left" style="font-size:12px;">
+                            <b>Caller Last / Given Name :</b>
+                        </td>
+                        <td style="font-size:12px;">
+                            {!referral.Caller_Last_Name__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            <b>Relationship :</b>
+                        </td>
+                        <td style="font-size:12px;">
+                            {!referral.Relationship_of_caller_to_donor__c}
+                        </td>
+                        
+                        <td align="left" style="font-size:12px;">
+                            <b>Phone :</b>
+                        </td>
+                        <td style="font-size:12px;">
+                            {!referral.Phone_Number_Of_Caller__c}
+                        </td>
+                    </tr>
+                    
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <th align="left" style="font-size:12px;">
+                            Death Notification From :
+                            
+                        </th>
+                        <td style="font-size:12px;">
+                            {!referral.Unit_Organization_Hospital_Name__r.Name}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <th align="left" style="font-size:12px;">
+                            Unit Type :
+                        </th>
+                        <td style="font-size:12px;">
+                            {!referral.Unit_Type__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" style="font-size:12px;">
+                            Special Instructions :
+                        </th>
+                        <td style="font-size:12px;" colspan="4">
+                            {!referral.Special_Instructions__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" style="font-size:12px;">
+                            Body Location :
+                        </th>
+                        <td style="font-size:12px;">
+                            {!referral.Location_of_Donor__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left"  valign="top" style="font-size:12px; ">
+                            Recovery Address :
+                        </th>
+                        <td style="font-size:12px;" colspan="4">
+                            {!referral.Recovery_Address__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" style="font-size:12px;">
+                            Recovery Directions :
+                        </th>
+                        <td style="font-size:12px;" colspan="4">
+                            {!referral.Recovery_Direction__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" style="font-size:12px;padding-bottom:15px;">
+                            General Referral Comments :
+                        </th>
+                        <td style="font-size:12px;padding-bottom:15px;" colspan="4">
+                            {!referral.Comments__c}
+                        </td>
+                    </tr>
+                 
+                    <tr style="color:white;background:black;border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;">
+                        <th colspan="4" style="text-align: center;font-size:13px;font-family: sans-serif;padding:4px 0px;">
+                            <b>PATIENT INFORMATION</b>
+                        </th>
+                    </tr>
+                    
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;padding-top:5px;">
+                            <b>First / Family Name :</b>
+                        </td>
+                        <td style="font-size:12px;padding-top:5px;">
+                            {!referral.First_Name__c}
+                        </td>
+                        <td align="left" style="font-size:12px;padding-top:5px;">
+                            <b>Last / Given Name :</b>
+                        </td>
+                        <td style="font-size:12px;padding-top:5px;">
+                            {!referral.Last_Name__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" valign="top" style="font-size:12px;">
+                            <b>DOB :</b>   <apex:outputText value="{0,date,dd/MM/yyyy}"> <apex:param value="{!referral.Date_of_Birth__c}" /> </apex:outputText>
+                        </td>
+                        <td style="font-size:12px;">
+                            <b>Age :</b>  {!referral.Age_of_Donor__c}
+                        </td>
+                        
+                        <td align="left" style="font-size:12px;">
+                            <b>Sex Of Donor :</b> {!referral.Gender__c}
+                        </td>
+                        <td style="font-size:12px;">
+                            <b>Religion :</b>  {!referral.Religion__c}
+                        </td>
+                        
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            <b>Height :</b> {!referral.Height__c} {!referral.Height_Unit__c} 
+                        </td>
+                        <td align="left" style="font-size:12px;">
+                            <b>Weight :</b> {!referral.Weight__c} {!referral.Weight_Unit__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" style="font-size:12px;">
+                            MRN :
+                        </th>
+                        <td style="font-size:12px;">
+                            {!referral.Medical_Record_Number__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" style="font-size:12px;">
+                            Admission Date-Time :
+                        </th>
+                        <td style="font-size:12px;">
+                            <apex:outputText value="{0,date,dd/MM/yyyy HH:mm}">
+                                <apex:param value="{!referral.Date_of_Admission__c+offset}"/>
+                            </apex:outputText> 
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" style="font-size:12px;">
+                            Primary Cause Of Death :
+                        </th>
+                        <td style="font-size:12px;">
+                            {!referral.Primary_Cause_of_Death__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" style="font-size:12px;display:{!IF(referral.Primary_Cause_of_Death__c = 'Other Diseases','','none')};">
+                            Other Diseases :
+                        </th>
+                       <!-- <td style="font-size:12px;" colspan="4"> -->
+                        <td colspan="4" style="font-size:12px;display:{!IF(referral.Primary_Cause_of_Death__c = 'Other Diseases','','none')};">
+                            {!referral.If_Other_Provide_Cause__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left"  valign="top" style="font-size:12px;">
+                            Circumstances Of Death  :
+                        </th>
+                        <td colspan="3" style="font-size:12px;padding-right: 20px;">
+                            {!referral.Circumstances_Leading_to_Death__c}	
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" style="font-size:12px;padding-bottom:15px;">
+                            Att. MD :
+                        </th>
+                        <td style="font-size:12px;padding-bottom:15px;">
+                            {!referral.Attending_physician__c}
+                        </td>
+                    </tr>
+                    
+                    <tr style="color:white;background:black;border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;">
+                        <th colspan="4" style="text-align: center;font-size:13px;font-family:sans-serif;padding:4px 0px;">
+                            <b>PRELIMINARY TISSUE SCREENING INFORMATION</b>
+                        </th>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" valign="top" style="font-size:12px;padding-top:5px;">
+                            Death Date-Time :
+                        </th>
+                        <td style="font-size:12px;padding-top:5px;">
+                            <apex:outputText value="{0,date,dd/MM/yyyy HH:mm}">
+                                <apex:param value="{!referral.Date_Time_of_Death__c+offset}"/>
+                            </apex:outputText> 
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            <b>Donor On A Respirator ?</b>
+                        </td>
+                        <td style="font-size:12px;">
+                            {!referral.Was_the_donor_on_a_ventilator__c}
+                        </td>
+                        <td align="left" style="font-size:12px;display:{!IF(referral.Was_the_donor_on_a_ventilator__c = 'Yes','','none')};">
+                            <b>How Long ?</b>
+                        </td>
+                        <td style="font-size:12px;display:{!IF(referral.Was_the_donor_on_a_ventilator__c = 'Yes','','none')};">
+                            {!referral.Duration_of_time_on_Ventilator_if_Yes__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" style="font-size:12px;">
+                            Isolation :
+                        </th>
+                        <td style="font-size:12px;">
+                            {!referral.Isolation__c}
+                        </td>
+                        <td align="left" style="font-size:12px;display:{!IF(referral.Isolation__c = 'Yes','','none')};">
+                            <b> Isolation : </b>
+                        </td>
+                        <td style="font-size:12px;display:{!IF(referral.Isolation__c = 'Yes','','none')};">
+                            {!referral.If_Yes_Please_Specify_the_Isolation__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" style="font-size:12px;">
+                            Signs / Symptoms Of Systemic Infection ?
+                        </th>
+                        <td style="font-size:12px;">
+                            {!referral.Sign_symptoms_of_systemic_infection__c}
+                        </td>
+                        <td align="left" style="font-size:12px;display:{!IF(referral.Sign_symptoms_of_systemic_infection__c = 'Yes','','none')};">
+                            <b> Signs / Symptoms : </b>
+                        </td>
+                        <td style="font-size:12px;display:{!IF(referral.Sign_symptoms_of_systemic_infection__c = 'Yes','','none')};">
+                            {!referral.If_Yes_Mention_the_Sign_symptoms__c}
+                        </td>
+                     </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" style="font-size:12px;">
+                            IV Fluid Given In The Last Hour ?
+                        </th>
+                        <td style="font-size:12px;">
+                            {!referral.IV_Fluid_given_in_last_hour__c}
+                        </td>
+                        <td align="left" style="font-size:12px;display:{!IF(referral.IV_Fluid_given_in_last_hour__c = 'Yes','','none')};">
+                            <b> How much IV Fluids Given In The Last Hour (ml)? </b>
+                        </td>
+                        <td style="font-size:12px;display:{!IF(referral.IV_Fluid_given_in_last_hour__c = 'Yes','','none')};">
+                            {!referral.How_many_IV_Fluids_given_in_Last_Hour__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                                                            
+                        <th align="left" style="font-size:12px;display:{!IF(referral.IV_Fluid_given_in_last_hour__c = 'Yes','','none')};">
+                            <b> IV Fluid Date/Time : </b>
+                        </th>
+                        <!--<td style="font-size:12px;display:{!IF(referral.IV_Fluid_given_in_last_hour__c = 'Yes','','none')};">
+                            {!referral.IV_Fluid_Date_Time__c}
+                        </td> -->
+                        
+                        <td style="font-size:12px;display:{!IF(referral.IV_Fluid_given_in_last_hour__c = 'Yes','','none')};">
+                            <apex:outputText value="{0,date,dd/MM/yyyy HH:mm}">
+                                <apex:param value="{!referral.IV_Fluid_Date_Time__c+offset}"/>
+                            </apex:outputText> 
+                        </td>
+                                                
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" style="font-size:12px;">
+                            Blood Given In The Last 48 Hours ?
+                        </th>
+                        <td style="font-size:12px;">
+                            {!referral.Blood_given_in_the_last_48_hours__c}
+                        </td>
+                        <td align="left" style="font-size:12px;display:{!IF(referral.Blood_given_in_the_last_48_hours__c = 'Yes','','none')};">
+                            <b> How much Blood Given In The Last 48 Hours (ml) ? </b>
+                        </td>
+                        <td style="font-size:12px;display:{!IF(referral.Blood_given_in_the_last_48_hours__c = 'Yes','','none')};">
+                            {!referral.How_much_Blood_given_in_last_48_hours__c}
+                        </td>
+                                                
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                                                            
+                        <th align="left" style="font-size:12px;display:{!IF(referral.Blood_given_in_the_last_48_hours__c = 'Yes','','none')};">
+                            <b> Blood Given Date/Time </b>
+                        </th>
+                      <!--  <td style="font-size:12px;display:{!IF(referral.Blood_given_in_the_last_48_hours__c = 'Yes','','none')};">
+                            {!referral.Blood_given_Date_Time__c}
+                        </td> -->
+                        
+                        <td style="font-size:12px;display:{!IF(referral.Blood_given_in_the_last_48_hours__c = 'Yes','','none')};">
+                            <apex:outputText value="{0,date,dd/MM/yyyy HH:mm}">
+                                <apex:param value="{!referral.Blood_given_Date_Time__c+offset}"/>
+                            </apex:outputText> 
+                        </td>
+                        
+                        
+                        
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" style="font-size:12px;">
+                            Transferred From Other Facility ?
+                        </th>
+                        <td style="font-size:12px;">
+                            {!referral.Transferred_from_other_facility__c}
+                        </td>
+                        <th align="left" style="font-size:12px;display:{!IF(referral.Transferred_from_other_facility__c = 'Yes','','none')};">
+                            
+                            <b> From where : </b>
+                        </th>
+                        <td style="font-size:12px;display:{!IF(referral.Transferred_from_other_facility__c = 'Yes','','none')};">
+                            {!referral.Facility_Name__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                                                            
+                        <th align="left" style="font-size:12px;display:{!IF(referral.Transferred_from_other_facility__c = 'Yes','','none')};">
+                            <b> To where : </b>
+                        </th>
+                        <td style="font-size:12px;display:{!IF(referral.Transferred_from_other_facility__c = 'Yes','','none')};">
+                            {!referral.To_Where__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" valign="top" style="font-size:12px;">
+                            Medical/Ocular History :
+                        </th>
+                        <td colspan="3"  style="font-size:12px;padding-right: 20px;">
+                            {!referral.Medical_Ocular_Histor__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        
+                        <th align="left" style="font-size:12px;padding-bottom:10px;">
+                            Social And Behavioral History :
+                        </th>
+                        <td style="font-size:12px;padding-bottom:10px;" colspan="4">
+                            {!referral.Social_and_Behavioral_History__c}
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+       <table style="width:100%;float:left;margin-top:25px;border-top:1px solid #000;position: fixed;
+                          bottom: 0px;margin-bottom:20px;">
+                <tbody>
+                    <tr>
+                        <td width="22%"  align="left" style="font-size:12px;">
+                            <b>Date Generated:</b>
+                        </td>
+                        <td width="26%" style="font-size:12px;">
+     <apex:outputText value="{0,date,dd/MM/yyyy HH:mm:ss}">
+                                   <apex:param value="{!NOW()+offset}"/>
+                                  </apex:outputText> 
+                           
+                        </td>
+                        <td width="17%" align="left" style="font-size:12px;">
+                            <b>Staff Completing:</b>
+                        </td>
+                        <td width="35%" style="font-size:12px;">
+                            {!$User.LastName} {!$User.FirstName}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</apex:page>

@@ -1,0 +1,58 @@
+.THIS .slds-page-header--object-home {
+padding-top: 10px;
+padding-bottom: 5px;
+text-align: center;
+margin: 0 auto;
+}
+
+
+.THIS .slds-page-header {
+    background: #f3f3f2;
+      border: 1px solid #ccc;
+    padding: 4px 10px;
+    margin-top: 10px;
+}
+
+.THIS .slds-p-around--medium {
+    border: 1px solid #ecebea;
+    background: #fff;
+}
+
+.THIS .check-div .slds-checkbox_faux{
+margin-right: .5rem;
+}
+
+.THIS .check-div input{
+    float:left;
+    margin-top:4px;
+}
+
+
+
+.THIS printbtn {
+    background:gray;
+    width: inherit;
+}
+
+
+.THIS .main-header{
+    font-size: xx-large;
+    font-weight: 700;
+}
+
+.THIS .viewreport{
+    float:right;
+}
+.THIS .reportname{
+    float:left;
+}
+.THIS .slds-modal__container{
+    max-width: 100%;
+    width: 100%;
+    padding: 1%;
+    max-height: max-content;
+    margin-top: 4%;
+}
+.THIS .slds-textarea{
+    height:95px;
+}

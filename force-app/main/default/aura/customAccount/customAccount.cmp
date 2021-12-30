@@ -1,0 +1,115 @@
+<aura:component controller="CustomAccountController">
+    <aura:attribute name="postal" type="Account"
+                    default="{'sobjectType': 'Account','Zip_Postal_Code__c' : ' ' 
+                             }"/>
+    <aura:attribute name="disabled" type="Boolean" default="false" />
+    <aura:attribute name="saved" type="Boolean" default="false" />
+    <aura:attribute name="showSpinner" type="Boolean" default="true" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="contactRole" type="string"/>
+    <aura:registerEvent name="test" type="c:customAcc"/>
+    <aura:attribute name="CustomLookup" type="Aura.Component" required="true"/>
+    <aura:registerEvent name="oSelectedRecordEvent" type="c:selectedsObjectRecordEvent"/>
+      <aura:if isTrue="{!!v.saved}">
+        <lightning:recordEditForm
+                                  onsubmit="{!c.validate}"
+                                  onsuccess="{!c.handleSuccess}"
+                                  objectApiName="Account">
+            <!-- the messages component is for error messages -->
+            <lightning:messages />
+            
+            <div class="slds-size_1-of-1" style="background:#005fb2;color:#fff;">
+                
+                <lightning:layoutItem padding="horizontal-small">
+                    
+                    <div class="page-section page-header slds-p-around_x-small">
+                        <h3 class="slds-text-heading--large">New Account</h3>
+                    </div> 
+                </lightning:layoutItem>
+            </div>                  
+            <div>
+                <div class="slds-page-header" style="cursor: pointer;" >
+                    <section class="slds-clearfix">
+                        <div class="slds-float--left ">
+                            <lightning:icon class="slds-show" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                            <lightning:icon class="slds-hide" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                        </div>
+                        <div class="slds-m-left--large">Account Information</div>
+                    </section>
+                </div>
+                <br/>
+                <lightning:inputField fieldName="Name" />
+                <lightning:inputField fieldName="Phone" />
+                <lightning:inputField fieldName="Email" />
+                <!--<lightning:inputField fieldName="Type" />-->
+                <lightning:inputField fieldName="Fax" />
+                <lightning:inputField fieldName="Website" />
+                <lightning:inputField fieldName="npe01__One2OneContact__c" />
+                <br/>
+                <div class="slds-page-header" style="cursor: pointer;">
+                    <section class="slds-clearfix">
+                        <div class="slds-float--left ">
+                            <lightning:icon class="slds-show" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                            <lightning:icon class="slds-hide" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                        </div>
+                        <div class="slds-m-left--large">Description</div>
+                    </section>
+                </div>
+                <br/>
+                <lightning:inputField fieldName="Description" />
+                <br/>
+                
+                <div class="slds-page-header" style="cursor: pointer;" >
+                    <section class="slds-clearfix">
+                        <div class="slds-float--left ">
+                            <lightning:icon class="slds-show" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                            <lightning:icon class="slds-hide" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                        </div>
+                        <div class="slds-m-left--large"><b>Contact Roles</b></div>
+                    </section>
+                </div>
+                <br/>
+                <aura:if isTrue="{!v.contactRole=='unitOrganisation'}"> 
+                <lightning:inputField aura:id="inputCmp" fieldName="Hospital__c" /> 
+                <lightning:inputField aura:id="hcrphospital" fieldName="HCRP_Hospital__c" />
+                <lightning:inputField aura:id="organisation" fieldName="Organisation__c" />
+                <lightning:inputField aura:id="transhospital" fieldName="Transplant_Hospital__c" />
+               
+                    <aura:set attribute="else">
+                        <lightning:inputField aura:id="hospital1" fieldName="Hospital__c" /> 
+                    </aura:set> 
+                </aura:if><br/>
+                <div class="slds-page-header" style="cursor: pointer;" >
+                    <section class="slds-clearfix">
+                        <div class="slds-float--left ">
+                            <lightning:icon class="slds-show" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                            <lightning:icon class="slds-hide" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                        </div>
+                        <div class="slds-m-left--large">Address Information</div>
+                    </section>
+                </div>
+                <br/>
+                <lightning:inputField fieldName="Street_1__c" />
+                <lightning:inputField fieldName="Street_2__c" />
+                <lightning:inputField fieldName="Country__c" />
+                <lightning:inputField fieldName="State__c" /> 
+                <lightning:inputField fieldName="City__c" />
+                <!--  <lightning:input label = "Zip/Postal Code" pattern="[0-9]{0-10}" type="tel" fieldName="Zip_Postal_Code__c" value = "{!v.postal.Zip_Postal_Code__c}" maxlength="10"/>  -->
+                <lightning:inputField aura:id="zipcode" fieldName="Zip_Postal_Code__c" onchange="{!c.validateFields}" />
+                <p style="color:red;">{!v.eMsg}</p>
+                
+                <!--    <lightning:input aura:id="Zipcode"  type="tel" fieldName="Zip_Postal_Code__c" pattern="[0-9]{0-10}" messageWhenPatternMismatch="Please Enter a Valid Zip Code" name="Num" label="Zip/Postal Code" value = "{!v.postal.Zip_Postal_Code__c}" maxlength="10"/> --> 
+                
+                <br/>
+                <div class="slds-p-top_medium slds-p-bottom_xx-large" >
+                    <lightning:button  variant="brand" disabled="false" aura:id="savebtn" type="submit" name="save" label="Save" />
+                    <lightning:button  variant="brand" type="submit" name="cancel" label="Cancel" onclick="{!c.CancelCreate}"/>
+                </div>
+            </div>           
+        </lightning:recordEditForm>
+        <aura:set attribute="else">
+            <p>Saved! New record id is {!v.recordId}</p>
+        </aura:set>
+    </aura:if>
+    
+</aura:component>

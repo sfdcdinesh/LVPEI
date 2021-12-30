@@ -1,0 +1,6 @@
+<aura:event type="COMPONENT" description="Event template">
+    <aura:attribute name="bloodData" type="Blood_Product__c[]"/>
+    <aura:attribute name="colloidData" type="Colloid__c[]"/>
+    <aura:attribute name="crystalloidData" type="Crystalloid__c[]"/>
+    <aura:attribute name="closeTable" type="Boolean"/>
+</aura:event>

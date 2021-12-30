@@ -1,0 +1,1479 @@
+<aura:component controller="ReferralCtrl" implements="force:appHostable,lightning:actionOverride,force:hasRecordId,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="recordName" type="String"/>
+    <aura:attribute name="Ref" type="Referral__c"/>
+    <aura:attribute name="Age" type="integer" default="{}"/>
+    <aura:attribute name="donorName" type="String"/>
+    <aura:attribute name="donorGender" type="String"/>
+    <aura:attribute name="donorAge" type="String"/>
+    <aura:attribute name="deathTime" type="datetime"/>
+    <aura:attribute name="Getrecordinpopup" type="Referral__c[]" />
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <aura:attribute name="HideRefferal" type="Boolean" default="true"/>
+    <aura:attribute name="booleanvalue" type="boolean" default="false"/>
+    <aura:attribute name="booleanvalue1" type="boolean" default="false"/>
+    <aura:attribute name="booleanvalue2" type="boolean" default="false"/>
+    <!-- Lookup Attribute-->
+    <aura:attribute name="donarcon" type="Sobject" default="{}"/>
+    <aura:attribute name="donarcon1" type="Sobject" default="{}"/>
+    <aura:attribute name="donarcon2" type="Sobject" default="{}"/>
+    <aura:attribute name="donarcon3" type="Sobject" default="{}"/> 
+    <aura:attribute name="donartest" type="string"/>
+    
+    <!-- Reneder Attributes-->
+    <aura:attribute name="display" type="Boolean" default="false"/>
+    <aura:attribute name="display1" type="Boolean" default="false"/>
+    <aura:attribute name="display2" type="Boolean" default="false"/>
+    <aura:attribute name="display3" type="Boolean" default="false"/>
+    <aura:attribute name="display4" type="Boolean" default="false"/>
+    <aura:attribute name="display5" type="Boolean" default="false"/>
+    <aura:attribute name="display6" type="Boolean" default="false"/>
+    <aura:attribute name="display7" type="Boolean" default="false"/>
+    <aura:attribute name="display8" type="Boolean" default="false"/>
+    <aura:attribute name="display9" type="Boolean" default="false"/>
+    <aura:attribute name="display10" type="Boolean" default="false"/>
+    <aura:attribute name="display11" type="Boolean" default="false"/>
+    <aura:attribute name="display12" type="Boolean" default="false"/>
+    <aura:attribute name="display13" type="Boolean" default="false"/>
+    <aura:attribute name="display14" type="Boolean" default="false"/>
+    <aura:attribute name="display15" type="Boolean" default="false"/>
+    <aura:attribute name="display16" type="Boolean" default="false"/>
+    <aura:attribute name="display17" type="Boolean" default="false"/>
+    <aura:attribute name="display18" type="Boolean" default="false"/>
+    <aura:attribute name="display19" type="Boolean" default="false"/>
+    <aura:attribute name="display20" type="Boolean" default="false"/>
+    <!--PDF-->
+    <aura:attribute name="Open" type="boolean" default="false"/>
+    <aura:attribute name="viewreport" type="boolean" default="false"/>
+    <aura:attribute name="GenreList" type="List" default="[]" description="Genre Picklist Values"/>
+    <aura:attribute name="selectedGenreList" type="List" default="[]" description="Selected Genre Picklist Values"/>
+    
+    <aura:attribute name="referralOutcome" type="String"/>
+    <aura:attribute name="currentUser" type="sObject"/>    
+    <aura:attribute name="newRef" type="Referral__c"
+                    default="{'sobjectType': 'Referral__c'
+                             }"/>
+    
+    <!-- To Populate in the HeaderSection -->
+    <aura:attribute name="refMethod" type="String"/>
+    <aura:attribute name="referralSource" type="String"/>
+    
+    <!-- Picklist -->
+    <aura:attribute name="listControllingValues" type="list" description="to store controller field values"/>
+    <aura:attribute name="listDependingValues" type="list" description="to store dependent field values"/>
+    <aura:attribute name="depnedentFieldMap" type="map" description="map to store dependent values with controlling value"/>
+    <aura:attribute name="bDisabledDependentFld" type="boolean" default="false"/> 
+    
+    <!-- <aura:attribute name="objDetail" type="Referral__c" default="{'sobjectType' : 'Referral__c'}"/> -->
+    <aura:attribute name="controllingFieldAPI" type="string" default="Referral_Method__c" description="store field API name of Controller field"/>
+    <aura:attribute name="dependingFieldAPI" type="string" default="Referral_Source__c" description="store field API name of dependent field"/>
+    
+    <!-- Picklist End --> 
+    <aura:method name="ReferralMethod">
+        <aura:attribute name="Referral" type="Referral__c"/>
+        <aura:attribute name="dislpayNext" type="Boolean"/>
+    </aura:method>
+    <aura:attribute name="Referral" type="Referral__c"/>
+    <aura:attribute name="dislpayNext" type="Boolean"/>
+    <aura:registerEvent name="refEvent" type="c:GetReferral"/>
+    <aura:attribute name="lookupList" type="Map" default="{}"/>
+    
+    <force:recordData aura:id="forceRecord"
+                      recordId="{!v.recordId}"
+                      targetFields="{!v.newRef}"
+                      fields="Referral_Method__c,Referral_Source__c"
+                      layoutType="FULL"
+                      mode="EDIT" />
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <!--Lookup Tab Index-->
+    <aura:handler name="oSelectedRecordEvent" event="c:selectedsObjectRecordEvent" action="{!c.focusToNextField}"/>
+    <!--<ltng:require scripts="{!$Resource.IndexFile}" afterScriptsLoaded="{!c.afterScriptsLoaded}" />-->
+    <style>
+        .slds-template_default, html{
+        background:#fff!important;
+        
+        }
+        .slds-brand-band:after, .slds-brand-band:before{
+        background-image:none!important;
+        }
+        
+    </style>
+    
+    <div class="slds-container--large slds-align_absolute-center slds-wrap slds-m-bottom_medium donor-details-box" style="margin-top:1rem;"> 
+        <div class="slds-col slds-size_1-of-1">
+            <div class="slds-show slds-p-around_xx-small" aura:id="Zero" style="background:#f3f3f2;color:#000;
+                                                                                box-shadow:0px 0px 1px 0px  rgba(0, 0, 0, 0.10);">
+                <div class="slds-grid  slds-form slds-form_stacked ">
+                    <div class="slds-grid slds-size_1-of-1 " style="border-bottom:1px solid #ccc;">
+                        
+                        <div class="slds-col slds-size_4-of-12">
+                            <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                                <div class="slds-col slds-size_4-of-12 slds-text-align_right slds-p-around_none"><span>Donor Name</span>: </div>
+                                <div class="slds-col slds-size_8-of-12">   
+                                    <ui:outputText value="{!v.donorName}"/>
+                                </div>
+                                
+                            </div></div>
+                        
+                        <div class="slds-col slds-size_4-of-12">
+                            <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                                <div class="slds-col slds-size_5-of-12 slds-text-align_right slds-p-around_none"><span>Date/Time of Death</span><span style="color:#ff0000;font-weight:bold;">*</span>: </div>
+                                <div class="slds-col slds-size_7-of-12">   
+                                    <ui:outputDateTime format="dd/MM/yyyy HH:mm:ss" 
+                                                       value="{!v.newRef.Date_Time_of_Death__c}" />
+                                </div>
+                            </div></div>
+                        
+                        <div class="slds-col slds-size_2-of-12">
+                            <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                                <div class="slds-col slds-size_2-of-12 slds-text-align_right slds-p-around_none"><span>Age</span>: </div>
+                                <div class="slds-col slds-size_10-of-12">   
+                                    <ui:outputText value="{!v.newRef.Age_of_Donor__c}"/>
+                                </div>
+                            </div></div>
+                        
+                        <div class="slds-col slds-size_2-of-12">
+                            <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                                <div class="slds-col slds-size_3-of-12 slds-text-align_right slds-p-around_none"><span>Gender</span>: </div>
+                                <div class="slds-col slds-size_9-of-12">   
+                                    <ui:outputText value="{!v.newRef.Gender__c}"/>
+                                </div>
+                            </div></div>                                         
+                    </div>                    
+                </div>   
+                
+                <div class="slds-grid slds-gutters slds-form slds-form_stacked ">
+                    
+                    <div class="slds-col slds-size_4-of-12" style="border-right: 1px solid #ccc;">
+                        
+                        <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                            <div class="slds-col slds-size_6-of-12 slds-text-align_right slds-p-around_none"><span>Date/Time of Death</span><span style="color:#ff0000;font-weight:bold;">*</span>: </div>
+                            <div class="slds-col slds-size_6-of-12">    
+                                <ui:outputDateTime format="dd/MM/yyyy HH:mm:ss" 
+                                                   value="{!v.newRef.Date_Time_of_Death__c}"/>
+                            </div>
+                        </div>
+                        <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                            <div class="slds-col slds-size_6-of-12 slds-text-align_right slds-p-around_none">    <span >First Name :</span>   </div>
+                            <div class="slds-col slds-size_6-of-12"> 
+                                <ui:outputText value="{!v.newRef.First_Name__c}"/>
+                            </div>
+                        </div>
+                        <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                            <div class="slds-col slds-size_6-of-12 slds-text-align_right 
+                                        slds-p-around_none"> <span > Last Name : </span> </div>
+                            <div class="slds-col slds-size_6-of-12"> 
+                                <ui:outputText value="{!v.newRef.Last_Name__c}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_4-of-12" style="border-right: 1px solid #ccc;">
+                        <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                            <div class="slds-col slds-size_5-of-12 slds-text-align_right slds-p-around_none">      
+                                <span > Referral ID : </span> </div>
+                            <div class="slds-col slds-size_7-of-12">    
+                                <ui:outputText value="{!v.newRef.Name}"/>
+                            </div>
+                        </div>
+                        <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                            <div class="slds-col slds-size_5-of-12 slds-text-align_right slds-p-around_none">     
+                                <span > Referral Outcome : </span> </div>
+                            <div class="slds-col slds-size_7-of-12">    
+                                <ui:outputText value="{!v.newRef.Referral_Outcome__c}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_4-of-12">
+                        <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                            <div class="slds-col slds-size_4-of-12 slds-text-align_right slds-p-around_none">
+                                <span >Owner</span><span style="color:#ff0000;font-weight:bold;">*</span> : </div>
+                            <div class="slds-col slds-size_8-of-12">  
+                                <ui:outputText value="{!v.newRef.CreatedBy.Name}"/>
+                            </div>
+                        </div>
+                        <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                            <div class="slds-col slds-size_4-of-12 slds-text-align_right slds-p-around_none">  
+                                <span >Modified By : </span>  </div>
+                            <div class="slds-col slds-size_8-of-12">   
+                                <ui:outputText value="{!v.newRef.LastModifiedBy.Name}"/>
+                            </div>
+                        </div>
+                        <div class="slds-m-bottom_xxx-small slds-grid slds-gutters">
+                            <div class="slds-col slds-size_4-of-12 slds-text-align_right slds-p-around_none">  
+                                <span >Branch : </span>  </div>
+                            <div class="slds-col slds-size_8-of-12">   
+                                <ui:outputText value="{!v.newRef.Branch_Name__c}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div></div>
+    
+    
+    <div class="slds-container--large slds-align_absolute-center medical-pad" >
+        <div class="slds-grid slds-wrap slds-size_1-of-1">
+            <div class="slds-page-header slds-size_1-of-1" style="cursor: pointer;" onclick="{!c.sectionOne}">
+                <section class="slds-clearfix">
+                    <div class="slds-float--left ">
+                        <lightning:icon class="slds-show" aura:id="One" iconName="utility:dash" size="x-small" alternativeText="Indicates add"/>
+                        <lightning:icon class="slds-hide" aura:id="One" iconName="utility:add" size="x-small" alternativeText="Indicates dash"/>
+                    </div>
+                    <div class="slds-m-left--large">Death Notification</div>
+                </section>
+            </div>
+            
+            
+            <div class="slds-show slds-p-around--medium slds-col slds-size_1-of-1"  
+                 aura:id="One">
+                <div class="c-container">
+                    <lightning:layout multipleRows="true">
+                        <lightning:layoutItem size="12" padding="around-small">
+                            <div class="custom-box date-timebox" >
+                                <lightning:input aura:id = "consignmentTime" 
+                                                 type="datetime" 
+                                                 required="true" 
+                                                 label="Death Notification/Consignment Date/Time" 
+                                                 onblur = "{!c.dateValidationn}" 
+                                                 value="{!v.newRef.Death_Notification_Consignment_Date_Time__c}" />
+                                <aura:if isTrue="{!v.booleanvalue2}">
+                                    <div class="slds-text-color_error slds-p-left_x-small">
+                                        Selected Date/Time Should be Grater than or Equal to Death Date/Time.
+                                    </div>
+                                </aura:if>                             
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" padding="around-small">
+                            <div class="custom-box" >
+                                <lightning:select aura:id="referralMethod" name="controllerFld"
+                                                  value="{!v.newRef.Referral_Method__c}"
+                                                  label="Referral Method"
+                                                  required="true"
+                                                  onchange="{!c.onControllerFieldChange}">
+                                    <aura:iteration items="{!v.listControllingValues}" var="val">
+                                        <option value="{!val.value}" 
+                                                selected="{!val.value==v.newRef.Referral_Method__c}">
+                                            {!val.label}
+                                        </option>
+                                    </aura:iteration>
+                                </lightning:select>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="6" padding="around-small">
+                            <div class="custom-box">
+                                <lightning:select aura:id="dependentFld"
+                                                  name="dependentFld"
+                                                  value="{!v.newRef.Referral_Source__c}"
+                                                  label="Referral Source"
+                                    		      disabled="{!v.bDisabledDependentFld}">
+                                    <aura:iteration items="{!v.listDependingValues}" var="val">
+                                        <option value="{!val.value}"
+                                                selected="{!val.value==v.newRef.Referral_Source__c}"
+                                                >{!val.label}</option>
+                                    </aura:iteration>
+                                </lightning:select>    
+                            </div>
+                        </lightning:layoutItem>
+                        
+                        
+                        <aura:if isTrue="{!v.newRef.Referral_Source__c == 'Family initiated'}">
+                          <lightning:layoutItem size="6" padding="around-small" >
+                               
+                                <div class="custom-box1" >
+                                    
+                                  <c:customLookup  contactRole="hrcpcounselor" 
+                                                  objectAPIName="Contact" 
+                                                  IconName="standard:contact" 
+                                                  selectedRecord="{!v.donarcon}" 
+                                                  label="Donation Counselor/Volunteer"  
+                                                  objName="contact" />
+            					</div>
+                          </lightning:layoutItem>
+                        	<aura:set attribute="else">
+                                <lightning:layoutItem size="6" padding="around-small" >
+                                       <div  class="custom-box" >
+                                         <c:customLookup  
+                                                         contactRole="hrcpcounselor" 
+                                                         objectAPIName="Contact" 
+                                                         IconName="standard:contact" 
+                                                         selectedRecord="{!v.donarcon}" 
+                                                         label="Donation Counselor/Volunteer"  
+                                                         objName="contact" />
+                    					</div>
+                                     </lightning:layoutItem>
+                            </aura:set>
+                        </aura:if>
+                        <lightning:layoutItem size="6" padding="around-small">
+                            	<div class="custom-box">
+                                	<lightning:input aura:id="phoneNumberofCaller" 
+                                                 type="tel" 
+                                                 pattern="[0-9]{10}" 
+                                                 messageWhenPatternMismatch="Please Enter a Valid Mobile Number" 
+                                                 name="Num" 
+                                                 label="Phone Number of Caller" 
+                                                 value="{!v.newRef.Phone_Number_Of_Caller__c}" 
+                                                 maxlength="10"  />             
+                                
+                            	</div>
+                        </lightning:layoutItem>
+                         <aura:if isTrue="{!v.newRef.Referral_Source__c == 'Family initiated'}">
+                                <lightning:layoutItem size="6" padding="around-small">
+                                    <div class="custom-box1">
+                                        <c:customLookup  
+                                                        contactRole="hrcpcounselor" 
+                                                        objectAPIName="Contact" 
+                                                        IconName="standard:contact" 
+                                                        selectedRecord="{!v.donarcon1}" 
+                                                        label="Secondary Donation Counselor/Volunteer"  
+                                                        objName="contact"/>
+                                    </div>
+                                </lightning:layoutItem>
+                                <aura:set attribute="else">
+                                    <lightning:layoutItem size="6" padding="around-small">
+                                        <div class="custom-box">
+                                            <c:customLookup  
+                                                            contactRole="hrcpcounselor" 
+                                                            objectAPIName="Contact" 
+                                                            IconName="standard:contact" 
+                                                            selectedRecord="{!v.donarcon1}" 
+                                                            label="Secondary Donation Counselor/Volunteer"  
+                                                            objName="contact"/>
+                                        </div>
+                                    </lightning:layoutItem>
+                            </aura:set>
+                        </aura:if>
+                        
+                        <lightning:layoutItem size="6" padding="around-small">
+                            <div class="custom-box">
+                                <lightning:input aura:id="text1" 
+                                                 type="string" 
+                                                 label="Caller First Name"  
+                                                 value="{!v.newRef.Caller_First_Name__c}"/>             
+                            </div>
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="6" padding="around-small">
+                            <div class="custom-box">
+                                <lightning:input aura:id="text2" 
+                                                 type="string" 
+                                                 label="Caller Last Name"  
+                                                 value="{!v.newRef.Caller_Last_Name__c}"/>                  
+                            </div>
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="6" padding="around-small">
+                            <div class="custom-box">
+                                <lightning:Select aura:id="Relation"  
+                                                  label="Relationship of Caller to Donor"  
+                                                  value="{!v.newRef.Relationship_of_caller_to_donor__c}">
+                                    <option value="--None--">--None--</option>
+                                    <option value="Hospital  Staff Member"
+                                            selected="{!v.newRef.Relationship_of_caller_to_donor__c == 'Hospital  Staff Member'}"
+                                            >Hospital  Staff Member</option>
+                                    <option value="Other Family Member"
+                                            selected="{!v.newRef.Relationship_of_caller_to_donor__c == 'Other Family Member'}"
+                                            >Other Family Member</option>
+                                    <option value="Other Staff"
+                                            selected="{!v.newRef.Relationship_of_caller_to_donor__c == 'Other Staff'}"
+                                            >Other Staff</option>
+                                    <option value="EDC- Eye Donation Counsellor"
+                                            selected="{!v.newRef.Relationship_of_caller_to_donor__c == 'EDC- Eye Donation Counsellor'}"
+                                            >EDC- Eye Donation Counsellor</option>
+                                    <option value="Treating Physician"
+                                            selected="{!v.newRef.Relationship_of_caller_to_donor__c == 'Treating Physician'}"
+                                            >Treating Physician</option>
+                                    <option value="Parent"
+                                            selected="{!v.newRef.Relationship_of_caller_to_donor__c == 'Parent'}"
+                                            >Parent</option>
+                                    <option value="Spouse"
+                                            selected="{!v.newRef.Relationship_of_caller_to_donor__c == 'Spouse'}"
+                                            >Spouse</option>
+                                    <option value="Child"
+                                            selected="{!v.newRef.Relationship_of_caller_to_donor__c == 'Child'}"
+                                            >Child</option>
+                                    <option value="Sibling"
+                                            selected="{!v.newRef.Relationship_of_caller_to_donor__c == 'Sibling'}"
+                                            >Sibling</option>
+                                    <option value="Other"
+                                            selected="{!v.newRef.Relationship_of_caller_to_donor__c == 'Other'}"
+                                            >Other</option>
+                                </lightning:Select>
+                            </div>
+                            
+                            <aura:if isTrue="{!v.newRef.Relationship_of_caller_to_donor__c=='Other'}">
+                                <div class="custom-box">
+                                    <lightning:input type="string" 
+                                                     label="If Other, Specify the Relation" 
+                                                     value="{!v.newRef.If_Other_Mention_the_Relationship__c}" 
+                                                     name="Name"/>                 
+                                </div>
+                            </aura:if>
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="6" padding="around-small">
+                            <div class="custom-box">
+                                <c:customLookup  contactRole="unitOrganisation" 
+                                                objectAPIName="Account" 
+                                                IconName="standard:account" 
+                                                selectedRecord="{!v.donarcon2}" 
+                                                label="Unit/Organization/Hospital Name" 
+                                                objName="Hospital"/>
+                            </div>
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="6" padding="around-small">
+                            <div class="custom-box">
+                                <lightning:input aura:id="specialinstructions" 
+                                                 label="Special Instructions"  
+                                                 value="{!v.newRef.Special_Instructions__c}"/>             
+                            </div>
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="6" padding="around-small">
+                            <div class="custom-box">
+                                <lightning:Select  label="Unit Type"  value="{!v.newRef.Unit_Type__c}">
+                                    <option value="">--None--</option>
+                                    <option value="Mortuary"
+                                            selected="{!v.newRef.Unit_Type__c == 'Mortuary'}"
+                                            >Mortuary</option>
+                                    <option value="Trauma Center"
+                                            selected="{!v.newRef.Unit_Type__c == 'Trauma Center'}"
+                                            >Trauma Center</option>
+                                    <option value="Residence"
+                                            selected="{!v.newRef.Unit_Type__c == 'Residence'}"
+                                            >Residence</option>
+                                    <option value="Ward-Internal Medicine"
+                                            selected="{!v.newRef.Unit_Type__c == 'Ward-Internal Medicine'}"
+                                            >Ward-Internal Medicine</option>
+                                    <option value="Ward-Cardiology/CT"
+                                            selected="{!v.newRef.Unit_Type__c == 'Ward-Cardiology/CT'}"
+                                            >Ward-Cardiology/CT</option>
+                                    <option value="Ward- Neurology/Neurosurgery"
+                                            selected="{!v.newRef.Unit_Type__c == 'Ward- Neurology/Neurosurgery'}"
+                                            >Ward- Neurology/Neurosurgery</option>
+                                    <option value="Ward- Pediatrics"
+                                            selected="{!v.newRef.Unit_Type__c == 'Ward- Pediatrics'}"
+                                            >Ward- Pediatrics</option>
+                                    <option value="Casualty/Emergency"
+                                            selected="{!v.newRef.Unit_Type__c == 'Casualty/Emergency'}"
+                                            >Casualty/Emergency</option>
+                                    <option value="ICU/HDU"
+                                            selected="{!v.newRef.Unit_Type__c == 'ICU/HDU'}"
+                                            >ICU/HDU</option>
+                                    <option value="Other"
+                                            selected="{!v.newRef.Unit_Type__c == 'Other'}"
+                                            >Other</option>
+                                </lightning:Select>
+                            </div>
+                             <aura:if isTrue="{!v.newRef.Unit_Type__c=='Other'}">
+                                <div class="custom-box">
+                                    <lightning:input type="string" label="Other Unit Type" 
+                                                     value="{!v.newRef.unit_type_other__c}" name="Other"/>                 
+                                </div></aura:if>
+                        </lightning:layoutItem> 
+                        
+                        <lightning:layoutItem size="6" padding="around-small">
+                            <div class="custom-box">
+                                <lightning:input aura:id="RecoveryDirection" 
+                                                 type="string" 
+                                                 label="Recovery Direction"  
+                                                 value="{!v.newRef.Recovery_Direction__c}"/>             
+                            </div>
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="6" padding="around-small">
+                            <div class="custom-box">
+                                <lightning:input  aura:id="RecoveryAddress" 
+                                                 type="string" 
+                                                 label="Recovery Address"  
+                                                 value="{!v.newRef.Recovery_Address__c}"/>             
+                            </div>
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="6" padding="around-small">
+                            <div class="custom-box">
+                                <lightning:Select  aura:id="location" 
+                                                  label="Location of Donor" 
+                                                  value="{!v.newRef.Location_of_Donor__c}" required="false">
+                                    <option value="">--- None ---</option>
+                                    <option value="Hospital"
+                                            selected="{!v.newRef.Location_of_Donor__c == 'Hospital'}"
+                                            >Hospital</option>
+                                    <option value="Mortuary"
+                                            selected="{!v.newRef.Location_of_Donor__c == 'Mortuary'}"
+                                            >Mortuary</option>
+                                    <option value="Residence"
+                                            selected="{!v.newRef.Location_of_Donor__c == 'Residence'}"
+                                            >Residence</option>
+                                    <option value="Other"
+                                            selected="{!v.newRef.Location_of_Donor__c == 'Other'}"
+                                            >Other</option>
+                                </lightning:Select>
+                            </div>   
+                            <aura:if isTrue="{!v.newRef.Location_of_Donor__c=='Other'}">
+                                <div class="custom-box">
+                                    <lightning:input type="string" 
+                                                     label="Other Location of Donor" 
+                                                     value="{!v.newRef.Other_Location_of_Donor__c}" 
+                                                     name="Name"/>                 
+                                </div></aura:if>
+                            
+                            
+                        </lightning:layoutItem> 
+                    </lightning:layout>
+                </div>
+                
+            </div>   
+        </div>   
+    </div> 
+    
+    
+    <div class="slds-container--large slds-align_absolute-center ">
+        <div class="slds-grid slds-wrap slds-size_1-of-1">
+            
+            <div  aura:id="section2" class="slds-show slds-col slds-size_1-of-1">
+                
+                <div class="slds-page-header" style="cursor: pointer;" 
+                     onclick="{!c.sectionTwo}">
+                    <section class="slds-clearfix">
+                        <div class="slds-float--left">
+                            <lightning:icon class="slds-show" aura:id="Two" 
+                                            iconName="utility:add" 
+                                            size="x-small" 
+                                            alternativeText="Indicates add"/>
+                            <lightning:icon class="slds-hide" 
+                                            aura:id="Two" 
+                                            iconName="utility:dash" 
+                                            size="x-small" 
+                                            alternativeText="Indicates dash"/>
+                        </div>
+                        <div class="slds-m-left--large">Donor Information</div>
+                    </section>
+                </div>
+                
+                <div class="slds-hide slds-p-around--medium" aura:id="Two">
+                    
+                    <div class="c-container">
+                        <lightning:layout multipleRows="true">
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box" >
+                                    <lightning:input aura:id="FirstName" 
+                                                     type="string" 
+                                                     label="Family Name"  
+                                                     value="{!v.newRef.First_Name__c}" onblur="{!c.donorFullName}"/>   
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box" >
+                                    <lightning:input aura:id="LastName" type="string" 
+                                                     label="Given Name"  
+                                                     value="{!v.newRef.Last_Name__c}" onblur="{!c.donorFullName}"/>             
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box" >
+                                    <lightning:Select label="Gender" value="{!v.newRef.Gender__c}">
+                                        <option value="">--None--</option>
+                                        <option value="Male"
+                                                selected="{!v.newRef.Gender__c == 'Male'}"
+                                                >Male</option>
+                                        <option value="Female"
+                                                selected="{!v.newRef.Gender__c == 'Female'}"
+                                                >Female</option>
+                                        <option value="Unknown/Other"
+                                                selected="{!v.newRef.Gender__c == 'Unknown/Other'}"
+                                                >Unknown/Other</option>
+                                    </lightning:Select>                           
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box" >
+                                    <lightning:input aura:id="Age" type="string" 
+                                                     onchange="{!c.dateofbirthCalculation}" 
+                                                     required="true" label="Age of Donor" 
+                                                     name="Age"  value="{!v.newRef.Age_of_Donor__c}"/>             
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box" >
+                                    <lightning:input   aura:id="DateofBirth" 
+                                                     type="date" label="Date of Birth"  
+                                                     value="{!v.newRef.Date_of_Birth__c}"/>             
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box" >
+                                    <lightning:Select aura:id="Otherreligiousval" 
+                                                      name="Otherreligiousval" 
+                                                      label="Religion" 
+                                                      value="{!v.newRef.Religion__c}">
+                                        <option value="">--None--</option>
+                                        <option value="Hindu"
+                                                selected="{!v.newRef.Religion__c == 'Hindu'}"
+                                                >Hindu</option>
+                                        <option value="Muslim"
+                                                selected="{!v.newRef.Religion__c == 'Muslim'}"
+                                                >Muslim</option>
+                                        <option value="Christian"
+                                                selected="{!v.newRef.Religion__c == 'Christian'}"
+                                                >Christian</option>
+                                        <option value="Buddhist"
+                                                selected="{!v.newRef.Religion__c == 'Buddhist'}"
+                                                >Buddhist</option>
+                                        <option value="Jain"
+                                                selected="{!v.newRef.Religion__c == 'Jain'}"
+                                                >Jain</option>
+                                        <option value="Atheist"
+                                                selected="{!v.newRef.Religion__c == 'Atheist'}"
+                                                >Atheist</option>
+                                        <option value="Sikh"
+                                                selected="{!v.newRef.Religion__c == 'Sikh'}"
+                                                >Sikh</option>
+                                        <option value="Other"
+                                                selected="{!v.newRef.Religion__c == 'Other'}"
+                                                >Other</option>
+                                        
+                                    </lightning:Select>
+                                </div>
+                                <aura:if isTrue="{!v.newRef.Religion__c=='Other'}">
+                                    <div class="custom-box" >
+                                        <lightning:input  type="string" 
+                                                         label="If Other Specify the Religion"  
+                                                         value="{!v.newRef.If_Other_Specify_the_Religion__c}"/>             
+                                    </div>
+                                </aura:if>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box" >
+                                    <lightning:input type="Integer"  
+                                                     label="Height" 
+                                                     value="{!v.newRef.Height__c}"/>        
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box" >
+                                    <lightning:Select label="Height Unit" value="{!v.newRef.Height_Unit__c}">
+                                        <option value="">--None--</option>
+                                        <option value="cm"
+                                                selected="{!v.newRef.Height_Unit__c == 'cm'}"
+                                                >cm</option>
+                                        <option value="Foot Inches"
+                                                selected="{!v.newRef.Height_Unit__c == 'Foot Inches'}"
+                                                >Foot Inches</option>
+                                        <option value="Meters"
+                                                selected="{!v.newRef.Height_Unit__c == 'Meters'}"
+                                                >Meters</option>
+                                        
+                                    </lightning:Select>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box" >
+                                    <lightning:input type="Integer" label="Weight" 
+                                                     value="{!v.newRef.Weight__c}"/>         
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box" >
+                                    <lightning:Select label="Weight Unit" value="{!v.newRef.Weight_Unit__c}">
+                                        <option value="KG"
+                                                selected="{!v.newRef.Weight_Unit__c == 'KG'}"
+                                                >KG</option>
+                                    </lightning:Select>                           
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box" >
+                                    <lightning:Select label="Is Height Estimated or Reported?" 
+                                                      value="{!v.newRef.Is_Height_Estimated_or_Reported__c}">
+                                        <option value="">--None--</option>
+                                        <option value="Estimated"
+                                                selected="{!v.newRef.Is_Height_Estimated_or_Reported__c == 'Estimated'}"
+                                                >Estimated</option>
+                                        <option value="Reported"
+                                                selected="{!v.newRef.Is_Height_Estimated_or_Reported__c == 'Reported'}"
+                                                >Reported</option>
+                                    </lightning:Select>                            
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box" >
+                                    <lightning:Select label="Is Weight Estimated or Reported?" 
+                                                      value="{!v.newRef.Is_weight_Estimated_or_Reported__c}">
+                                        <option value="">--None--</option>
+                                        <option value="Estimated"
+                                                selected="{!v.newRef.Is_weight_Estimated_or_Reported__c == 'Estimated'}">Estimated</option>
+                                        <option value="Reported"
+                                                selected="{!v.newRef.Is_weight_Estimated_or_Reported__c == 'Reported'}"
+                                                >Reported</option>
+                                    </lightning:Select>                         
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box date-timebox" >
+                                    <lightning:input aura:id="admissiondate" type="datetime" 
+                                                     name="date" label="Date of Admission" 
+                                                     onblur = "{!c.dateValidation11}"
+                                                     value="{!v.newRef.Date_of_Admission__c}" />
+                                    <aura:if isTrue="{!v.booleanvalue1}">
+                                        <div class="slds-text-color_error slds-p-left_x-small">
+                                            Selected Date/Time Should be Less than or Equal to Death Date/Time.
+                                        </div>
+                                    </aura:if>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box" style="margin-top: 21px;" >
+                                    <lightning:input type="Integer" name="Num" 
+                                                     label="Medical Record Number" 
+                                                     value="{!v.newRef.Medical_Record_Number__c	}"/>             
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box" >
+                                    <lightning:Select aura:id="SpecEval" label="Primary Cause of Death" 
+                                                      value="{!v.newRef.Primary_Cause_of_Death__c}" 
+                                                      name="SpecEval">
+                                        <option value="">--None--</option>
+                                        <option value="Cancer"
+                                                selected="{!v.newRef.Primary_Cause_of_Death__c == 'Cancer'}"
+                                                >Cancer</option>
+                                        <option value="Heart Disease"
+                                                selected="{!v.newRef.Primary_Cause_of_Death__c == 'Heart Disease'}"
+                                                >Heart Disease</option>
+                                        <option value="Cerebral Vascular Accident"
+                                                selected="{!v.newRef.Primary_Cause_of_Death__c == 'Cerebral Vascular Accident'}"
+                                                >Cerebral Vascular Accident</option>
+                                        <option value="Respiratory Disease"
+                                                selected="{!v.newRef.Primary_Cause_of_Death__c == 'Respiratory Disease'}"
+                                                >Respiratory Disease</option>
+                                        <option value="Trauma"
+                                                selected="{!v.newRef.Primary_Cause_of_Death__c == 'Trauma'}"
+                                                >Trauma</option>
+                                        <option value="Suicide"
+                                                selected="{!v.newRef.Primary_Cause_of_Death__c == 'Suicide'}"
+                                                >Suicide</option>
+                                        <option value="Other Diseases"
+                                                selected="{!v.newRef.Primary_Cause_of_Death__c == 'Other Diseases'}"
+                                                >Other Diseases</option>
+                                        
+                                    </lightning:Select>
+                                </div>
+                                <aura:if isTrue="{!v.newRef.Primary_Cause_of_Death__c=='Other Diseases'}">
+                                    
+                                    <div class="custom-box" >
+                                        <lightning:input aura:id="providecause" type="string" 
+                                                         label="If Other, Provide Cause"  
+                                                         value="{!v.newRef.If_Other_Provide_Cause__c}"/>             
+                                    </div>
+                                </aura:if>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box" >
+                                    <lightning:input aura:id="CIRCUMSTANCES" 
+                                                     type="string" label="Circumstances Leading to Death"  
+                                                     value="{!v.newRef.Circumstances_Leading_to_Death__c}"/>             
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box" >
+                                    <lightning:input aura:id="Attending" type="string" 
+                                                     label="Attending Physician"  
+                                                     value="{!v.newRef.Attending_physician__c}"/>             
+                                </div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </div>
+                </div>
+            </div> 
+            
+            
+            
+            <div aura:id="section3" class="slds-show slds-col slds-size_1-of-1">
+                
+                <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.sectionThree}">
+                    <section class="slds-clearfix">
+                        <div class="slds-float--left">
+                            <lightning:icon class="slds-show" aura:id="Three" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                            <lightning:icon class="slds-hide" aura:id="Three" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                        </div>
+                        <div class="slds-m-left--large">Preliminary Tissue Screening</div>
+                    </section>
+                </div>
+                
+                <div class="slds-hide slds-p-around--medium" aura:id="Three">
+                    
+                    
+                    <div class="c-container">
+                        <lightning:layout multipleRows="true">
+                            <lightning:layoutItem size="12" padding="around-small">
+                                <div class="custom-box date-timebox">
+                                    <lightning:input aura:id="datettimenotification" 
+                                                     onblur="{!c.dateValidation}"  
+                                                     type="datetime" name="date" 
+                                                     required="true" 
+                                                     label="Date/Time of Death" 
+                                                     value="{!v.newRef.Date_Time_of_Death__c}"/>             
+                                    <aura:if isTrue="{!v.booleanvalue}">
+                                        <div class="slds-text-color_error slds-p-left_x-small">
+                                            Selected Date/Time Should be Less than or Equal to Consignment Date/Time.
+                                        </div>
+                                    </aura:if>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box">
+                                    <lightning:input  aura:id="Medicalandocular" 
+                                                     type="string" 
+                                                     label="Medical/Ocular History"  
+                                                     value="{!v.newRef.Medical_Ocular_Histor__c}"/>             
+                                    
+                                </div>
+                            </lightning:layoutItem>
+                            
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box">
+                                    <lightning:input  aura:id="SocialandBehavioralHistory" 
+                                                     type="string" 
+                                                     label="Social and Behavioral History"  
+                                                     value="{!v.newRef.Social_and_Behavioral_History__c}"/>             
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box">
+                                    <lightning:Select  aura:id="Venval" name="Venval"  
+                                                      label="Was the Donor on a Ventilator" 
+                                                      value="{!v.newRef.Was_the_donor_on_a_ventilator__c}">
+                                        <option value="No"
+                                                selected="{!v.newRef.Was_the_donor_on_a_ventilator__c == 'No'}"
+                                                >No</option>
+                                        <option value="Yes"
+                                                selected="{!v.newRef.Was_the_donor_on_a_ventilator__c == 'Yes'}"
+                                                >Yes</option>
+                                    </lightning:Select>
+                                    
+                                    <aura:if isTrue="{!v.newRef.Was_the_donor_on_a_ventilator__c=='Yes'}">
+                                        
+                                        <div class="custom-box">
+                                            <lightning:input aura:id="DurationoftimeonVentilatorifYes" 
+                                                             type="string" 
+                                                             label="Duration of Time on Ventilator if Yes"  
+                                                             value="{!v.newRef.Duration_of_time_on_Ventilator_if_Yes__c}"/>             
+                                        </div>
+                                    </aura:if>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box">
+                                    <lightning:Select  aura:id="Otherisolationval" 
+                                                      name="Otherisolationval" 
+                                                      label="Isolation" value="{!v.newRef.Isolation__c}">
+                                        <option value="No"
+                                                selected="{!v.newRef.Isolation__c == 'No'}"
+                                                >No</option>
+                                        <option value="Yes"
+                                                selected="{!v.newRef.Isolation__c == 'Yes'}"
+                                                >Yes</option>
+                                    </lightning:Select>
+                                    
+                                    <aura:if isTrue="{!v.newRef.Isolation__c=='Yes'}">
+                                        <div class="custom-box">
+                                            <lightning:input type="string" 
+                                                             label="If Yes, Please Specify the Isolation"  
+                                                             value="{!v.newRef.If_Yes_Please_Specify_the_Isolation__c}"/>             
+                                        </div>
+                                    </aura:if>                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box">
+                                    <lightning:Select aura:id="Fluidval" name="Fluidval" 
+                                                      label="IV Fluid Given in Last Hour" 
+                                                      value="{!v.newRef.IV_Fluid_given_in_last_hour__c}">
+                                        <option value="No"
+                                                selected="{!v.newRef.IV_Fluid_given_in_last_hour__c == 'No'}"
+                                                >No</option>
+                                        <option value="Yes"
+                                                selected="{!v.newRef.IV_Fluid_given_in_last_hour__c == 'Yes'}"
+                                                >Yes</option>
+                                        
+                                    </lightning:Select>
+                                    
+                                    <aura:if isTrue="{!v.newRef.IV_Fluid_given_in_last_hour__c=='Yes'}">
+                                        
+                                        <div class="custom-box">
+                                            <lightning:input aura:id="Howmanyivfluids" type="string" 
+                                                             label="How Many IV Fluids Given in Last Hour?"  
+                                                             value="{!v.newRef.How_many_IV_Fluids_given_in_Last_Hour__c	}"/>             
+                                        </div>
+                                        <div class="custom-box">
+                                            <lightning:input type="datetime" aura:id = "IvFluidDate" 
+                                                             name="date" label="IV Fluid Date/Time" 
+                                                             value="{!v.newRef.IV_Fluid_Date_Time__c}" /> 
+                                        </div> 
+                                        
+                                    </aura:if>                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box">
+                                    <lightning:Select  aura:id="Signval" name="Signval" 
+                                                      label="Sign/Symptoms of Systemic Infection" 
+                                                      value="{!v.newRef.Sign_symptoms_of_systemic_infection__c}">
+                                        
+                                        <option value="No"
+                                                selected="{!v.newRef.Sign_symptoms_of_systemic_infection__c == 'No'}"
+                                                >No</option>
+                                        <option value="Yes"
+                                                selected="{!v.newRef.Sign_symptoms_of_systemic_infection__c == 'Yes'}"
+                                                >Yes</option>
+                                        
+                                    </lightning:Select>
+                                    
+                                    <aura:if isTrue="{!v.newRef.Sign_symptoms_of_systemic_infection__c=='Yes'}">
+                                        
+                                        <div class="custom-box">
+                                            <lightning:input aura:id="mentionsign" type="string" 
+                                                             label="If Yes, Mention the Sign/Symptoms"  
+                                                             value="{!v.newRef.If_Yes_Mention_the_Sign_symptoms__c}"/>             
+                                        </div>
+                                        
+                                    </aura:if>                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box">
+                                    <div class="slds-form-element">
+                                        <lightning:Select  aura:id="Bloodval" name="Bloodval" 
+                                                          label="Blood Given in the Last 48 Hours" 
+                                                          value="{!v.newRef.Blood_given_in_the_last_48_hours__c}">
+                                            <option value="No"
+                                                    selected="{!v.newRef.Blood_given_in_the_last_48_hours__c == 'No'}"
+                                                    >No</option>
+                                            <option value="Yes"
+                                                    selected="{!v.newRef.Blood_given_in_the_last_48_hours__c == 'Yes'}"
+                                                    >Yes</option>
+                                        </lightning:Select>
+                                        
+                                        <aura:if isTrue="{!v.newRef.Blood_given_in_the_last_48_hours__c=='Yes'}" >
+                                            
+                                            <div class="custom-box">
+                                                <lightning:input aura:id="howmuch" type="string" 
+                                                                 label="How Much Blood Given in Last 48 Hours"  
+                                                                 value="{!v.newRef.How_much_Blood_given_in_last_48_hours__c}"/>             
+                                            </div>
+                                            <div class="custom-box">
+                                                <lightning:input type="datetime" name="date" 
+                                                                 label="Blood Given Date/Time" 
+                                                                 value="{!v.newRef.Blood_given_Date_Time__c}" />             
+                                            </div> 
+                                            
+                                        </aura:if>                   
+                                    </div>
+                                </div>
+                                
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box">
+                                    <lightning:Select  label="Initially Suitable?" 
+                                                      value="{!v.newRef.Initially_Suitable__c}">
+                                        <option value="">--None--</option>
+                                        <option value="Yes"
+                                                selected="{!v.newRef.Initially_Suitable__c == 'Yes'}"
+                                                >Yes</option>
+                                        <option value="No"
+                                                selected="{!v.newRef.Initially_Suitable__c == 'No'}"
+                                                >No</option>
+                                    </lightning:Select> 
+                                </div>
+                            </lightning:layoutItem>
+                            <!-- <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box">
+                                    <lightning:input  aura:id="Medicalandocular" type="string" label="Suitability Explanation"  value="{!v.newRef.Suitability_Explanation__c}"/>             
+                                </div>
+                            </lightning:layoutItem>-->
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box">
+                                    <lightning:Select  aura:id="Falicityval" name="Falicityval" 
+                                                      label="Transferred from Other Facility" 
+                                                      value="{!v.newRef.Transferred_from_other_facility__c}">
+                                        <option value="No"
+                                                selected="{!v.newRef.Transferred_from_other_facility__c == 'No'}"
+                                                >No</option>
+                                        <option value="Yes"
+                                                selected="{!v.newRef.Transferred_from_other_facility__c == 'Yes'}"
+                                                >Yes</option>
+                                    </lightning:Select>
+                                    
+                                    <aura:if isTrue="{!v.newRef.Transferred_from_other_facility__c=='Yes'}">
+                                        
+                                        <div class="custom-box">
+                                            <lightning:input aura:id="FacilityName" 
+                                                             type="string" label="From Where"  
+                                                             value="{!v.newRef.Facility_Name__c}"/>             
+                                        </div>
+                                        <div class="custom-box">
+                                            <lightning:input aura:id="FacilityName" type="string" 
+                                                             label="To Where"  value="{!v.newRef.To_Where__c}"/>             
+                                        </div>
+                                        
+                                    </aura:if>                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box">
+                                    <lightning:input  aura:id="Medicalandocular" type="string" 
+                                                     label="Suitability Explanation"  
+                                                     
+                                                     value="{!v.newRef.Suitability_Explanation__c}"/>             
+                                </div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </div>
+                    
+                </div>  
+            </div>
+            
+            
+            <div aura:id="section4" class="slds-show slds-col slds-size_1-of-1">
+                
+                <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.sectionFour}">
+                    <section class="slds-clearfix">
+                        <div class="slds-float--left">
+                            <lightning:icon class="slds-show" aura:id="Four" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                            <lightning:icon class="slds-hide" aura:id="Four" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                        </div>
+                        <div class="slds-m-left--large">Medico Legal Information</div>
+                    </section>
+                </div>
+                
+                <div class="slds-hide slds-p-around--medium lds-grid  slds-form slds-form_stacked slds-wrap" aura:id="Four">
+                    
+                    
+                    <!--<div class="slds-col slds-size_6-of-12">-->
+                    <div class="c-container">
+                        <lightning:layout multipleRows="true">
+                            <lightning:layoutItem size="6" padding="around-small">
+                                <div class="custom-box">
+                                    <lightning:Select aura:id="Medicoval" name="Medicoval" label="Medico-Legal Information Case"                                           
+                                                      value="{!v.newRef.Medico_Legal_Information_Case__c}">
+                                        <option value="No"
+                                                selected="{!v.newRef.Medico_Legal_Information_Case__c == 'No'}"
+                                                >No</option>
+                                        <option value="Yes"
+                                                selected="{!v.newRef.Medico_Legal_Information_Case__c == 'Yes'}"
+                                                >Yes</option>
+                                    </lightning:Select>
+                                </div>
+                            </lightning:layoutItem>
+                            <aura:if isTrue="{!v.newRef.Medico_Legal_Information_Case__c=='Yes'}">                                    
+                                <lightning:layoutItem size="6" padding="around-small">
+                                    <div class="custom-box">
+                                        <lightning:input aura:id="PoliceMedicoLegalCaseAutopsyNumber" 
+                                                         type="string" 
+                                                         
+                                                         label="Police/Medico-Legal Case/Autopsy Number"  
+                                                         value="{!v.newRef.Police_Medico_Legal_Case_Autopsy_Number__c}"/>             
+                                    </div>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="6" padding="around-small">
+                                    <div class="custom-box">
+                                        <lightning:Select  label="Permission for Donation" 
+                                                          value="{!v.newRef.Permission_for_Donation__c}">
+                                            <option value="">--None--</option>
+                                            <option value="Yes"
+                                                    selected="{!v.newRef.Permission_for_Donation__c == 'Yes'}"
+                                                    >Yes</option>
+                                            <option value="No"
+                                                    selected="{!v.newRef.Permission_for_Donation__c == 'No'}"
+                                                    >No</option>
+                                            <option value="Undecided"
+                                                    selected="{!v.newRef.Permission_for_Donation__c == 'Undecided'}"
+                                                    >Undecided</option>
+                                        </lightning:Select>                            </div>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="6" padding="around-small">
+                                    <div class="custom-box">
+                                        <lightning:input aura:id="ReleasedBy" type="string" 
+                                                         label="Released By"  
+                                                         value="{!v.newRef.Released_By__c}"/>             
+                                    </div>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="6" padding="around-small">
+                                    <div class="custom-box">
+                                        <lightning:input  type="tel" aura:id="PhoneNumberforWhoReleasedDonor" 
+                                                         pattern="[0-9]{10}" 
+                                                         
+                                                         messageWhenPatternMismatch="Please Enter a Valid Mobile Number" 
+                                                         name="Num" label="Phone Number for Who Released Donor" 
+                                                         value="{!v.newRef.Phone_Number_for_Who_Released_Donor__c}" 
+                                                         maxlength="10" />             
+                                    </div>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="6" padding="around-small">
+                                    <div class="custom-box">
+                                        <lightning:Select  aura:id="Autospyval" name="Autospyval" 
+                                                          label="Autopsy Completed" 
+                                                          value="{!v.newRef.Autopsy_Completed__c}">
+                                            <option value="">--None--</option>
+                                            <option value="Yes"
+                                                    selected="{!v.newRef.Autopsy_Completed__c == 'Yes'}"
+                                                    >Yes</option>
+                                            <option value="No"
+                                                    selected="{!v.newRef.Autopsy_Completed__c == 'No'}"
+                                                    >No</option>
+                                            <option value="Not Done"
+                                                    selected="{!v.newRef.Autopsy_Completed__c == 'Not Done'}"
+                                                    >Not Done</option>
+                                            
+                                        </lightning:Select>
+                                        
+                                        <aura:if isTrue="{!v.newRef.Autopsy_Completed__c=='Yes'}">
+                                            
+                                            <div class="slds-form-element ">
+                                                <lightning:input aura:id="IfYesWhoCompletedtheAutopsy" 
+                                                                 type="string" label="If Yes,Who Completed the Autopsy?"  
+                                                                 value="{!v.newRef.If_Yes_Who_Completed_the_Autopsy__c}"/>             
+                                            </div>
+                                        </aura:if>                            </div>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="6" padding="around-small">
+                                    <div class="custom-box">
+                                        <c:customLookup contactRole="unitOrganisation" 
+                                                        objectAPIName="Account" 
+                                                        IconName="standard:account" 
+                                                        selectedRecord="{!v.donarcon3}" 
+                                                        label="Medico-Legal Facility" 
+                                                        objName="Hospital"/>
+                                    </div>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="6" padding="around-small">
+                                    <div class="custom-box">
+                                        <lightning:input aura:id="medicolegalhosp" type="string" 
+                                                         label="Medico-Legal/Hosp.Restriction/SpecialReq"  
+                                                         value="{!v.newRef.Medico_Legal_Hosp_Restriction_SpecialReq__c}"/>             
+                                    </div>
+                                </lightning:layoutItem>
+                                
+                                
+                                
+                            </aura:if>
+                        </lightning:layout>
+                    </div> 
+                    <!--                    </div>  -->
+                    
+                </div>  
+                
+            </div>
+            
+            <div aura:id="section6" class="slds-show slds-col slds-size_1-of-1">
+                
+                <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.sectionSix}">
+                    <section class="slds-clearfix">
+                        <div class="slds-float--left">
+                            <lightning:icon class="slds-show" aura:id="Six" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                            <lightning:icon class="slds-hide" aura:id="Six" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                        </div>
+                        <div class="slds-m-left--large">Comments</div>
+                    </section>
+                </div>
+                <div class="slds-hide slds-p-around--medium" aura:id="Six">
+                    <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                        <div class="slds-col slds-size_6-of-12">    
+                            <div class="slds-form-element">
+                                <lightning:textarea aura:id="commentField" name="noteComment"
+                                                    label="Referral Comments" 
+                                                    value="{!v.newRef.Comments__c}" 
+                                                    placeholder="Enter a Comment"/>
+                                
+                            </div> </div>
+                    </div>
+                </div>
+            </div>
+            <div aura:id="section5" class="slds-show slds-col slds-size_1-of-1">
+                
+                <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.sectionFive}">
+                    <section class="slds-clearfix">
+                        <div class="slds-float--left">
+                            <lightning:icon class="slds-show" aura:id="Five" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                            <lightning:icon class="slds-hide" aura:id="Five" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                        </div>
+                        <div class="slds-m-left--large">OutCome: Decision Point in System</div>
+                    </section>
+                </div>
+                
+                <div class="slds-hide slds-p-around--medium" aura:id="Five">
+                    <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                        <div class="slds-col slds-size_6-of-12">
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="Coveroneval" name="Coveroneval" 
+                                                  label="Referral Outcome" 
+                                                  value="{!v.newRef.Referral_Outcome__c}">
+                                    <option value="New/In Progress"
+                                            selected="{!v.newRef.Referral_Outcome__c == 'New/In Progress'}"
+                                            >New/In Progress</option>
+                                    <option value="Not Screened"
+                                            selected="{!v.newRef.Referral_Outcome__c == 'Not Screened'}"
+                                            >Not Screened</option>
+                                    <option value="Screened Not Suitable"
+                                            selected="{!v.newRef.Referral_Outcome__c == 'Screened Not Suitable'}"
+                                            >Screened Not Suitable</option>
+                                    <option value="Suitable: Not Approched"
+                                            selected="{!v.newRef.Referral_Outcome__c == 'Suitable: Not Approched'}"
+                                            >Suitable: Not Approched</option>
+                                    <option value="Approached: Not Consented"
+                                            selected="{!v.newRef.Referral_Outcome__c == 'Approached: Not Consented'}"
+                                            >Approached: Not Consented</option>
+                                    <option value="Approached: Consented"
+                                            selected="{!v.newRef.Referral_Outcome__c == 'Approached: Consented'}"
+                                            >Approached: Consented</option>
+                                </lightning:Select>
+                            </div> 
+                            
+                            
+                            
+                            
+                        </div>
+                        
+                        <div class="slds-col slds-size_6-of-12">
+                            <span>
+                                <aura:if isTrue="{!v.newRef.Referral_Outcome__c=='Screened Not Suitable'}">
+                                    <div class="slds-form-element">
+                                        <lightning:Select aura:id="Otherscreenpickval" 
+                                                          name="Otherscreenpickval" 
+                                                          label="Screened:Not Suitable" 
+                                                          value="{!v.newRef.Screened_Not_Suitable__c}">
+                                            <option value="">--None--</option>
+                                            <option value="Medical Contraindication"
+                                                    selected="{!v.newRef.Screened_Not_Suitable__c == 'Medical Contraindication'}"
+                                                    >Medical Contraindication</option>
+                                            <option value="Hemodilution"
+                                                    selected="{!v.newRef.Screened_Not_Suitable__c == 'Hemodilution'}"
+                                                    >Hemodilution	</option>
+                                            <option value="Ocular History"
+                                                    selected="{!v.newRef.Screened_Not_Suitable__c == 'Ocular History'}"
+                                                    >Ocular History</option>
+                                            <option value="High Risk"
+                                                    selected="{!v.newRef.Screened_Not_Suitable__c == 'High Risk'}"
+                                                    >High Risk</option>
+                                            <option value="Trauma to Eyes"
+                                                    selected="{!v.newRef.Screened_Not_Suitable__c == 'Trauma to Eyes'}"
+                                                    >Trauma to Eyes</option>
+                                            <option value="Age Out of Range"
+                                                    selected="{!v.newRef.Screened_Not_Suitable__c == 'Age Out of Range'}"
+                                                    >Age Out of Range</option>
+                                            <option value="Deceased has no family  or Unclaimed  Body"
+                                                    selected="{!v.newRef.Screened_Not_Suitable__c == 'Deceased has no family  or Unclaimed  Body'}"
+                                                    >Deceased has no family  or Unclaimed  Body</option>
+                                            <option value="Does not meet criteria for death to preservation time"
+                                                    selected="{!v.newRef.Screened_Not_Suitable__c == 'Does not meet criteria for death to preservation time'}"
+                                                    >Does not meet criteria for death to preservation time</option>
+                                            <option value="Other"
+                                                    selected="{!v.newRef.Screened_Not_Suitable__c == 'Other'}"
+                                                    >Other</option>
+                                        </lightning:Select>
+                                    </div> 
+                                    <aura:if isTrue="{!v.newRef.Screened_Not_Suitable__c=='Other'}" >
+                                        <div class="slds-form-element ">
+                                            <lightning:input  type="string" 
+                                                             label="If Other Specify the Reason"  
+                                                             value="{!v.newRef.If_Other_Specify_the_Reason1__c}"/>             
+                                        </div>
+                                    </aura:if>
+                                    
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!v.newRef.Referral_Outcome__c=='Suitable: Not Approched'}">
+                                    
+                                    <div class="slds-form-element">
+                                        <lightning:Select aura:id="Othersuitableval" 
+                                                          name="Othersuitableval" 
+                                                          label="Suitable: Not Approached" 
+                                                          value="{!v.newRef.Suitable_Not_Approached__c}">
+                                            <option value="">--None--</option>
+                                            <option value="Family members aggravated or emotional or unapproachable"
+                                                    selected="{!v.newRef.Suitable_Not_Approached__c == 'Family members aggravated or emotional or unapproachable'}"
+                                                    >Family members aggravated or emotional or unapproachable</option>
+                                            <option value="Police doesn't allow donation"
+                                                    
+                                                    >Police doesn't allow donation</option>
+                                            <option value="Family Members not Available"
+                                                    selected="{!v.newRef.Suitable_Not_Approached__c == 'Family Members not Available'}"
+                                                    >Family Members not Available</option>
+                                            <option value="Other"
+                                                    selected="{!v.newRef.Suitable_Not_Approached__c == 'Other'}"
+                                                    >Other</option>
+                                        </lightning:Select>
+                                    </div> 
+                                    <aura:if isTrue="{!v.newRef.Suitable_Not_Approached__c=='Other'}" >
+                                        <div class="slds-form-element ">
+                                            <lightning:input  type="string" 
+                                                             label="If Other Mention the Reason for Suitable"  
+                                                             value="{!v.newRef.If_Other_Mention_the_Reason__c}"/>             
+                                        </div>
+                                    </aura:if>
+                                    
+                                </aura:if>
+                                <aura:if isTrue="{!v.newRef.Referral_Outcome__c=='Not Screened'}">
+                                    
+                                    <div class="slds-form-element">
+                                        <lightning:Select aura:id="Othernotscreenval" 
+                                                          name="Othernotscreenval" label="Not Screened" 
+                                                          value="{!v.newRef.Not_Screened__c}">
+                                            <option value="">--None--</option>
+                                            <option value="Identity of Descendent not known"
+                                                    selected="{!v.newRef.Not_Screened__c == 'Identity of Descendent not known'}"
+                                                    >Identity of Descendent not known</option>
+                                            <option value="Body Removed"
+                                                    selected="{!v.newRef.Not_Screened__c == 'Body Removed'}"
+                                                    >Body Removed</option>
+                                            <option value="Other"
+                                                    selected="{!v.newRef.Not_Screened__c == 'Other'}"
+                                                    >Other</option>
+                                        </lightning:Select>
+                                    </div> 
+                                    <aura:if isTrue="{!v.newRef.Not_Screened__c=='Other'}" >
+                                        <div class="slds-form-element ">
+                                            <lightning:input  type="string" 
+                                                             label="If Other Mention Not Screened"  
+                                                             value="{!v.newRef.If_Other_Mention_Not_Screened__c}"/>             
+                                        </div>
+                                    </aura:if>
+                                    
+                                </aura:if>
+                                <aura:if isTrue="{!v.newRef.Referral_Outcome__c=='Approached: Not Consented'}">
+                                    
+                                    <div class="slds-form-element">
+                                        <lightning:Select aura:id="Otherreasonval" 
+                                                          name="Otherreasonval" 
+                                                          label="Approached: Not  Consented" 
+                                                          value="{!v.newRef.Approached_Not_Consented__c}">
+                                            <option value="">--None--</option>
+                                            <option value="Patient wishes unknown"
+                                                    selected="{!v.newRef.Approached_Not_Consented__c == 'Patient wishes unknown'}"
+                                                    >Patient wishes unknown</option>
+                                            <option value="Disagreement among family"
+                                                    selected="{!v.newRef.Approached_Not_Consented__c == 'Disagreement among family'}"
+                                                    >Disagreement among family</option>
+                                            <option value="Wants to keep the body intact after death"
+                                                    selected="{!v.newRef.Approached_Not_Consented__c == 'Wants to keep the body intact after death'}"
+                                                    >Wants to keep the body intact after death</option>
+                                            <option value="Family demands / expectations"
+                                                    selected="{!v.newRef.Approached_Not_Consented__c == 'Family demands / expectations'}"
+                                                    >Family demands / expectations</option>
+                                            <option value="Consent recanted"
+                                                    selected="{!v.newRef.Approached_Not_Consented__c == 'Consent recanted'}"
+                                                    >Consent recanted</option>
+                                            <option value="Other reason"
+                                                    selected="{!v.newRef.Approached_Not_Consented__c == 'Other reason'}"
+                                                    >Other reason</option>
+                                        </lightning:Select>
+                                    </div> 
+                                    <aura:if isTrue="{!v.newRef.Approached_Not_Consented__c=='Other reason'}" >
+                                        <div class="slds-form-element ">
+                                            <lightning:input  type="string" label="If Other Specify about it"  
+                                                             value="{!v.newRef.If_Other_Specify_about_it__c}"/>             
+                                        </div>
+                                    </aura:if>
+                                </aura:if>                 
+                            </span>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                            
+                            <div class="slds-form-element ">
+                                <lightning:input aura:id="referralId" type="string" 
+                                                 label="Referral ID"  
+                                                 value="{!v.newRef.Name}" 
+                                                 disabled="true"/>             
+                            </div></div>
+                    </div>   
+                    
+                    
+                </div> 
+                
+                <div class="slds-grid slds-grid_align-center slds-p-bottom_large" >
+                    <div class="slds-col slds-size_1-of-6 " style="text-align:right;margin-top:20px;">
+                        <lightning:button aura:id="disablebuttonid" variant="brand" 
+                                          label="Save" onclick="{!c.createReferral}"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-6 " style="text-align:center;margin-top:20px;">
+                        <lightning:button variant="brand" label="Referral Worksheet" onclick="{!c.downloadpdf}"/> 
+                    </div></div>
+            </div></div></div>
+    
+    <div class="slds-m-around_xx-large">
+        
+        <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->   
+        <aura:if isTrue="{!v.isOpen}">
+            
+            <!--###### MODAL BOX Start######--> 
+            <section role="dialog" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- ###### MODAL BOX HEADER Start ######-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{!c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Donor Information</h2>
+                    </header>
+                    <!--###### MODAL BOX BODY Part Start######-->
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        
+                        <table id="example" class="slds-table slds-table_bordered slds-table--header-fixed" >
+                            
+                            <thead>
+                                <tr class="slds-text-title--caps">
+                                    <th scope="col">
+                                        <div class="slds-truncate slds-cell-fixed" title=""></div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate slds-cell-fixed" title=""></div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate slds-cell-fixed" title=""></div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.Getrecordinpopup}" var="re">
+                                    
+                                    
+                                    <div class="slds-truncate" title="">Death Notification : {!re.Death_Notification_Consignment_Date_Time__c	}</div>
+                                    <br/>
+                                    
+                                    <div class="slds-truncate" title=""> Date of Birth : {!re.Date_of_Birth__c}</div>
+                                    <br/>
+                                    
+                                    <div class="slds-truncate" title=""> Referal Method : {!re.Referral_Method__c}</div>
+                                    
+                                    
+                                </aura:iteration>
+                            </tbody>
+                        </table> 
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                    <!--###### MODAL BOX FOOTER Part Start ######-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                        <lightning:button variant="brand" 
+                                          label="Close"
+                                          title="Close"
+                                          onclick="{! c.likenClose }"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--###### MODAL BOX Part END Here ######-->
+            
+        </aura:if>
+    </div>
+    
+    
+    
+</aura:component>

@@ -1,0 +1,11 @@
+<aura:component controller="TissueDetailFormPrintController" implements="force:appHostable,lightning:actionOverride,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+
+   
+
+    
+
+    <lightning:quickActionAPI aura:id="quickActionAPI"/>
+
+    <lightning:button variant="brand" label="Print Label" onclick="{!c.printLabel}"/>
+
+</aura:component>

@@ -1,0 +1,2 @@
+<apex:page standardController="Contact" tabStyle="Contact"  action="{!URLFOR($Action.Contact.NewContact,null,['con4_lkid'='0016F000033QTEV'],true)}" >
+ </apex:page>

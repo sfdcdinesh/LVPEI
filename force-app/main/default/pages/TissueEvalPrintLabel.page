@@ -1,0 +1,91 @@
+<apex:page controller="TissueDetailFormPrintController" renderAs="pdf" cache="true" showheader="false" sidebar="false"  applyHtmlTag="false" docType="html-5.0" standardStylesheets="false">
+    
+  
+ <html>
+     
+<head>
+    
+<style>
+<!--@import url('https://fonts.googleapis.com/css?family=Open+Sans');   -->
+    
+    
+    @page {
+        size: 11cm 3.8cm;
+        margin:0px;
+    padding:0px;
+   
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');    
+     font-family: 'Open Sans', sans-serif;
+    font-weight:400;
+    }
+    
+    @media print {
+    body {
+    margin:0;padding:0;
+   @import url('https://fonts.googleapis.com/css?family=Open+Sans');
+    font-family: 'Open Sans', sans-serif;
+    }
+    }
+
+       
+    </style> 
+     </head> 
+ 
+    
+       
+<div class="labels" >
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td colspan="6" align="center"><span style="margin:0px;padding:0px;font-weight:bold;font-family: 'Open Sans', sans-serif;font-size:15px;">{!branch.Name}</span></td>
+    </tr>
+  <tr>
+    <td colspan="6" align="left" style="font-size:10px;text-align:center;font-family: 'Open Sans', sans-serif;"><i>{!branch.Address__c}</i> </td>
+    </tr>
+  <tr>
+    <td width="23%"  align="left" style="font-size:14px;font-family: 'Open Sans', sans-serif;padding-left:5px;"><b> Tissue ID :</b></td>
+    <td colspan="3"  align="left" style="font-size:14px;font-family: 'Open Sans', sans-serif;font-weight:bold;"><strong>{!tissue.Name}</strong></td>
+    <td width="10%"></td>
+      <td width="13%"></td>
+  </tr>
+  <tr >
+    <td align="left" width="23%" style="font-size:13px;padding-bottom:3px;font-family: 'Open Sans', sans-serif;padding-left:5px;">  Time of Death:</td>
+    <td width="30%" align="left" style="font-size:13px;padding-bottom:3px;font-family: 'Open Sans', sans-serif;font-weight:600;"><apex:outputText value="{0,date,dd/MM/yyyy HH:mm }">
+                             <apex:param value="{!tissue.Recovery__r.Referral__r.Date_Time_of_Death__c+offset}"/> 
+                            </apex:outputText></td>
+    <td colspan="4" align="left" style="font-size:12px;font-family: 'Open Sans', sans-serif;">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td colspan="2" align="left" style="font-size:13px;font-family: 'Open Sans', sans-serif;">  Age:<b>{!tissue.Recovery__r.Referral__r.Age_of_Donor__c}</b></td>
+           <td width="61%" colspan="2" align="left" style="font-size:12px;font-family: 'Open Sans', sans-serif;">  Sex:<b>{!tissue.Recovery__r.Referral__r.Gender__c}</b></td>
+           
+        </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td align="left" style="font-size:13px;padding-bottom:3px;font-family: 'Open Sans', sans-serif;padding-left:5px;" >Preservation:</td>
+    <td align="left" style="font-size:13px;padding-bottom:3px;font-family: 'Open Sans', sans-serif;" ><strong><apex:outputText value="{0,date,dd/MM/yyyy HH:mm }">
+     <apex:param value="{!tissue.Recovery__r.Cornea_Preservation_Date_Time__c+offset}"/> 
+                            </apex:outputText></strong></td>
+    <td width="14%" align="left" style="font-size:12px;font-family: 'Open Sans', sans-serif;" >Stored in:</td>
+    <td colspan="3" align="left" style="font-size:12px;font-family: 'Open Sans', sans-serif;" ><strong>{!tissue.Preservation_Medium__c}</strong></td>
+  </tr>
+  <tr>
+    <td align="left"  style="font-size:13px;font-family: 'Open Sans', sans-serif;padding-left:5px;">Expiration:</td>
+    <td align="left"  style="font-size:13px;font-family: 'Open Sans', sans-serif;"><strong><apex:outputText value="{0,date,dd/MM/yyyy HH:mm }">
+                             <apex:param value="{!tissue.Tissue_Expiry_Date__c+offset}"/> 
+                            </apex:outputText> </strong></td>
+    <td colspan="4" rowspan="2" align="left" valign="top"  style="font-size:11px;font-family: 'Open Sans', sans-serif;"><i>Tissue is intended for single patient
+application only, not to be considered
+sterile, and culturing is recommended.</i></td>
+    </tr>
+  <tr>
+    <td align="left" valign="bottom"  style="font-size:13px;font-family: 'Open Sans', sans-serif;padding-left:5px;">Tissue Type:</td>
+    <td align="left" valign="bottom" style="font-size:13px;font-family: 'Open Sans', sans-serif;"><strong>{!tissue.Tissue_Type__c}</strong></td>
+    </tr>
+</table>
+
+
+</div>
+     
+    </html>
+</apex:page>

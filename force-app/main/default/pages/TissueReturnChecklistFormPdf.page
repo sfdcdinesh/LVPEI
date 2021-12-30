@@ -1,0 +1,175 @@
+<apex:page controller="TissueReturnChecklistForm" cache="true" renderAs="PDF"  showheader="false" sidebar="false" standardStylesheets="true" applyBodyTag="true" applyHtmlTag="true">
+  <html>        
+ <head>    
+<style>
+                @page {
+                @import url('https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i');
+           
+                }    
+</style>  
+      </head>     
+  <body style="font-family: 'Lato', sans-serif;font-size:12px;font-weight:400;">      
+<div style="margin:0;padding:0;">   
+  <div style="width:100%;float:left;">
+     <div  style="text-align:left;padding-bottom:20px;width:20%;float:left;">
+         <apex:variable var="imageVar" value="{!branch.LogoName__c}"/> 
+         <apex:image alt="cloud" title="cloud" url="{!URLFOR($Resource.LVPEI_Logos, imageVar)}"/>
+        <!-- <img src="{!$Resource.RIEB_PDF}" style="width:75%;text-align:left"/> -->
+    </div>
+     <div style="width:40%;float:right;font-size:13px;">
+        <!-- <div><b>Referral# :</b> {!referral.Name} </div><br/>-->
+        {!branch.Address__c}
+        <!-- Ramayamma International Eye Bank,<br/>
+        Kallam Anji Reddy Campus,<br/>
+        L V Prasad Marg,<br/>
+        Hyderabad, 500034,<br/>
+        +91 040 30612514,<br/>
+        Telangana. -->
+    </div>     
+    </div>    
+
+ <table style="width:100%;float:left;margin-top:25px;border:1px solid #000;line-height:18px; "> 
+        <tbody>
+          <tr>
+              <th width="69%"> <h3 style="font-size:18px;margin:0px;padding:0px;line-height:0px;padding-top:10px;">Tissue Return Check List Form </h3><br/> <h4 style="font-size:15px;font-weight:normal;margin:0px;padding:0px;">{!tissueId}</h4></th>
+            </tr>  
+            <tr style="color:white;background:black;">
+                <th colspan="4" style="text-align: center;font-size:14px;" >
+                    <b>TISSUE TRACKING</b>
+                </th>
+            </tr>
+            
+           <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <th align="left" style="font-size:12px;font-weight:400;padding-left:5px;">
+                    Sent to :
+                </th>
+                <td width="31%" style="font-size:12px;font-weight:400;">
+                   {!surgeon}
+                </td>
+          </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <th align="left" style="font-size:12px;font-weight:400;padding-left:5px;">
+                    Date/Time Sent :
+                </th>
+                <td style="font-size:12px;">
+                      <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                <apex:param value="{!ETD+offset}"/>
+                            </apex:outputText>   
+                </td>
+          </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <th align="left" style="font-size:12px;font-weight:400;padding-left:5px;">
+                   Reason for Return :
+                </th>
+                <td style="font-size:12px;">
+                    {!tissuertrn.Reason_for_Return__c}
+                </td>
+          </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <th align="left" style="font-size:12px;font-weight:400;padding-left:5px;">
+                    Method of Transport to Eye Bank :
+                </th>
+                <td style="font-size:12px;">
+                    {!tissuertrn.Method_of_Transportation__c}
+                </td>
+          </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <th align="left" style="font-size:12px;font-weight:400;padding-left:5px;">
+                    Storage Conditions During Absence :
+                </th>
+                <td style="font-size:12px;">
+                    {!tissuertrn.Storage_Conditions_During_Absence__c}
+                </td>
+          </tr>
+           <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <th align="left" style="font-size:12px;font-weight:400;padding-left:5px;">
+                    Total Time Spent Out Cooling Range :
+                </th>
+                <td style="font-size:12px;">
+                   {!tissuertrn.Total_Time_Spent_Out_Cooling_Range__c}
+                </td>
+            </tr>
+            <tr style="color:white;background:black;border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;">
+                <th colspan="4" style="text-align: center;font-size:14px;">
+                    <b>TISSUE RECEIPT CHECKLIST</b>
+                </th>
+            </tr>
+            
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <th align="left" style="font-size:12px;font-weight:400;padding-left:5px;">
+                    1.Tamper Evident Seal(s) are Intact and do not Appear to have been tampered With ? :
+                </th>
+                <td style="font-size:13px;">
+                   {!tissuertrn.Tamper_Evident_Seal_Intact__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <th align="left" style="font-size:12px;font-weight:400;padding-left:5px;">
+                   2.Tissue is Cold and Appears to Have Been Refrigerated ? : 
+                </th>
+                <td style="font-size:13px;">
+                    {!tissuertrn.Tissue_Have_Been_Refrigerated__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <th align="left" style="font-size:12px;font-weight:400;padding-left:5px;">
+                    3.The Vial or Viewing Chamber is Not Broken or Damaged ? :
+                </th>
+                <td style="font-size:12px;">
+                    {!tissuertrn.Vial_or_Viewing_Chamber_Not_Broken__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <th align="left" style="font-size:12px;font-weight:400;padding-left:5px;">
+                    4.The Accompanying Paperwork Matches the Donor Number ? :
+                </th>
+                <td style="font-size:12px;">
+                    {!tissuertrn.Accompanying_Paperwork_Matches_Donor_No__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <th align="left" style="font-size:12px;font-weight:400;padding-left:5px;">
+                   5.Optisol Checked Visually for Consistency of Color ? :
+                </th>
+                <td style="font-size:12px;">
+                    {!tissuertrn.Optisol_Checked_Visually_Color__c} 
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <th align="left" style="font-size:12px;font-weight:400;padding-left:5px;">
+                   6. Date/Time Returned to Eye Bank :
+                </th>
+                <td style="font-size:12px;">
+                      <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                <apex:param value="{!tissuertrn.Date_Time_Returned__c+offset}"/>
+                            </apex:outputText>   
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <th align="left" style="font-size:12px;font-weight:400;padding-left:5px;">
+                    7.Completed By :
+                </th>
+                <td style="font-size:12px;">
+                    {!tissuertrn.Completed_By__r.Name}  
+                </td>
+            </tr>
+           
+        </tbody>
+    </table>
+      </div>
+    </body>
+    </html>
+</apex:page>

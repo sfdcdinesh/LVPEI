@@ -1,0 +1,130 @@
+<apex:page controller="ShipmentLabelPdfController" renderAs="PDF" cache="true" showheader="false" sidebar="false" applyHtmlTag="false" docType="html-5.0" standardStylesheets="false" >
+    <html>        
+        <head>                                    
+            <style>
+                @page :left {
+                margin-left: 0.5cm;
+                margin-right: 0.5cm;
+                }
+                
+                @page :right {
+                margin-left: 0.5cm;
+                margin-right: 0.5cm;
+                }    
+                 @page 
+                @import url('https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i');
+           
+                }
+            </style> 
+        </head> 
+         <body style="font-family: 'Lato', sans-serif;font-size:12px;font-weight:400;">
+        <div  style="margin:0;padding:0;">   
+            <div style="width:100%;float:left;">
+                <div  style="text-align:left;padding-bottom:20px;width:30%;float:left;">
+                    <img src="{!$Resource.RIEB_PDF}" style="width:55%;text-align:left"/>
+                </div>
+                
+                
+                <div style="width:30%;float:right;font-size:13px;float:right;">
+                    
+                    Ramayamma International Eye Bank,<br/>
+                    Kallam Anji Reddy Campus,<br/>
+                    L V Prasad Marg,<br/>
+                    Hyderabad, 500034,<br/>
+                    +91 040 68102514,<br/>
+                    Telangana.
+                </div>     
+            </div>
+    <table style="width:100%;float:left;margin-top:25px;border:1px solid black" cellpadding="5">
+                <tbody>     
+                    <tr >
+                        <th colspan="6" style="text-align: center; border-bottom:0.5px solid black;padding:10px;0px;font-size:15px;" >
+                            <b>Attention Corneal Surgeon</b>     
+                        </th>                        
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td width="22%" align="left" valign="top" style="font-size:13px;">
+                            <b> Attention : </b>
+                        </td>
+                        <td width="78%" align="left" style="font-size:13px;">
+                            <b> {!req.Requesting_Surgeon__r.Name}  </b>
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td width="22%" align="left" valign="top" style="font-size:13px;">
+                            <b> Tissue ID# : </b>
+                        </td>
+                        <td width="78%" align="left" style="font-size:13px;">
+                            <b> {!plac.Select_Tissue__r.Name} </b>
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td colspan="3" align="left" valign="top" style="font-size:13px;"><strong>Note the following (if checked):</strong></td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td width="22%" align="left" valign="top" style="font-size:13px;">
+                           <div style="border:1px solid #000;padding:10px;float:right;"></div>
+                        </td>
+                        <td style="font-size:13px;">Complete and return the recipient information form.</td>
+                    </tr>
+                     <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td width="22%" align="left" valign="top" style="font-size:13px;">
+                           <div style="border:1px solid #000;padding:10px;float:right;"></div>
+                        </td>
+                        <td colspan="2" style="font-size:13px;">Retain the adverse reaction form in the patient's chart. In the
+                          event that the<br />
+patient experiences an adverse reaction,<br />
+complete this form and return it to the Eye Bank</td>
+</tr>
+                    
+                     <tr style="border-left: 2px solid black;border-right: 2px solid black;font-size:13px;">
+                       <td colspan="3" align="left" valign="top" style="font-size:13px;">The enclosed eye tissue has been eveluated by RIEB, using international Eye Banking Standards for SightLife partners.  This tissue is
+                         delivered with no warranty as to the merchantability or fitness for a particular purpose, and recipient waives all claims it may have
+                         for breach of warranty either express or limited. The final responsibility for determining the suitability of the tissue for transplantation
+                       rests with the surgeon.</td>
+                     </tr>
+                     <tr style="border-left: 2px solid black;border-right: 2px solid black;font-size:13px;">
+                       <td colspan="3" align="left" valign="top" style="font-size:13px;">This tissue was non-reactive when tested by the Eye Bank for<strong> HIV-l/ll, Hepatitis B, Hepatitis C and Syphilis</strong>. Infectious disease testing 
+                         was performed per the NPCB Standards of Eye Banking in India. Test results are documented on the enclosed Tissue Detail Form sent 
+                       with the tissue.</td>
+                     </tr>
+                     <tr style="border-left: 2px solid black;border-right: 2px solid black;font-size:13px;">
+                       <td colspan="3" align="left" valign="top" style="font-size:13px;">No cornea transplantation to be done to any foreign nationals without getting no objection certificate (NOC) from the eye bank as per 
+                       the orders of the appropriate authority, under the Transplantation of Human Organ &amp; Tissue Act 2014.</td>
+                     </tr>
+                     <tr style="border-left: 2px solid black;border-right: 2px solid black;font-size:13px;">
+                       <td colspan="3" align="left" valign="top" style="font-size:13px;">This tissue is for <strong>single patient use only</strong>;under no circumstances should it be used for more than one patient.</td>
+                     </tr>
+                     <tr style="border-left: 2px solid black;border-right: 2px solid black;font-size:13px;">
+                       <td colspan="3" align="left" valign="top" style="font-size:13px;"><strong>The following recommendations may reduce the risk of bacterial infection:</strong></td>
+                     </tr>
+                     <tr style="border-left: 2px solid black;border-right: 2px solid black;font-size:13px;">
+                       <td colspan="3" align="left" valign="top" style="font-size:13px;">
+                       
+                       <ol>
+                       <li style="font-size:13px;padding-bottom:10px;">Each cornea is provided in a sterile tamper-proof vial. Please check for integrity of the seal and immediately report to the eye
+bank any evidence of possible tampering.</li>
+                           <li style="font-size:13px;padding-bottom:10px;">The cornea should be stored between 2-8°C, <b>DO NOT FREEZE</b>. Warm the corneal storage media to room temperature for a
+period of 1 hour prior to transplantation to maximize the effect of the antibiotic contained within it.</li>
+
+<li style="font-size:13px;padding-bottom:10px;">The medium should be a light rosy-orange color. A change from rosy-orange to yellow indicates a pH shift, possibly due to
+bacterial contamination. A color change from rosy-orange to red indicates an unacceptable pH shift. Do not use media that
+appears cloudy. Turbidity or cloudiness may be indicative of contamination. In either of these cases the tissue should not be
+used and a report made immediately to the eye bank. Acceptable color values for the media are available on request from the
+Eye Bank</li>
+
+<li style="font-size:13px;padding-bottom:10px;">RIEB does not perform pre-surgical cultures on corneas. The transplanting surgeon may want but is not required to culture the
+corneo-scleral rim in a liquid microbiologic culture media following excision or punching of the donor button. Prompt
+communication between lab and surgeon of any sign of growth can alert the surgeon to a possible infectious complication.</li>
+
+<li style="font-size:13px;padding-bottom:10px;">Perioperative subconjunctival antibiotic injections of both an aminoglycoside and a cephalosporin are used by many surgeons to
+maximize gram-positive and gram-negative coverage.</li>
+                       </ol>
+                       </td>
+                     </tr>
+                </tbody>
+            </table>
+        </div>
+        </body>
+    </html>
+</apex:page>

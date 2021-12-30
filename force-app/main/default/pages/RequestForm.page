@@ -1,0 +1,362 @@
+<apex:page controller="ShipmentLabelPdfController" renderAs="PDF" cache="true" showheader="false" sidebar="false" applyHtmlTag="false" docType="html-5.0" standardStylesheets="false" >
+    <html>        
+        <head>                                    
+            <style>
+                @page :left {
+                margin-left: 0.5cm;
+                margin-right: 0.5cm;
+                }
+                
+                @page :right {
+                margin-left: 0.5cm;
+                margin-right: 0.5cm;
+                } 
+                               @page 
+                @import url('https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i');
+           
+                }
+            </style> 
+        </head> 
+        
+        
+      <body style="font-family: 'Lato', sans-serif;font-size:12px;font-weight:400;">   
+        <div  style="margin:0;padding:0;">   
+            <div style="width:100%;float:left;">
+                <div  style="text-align:left;padding-bottom:20px;width:30%;float:left;">
+                    <img src="{!$Resource.RIEB_PDF}" style="width:55%;text-align:left"/>
+                </div>
+                
+                
+                <div style="width:30%;float:right;font-size:12px;float:right;">
+                    
+                    Ramayamma International Eye Bank,<br/>
+                    Kallam Anji Reddy Campus,<br/>
+                    L V Prasad Marg,<br/>
+                    Hyderabad, 500034,<br/>
+                    +91 040 68102514,<br/>
+                    Telangana.
+                </div>     
+            </div>
+<table style="width:100%;float:left;margin-top:25px;border:1px solid #000;padding:5px;line-height:18px;">       
+                <tbody>
+                    <tr style="border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;">
+                        <th colspan="6" style="text-align: center;font-size:15px;" >
+                            <b>Request Form</b>     
+                        </th>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td colspan="5"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td colspan="2" align="left" valign="top" style="font-size:12px;">
+                            <b>Request # :</b>&nbsp; <b>{!req.Name}</b>
+                        </td>
+                        <td colspan="2" align="left" style="font-size:12px;" >
+                            <b> Request Status :  </b>&nbsp;  <b> {!req.Request_Status__c}</b> 
+                        </td>
+                        <td width="26%" colspan="2" align="left" style="font-size:12px;" >
+                            <b> Tissue ID :</b>
+                            <b>{!plac.Select_Tissue__r.Name}  </b>  
+                        </td>
+                          </tr>
+                        </table></td>
+                    </tr>
+                    <tr style="color:white;background:black;border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;">
+                        <th colspan="6" style="text-align: center;font-size:14px;">
+                            <b>SURGEON</b>
+                        </th>
+                    </tr>
+                    
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                     <td colspan="5"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                       
+<tr>
+<td width="21%" align="left" style="font-size:12px;">
+                            Date-Time of Request :
+                        </td>
+                        <td width="31%" style="font-size:12px;">
+                            <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                <apex:param value="{!req.Request_Date_time__c+offset}"/>
+                            </apex:outputText>
+                        </td>
+                        <td width="20%" align="left" style="font-size:12px;">
+                            Intended Outcome :
+                        </td>
+                        <td width="28%" colspan="3" align="left" style="font-size:12px;">
+                            {!req.Intended_Outcome__c}
+                        </td>
+                    </tr>
+                    
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            Surgery Date-Time :
+                        </td>
+                        <td style="font-size:13px;">
+                            <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                <apex:param value="{!req.Surgery_Date_Time__c+offset}"/>
+                            </apex:outputText>  
+                        </td>
+                        <td align="left" style="font-size:12px;">
+                            Tissue Type Requested :
+                        </td>
+                        <td align="left" style="font-size:12px;" colspan="3">
+                           {!req.Tissue_Type__c} 
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            Surgeon :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.Requesting_Surgeon__r.Name}
+                        </td>
+                        <td align="left" style="font-size:12px;">
+                            Surgery/Usage Type:
+                        </td>
+                        <td align="left" style="font-size:12px;" colspan="3">
+                            {!req.Surgery__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            Surgery Location :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.Surgery_Location__r.Name}
+                        </td>
+                        <td align="left" style="font-size:12px;">
+                            Pre-Cut Requested :
+                        </td>
+                        <td align="left" style="font-size:12px;" colspan="3">  
+                            {!req.Pre_cut_needed__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            Additional Surgery Comments :
+                        </td>
+                        <td style="font-size:12px;">
+                            {!req.Surgery_Notes__c}
+                        </td>
+                        </tr>
+                     </table></td>   
+                    </tr>
+                    <tr style="color:white;background:black;border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;">
+                        <th colspan="6" style="text-align: center;font-size:14px;">
+                            <b>RECIPIENT</b>
+                        </th>
+                    </tr>
+                    
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td width="27%" align="left" style="font-size:12px;">
+                            Given Family Name :
+                        </td>
+                        <td width="28%" style="font-size:12px;">
+                            {!req.First_Name__c} {!req.Last_Name__c}
+                        </td>
+                        <td width="22%" align="left" style="font-size:12px;">
+                            Address :
+                        </td>
+                        <td width="14%" align="left" style="font-size:12px;">
+                        {!req.Address__c}
+                        </td>
+                        <td width="9%"></td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            Phone :
+                        </td>
+                        <td style="font-size:12px;">
+                            {!req.Phone__c}
+                        </td>
+                        <td align="left" style="font-size:12px;">
+                            Email :
+                        </td>
+                        <td align="left" style="font-size:12px;">
+                            {!req.Email__c}
+                        </td>
+                        
+                        
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            DOB :
+                        </td>
+                        <td style="font-size:12px;">
+                            <apex:outputText value="{0,date,dd/MM/yyyy}">
+                                <apex:param value="{!req.DOB__c+offset}"/>
+                            </apex:outputText>
+                        </td>
+                        <td align="left" style="font-size:12px;">
+                            Age :
+                        </td>
+                        <td align="left" style="font-size:12px;">
+                            {!req.Age__c}
+                        </td>
+                        
+                        
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            Gender :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.Gender__c}
+                        </td>
+                        <td align="left" style="font-size:12px;">
+                            Patient ID :
+                        </td>
+                        <td align="left" style="font-size:13px;">
+                            {!req.Medical_Record__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            Pre-Operative Diagnosis :
+                        </td>
+                        <td style="font-size:12px;">
+                            {!req.Pre_Surgical_Diagnosis__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            If Other :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.If_Other__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            Previous Ocular Surgeries :
+                        </td>
+                        <td style="font-size:13px;">
+                            {!req.Previous_Ocular_Surgery__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            Special Concerns :
+                        </td>
+                        <td style="font-size:12px;">
+                            {!req.Other_Patient_Notes__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            Eye Involved :
+                        </td>
+                        <td style="font-size:12px;">
+                            {!req.Eye_Involved__c}
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            Occupation :
+                        </td>
+                        <td style="font-size:12px;">
+                            {!req.Occupation__c}   
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            RIEB Responsible for Follow-Up :
+                        </td>
+                        <td style="font-size:12px;">
+                            {!plac.BU_Responsible_for_Follow_Up__c}
+                        </td>
+                    </tr>
+                    
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;" colspan="4">
+                            <b> Recipient Information Follow-Up </b>
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;padding-bottom:20px;">
+                            Date Initial Info Received :
+                        </td>
+                        <td style="font-size:12px;padding-bottom:20px;">
+                            <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                <apex:param value="{!plac.Date_Initial_Info_Received__c+offset}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;" colspan="4">
+                            <b> Follow-Up Request for Recipient Information </b>
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            Date 1st Follow-Up Request Sent :
+                        </td>
+                        <td style="font-size:12px;">
+                            <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                <apex:param value="{!plac.Date_1st_Follow_Up_Request_Sent__c+offset}"/>
+                            </apex:outputText>
+                        </td>
+                        <td colspan="3" align="left" style="font-size:12px;">
+                            Date 2nd Follow-Up Request Sent :
+                            <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                <apex:param value="{!plac.Date_2nd_Follow_Up_Request_Sent__c+offset}"/>
+                            </apex:outputText>
+                        </td>
+                       
+                        
+                        
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            Date Recipient Info Completed On :
+                        </td>
+                        <td style="font-size:12px;">
+                            <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                <apex:param value="{!plac.Date_Recipient_Info_Completed_on__c+offset}"/>
+                            </apex:outputText> 
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            <b> 3-6 Month Follow-Up </b>
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            Date 3-6 Follow-Up Form Sent :
+                        </td>
+                        <td style="font-size:12px;">
+                            <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                <apex:param value="{!plac.Date_3_6_month_Follow_Up_Form_Sent__c+offset}"/>
+                            </apex:outputText> 
+                        </td>
+                        <td colspan="3" align="left" style="font-size:12px;">
+                            Date 3-6 Follow-Up Form Received :
+                            <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                <apex:param value="{!plac.Date_3_6_Month_Follow_up_Form_Received__c+offset}"/>
+                            </apex:outputText> 
+                        </td>
+                       
+                        
+                        
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            <b> Adverse Reaction </b>
+                        </td>
+                    </tr>
+                    <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                        <td align="left" style="font-size:12px;">
+                            Date Adverse Reaction Reported :
+                        </td>
+                        <td align="left" style="font-size:12px;">
+                            <apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss a}">
+                                <apex:param value="{!req.Adverse_Reaction_Report_Date_Time__c+offset}"/>
+                            </apex:outputText> 
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </body>
+    </html>
+</apex:page>

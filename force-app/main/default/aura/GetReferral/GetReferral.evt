@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" description="Event template">
+    <aura:attribute name="referral" type="Referral__c"/> 
+    <aura:attribute name="referralOutcome" type="String"/>
+    <aura:attribute name="referralName" type="String"/> 
+</aura:event>

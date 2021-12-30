@@ -1,0 +1,489 @@
+<aura:component  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+        <aura:attribute name="selectedLookUpRecord" type="sObject" default="{}"/>
+    
+    <aura:attribute name="donarcon" type="Sobject" default="{}"/>
+    <aura:attribute name="donarcon1" type="Sobject" default="false"/>
+    <aura:attribute name="donarcon2" type="Sobject" default="false"/>
+    <aura:attribute name="donarcon3" type="Sobject" default="{}"/>
+    
+    <aura:attribute name="display" type="Boolean" default="false"/>
+    <aura:attribute name="disp" type="Boolean" default="false"/>
+    <aura:attribute name="display1" type="Boolean" default="false"/>
+    <aura:attribute name="emr" type="Request__c" default="{'sobjectType': 'Request__c',
+                                                       'Name': '', 'Owner' : '', 'Request_Id__c' : '', 'Request_Type__c' : '', 'Tissue_Type__c' : '', 'Tissue_Sub_Type__c' : '', 'Intended_Outcome__c' : '', 'Request_Status__c' : '', 'Request_Source__c' : '', 
+                                                       'Request_Date_time__c' : '', 'Requesting_Organization__c' : '', 'Requesting_Surgeon__c' : '', 'Surgery_Notes__c' : '', 'Surgery_Location__c' : '', 'Surgery_Date_Time__c' : '', 'Surgery__c' : '',
+                                                       'Pre_cut_needed__c' : '', '	Pre_cut_Date_Time__c' : '', 'Pre_cut_Sent_Out__c' : '', 'First_Name__c' : '', 'Last_Name__c' : '', 'DOB__c' : '', 'Age__c' : '', 'Gender__c' : '', 'Email__c' : '', 'Medical_Record__c' : '',
+                                                       'Urgency__c' : '', 'Blindness__c' : '', 'Patient_Payment_Type__c' : '', 'Pre_Surgical_Diagnosis__c' : '', 'Adverse_Reaction_Report_Date_Time__c' : '', 'Type_Of_Adverse_Reaction__c' : '', 
+                                                       'Adverse_Reaction_Case__c' : '', 'Eye_Involved__c' : '', 'Request_Date_time__c' : '' ,'Eye_Bank_Performing_Pre_cut__c' : '', 'Cut_Parameters__c' : '', 'unknown_custom_field' : '', 'Previous_Ocular_Surgery__c' : '', 
+                                                       'Other_Patient_Notes__c' : '', 'Adverse_Reaction_Reported__c' : '', 'Requesting_Organisation_Mobile_Phone__c' : '', 'Requesting_Organisation_Address__c' :  '',
+                                                       'Surgery_Location_Mobile_Phone__c' : '', 'Surgery_Location_Address__c' : ''}" />
+                                                           
+
+    
+    
+    
+    <lightning:layout class="slds-page-header slds-page-header--object-home">
+        <lightning:layoutItem>
+            <lightning:icon alternativeText="New Request"/>
+        </lightning:layoutItem>
+       
+        <lightning:layoutItem padding="horizontal-small">
+            <div class="page-section page-header">
+                <h1 class="slds-text-heading--label">REQUEST:INFORMATION</h1>
+                <h3 class="slds-text-heading--large">New Request</h3>
+            </div>
+        </lightning:layoutItem>
+    </lightning:layout>
+    
+    <div class="slds-p-around--large">
+        
+    <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.sectionOne}">
+      <section class="slds-clearfix">
+        <div class="slds-float--left ">
+            <lightning:icon class="slds-show" aura:id="articleOne" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+            <lightning:icon class="slds-hide" aura:id="articleOne" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+        </div>
+        <div class="slds-m-left--large">Request</div>
+      </section>
+    </div>
+        
+  <div class="slds-hide slds-p-around--medium" aura:id="articleOne">      
+      <lightning:layout>
+      <div class="slds-grid">
+                    <div class="slds-col slds-p-horizontal_medium">
+                        <span>
+                            <div class="slds-form--stacked slds-p-around--medium slds---x-large">
+     <!--
+      <div class="slds-form-element ">
+            <lightning:input  type="string" label="Name" name="Name" value="{!v.emr.Name}"/>             
+      </div>
+      -->    
+      <div class="slds-form-element ">
+            <lightning:input aura:id="Rid" type="string" label="Request ID" name="RequestID" value="{!v.emr.Request_Id__c}"/>             
+      </div>
+
+      <div class="slds-form-element">
+         <lightning:Select aura:id="reqtype" name="RequestType" label="Request Type" value="{!v.emr.Request_Type__c}">
+           <option value=""></option>
+           <option value="Transplant">Transplant</option>
+           <option value="Research">Research</option>
+           <option value="Training">Training</option>
+         </lightning:Select>
+      </div>     
+                                
+      <div class="slds-form-element">
+         <lightning:Select aura:id="tistp" onchange="{!c.OnTissueType}" name="TissueType" label="Tissue Type" value="{!v.emr.Tissue_Type__c}">
+           <option value=""></option>
+           <option value="Cornea">Cornea</option>
+           <option value="Sclera">Sclera</option>
+         </lightning:Select>
+      </div>    
+           
+      <aura:if isTrue="{!v.display1}">
+      <div class="slds-form-element">
+         <lightning:Select aura:id="tst" name="Tissue Sub-Type" label="Tissue Sub-Type" value="{!v.emr.Tissue_Sub_Type__c}">
+           <option value=""></option>
+           <option value="Whole">Whole</option>
+           <option value="Half">Half</option>
+           <option value="Quarter">Quarter</option>
+         </lightning:Select>
+      </div>                               
+      </aura:if>   
+                            </div>
+                        </span>
+                  </div>
+          </div>
+          
+           <div class="slds-grid">
+                    <div class="slds-col slds-p-horizontal_large">
+                        <span>
+                            <div class="slds-form--stacked slds-p-around--medium slds---x-large"> 
+                                
+       
+      <div class="slds-form-element ">
+            <lightning:input aura:id="own" readonly="true" type="string" label="Owner" name="Owner" value="{!v.emr.Owner}"/>             
+      </div>
+                               
+      <div class="slds-form-element">
+         <lightning:Select aura:id="io" name="Intended Outcome" label="Intended Outcome" value="{!v.emr.Intended_Outcome__c}">
+           <option value=""></option>
+           <option value="Transplant">Transplant</option>
+           <option value="Research">Research</option>
+           <option value="Training">Training</option>
+         </lightning:Select>
+      </div> 
+      
+      <div class="slds-form-element">
+         <lightning:Select aura:id="reqs" name="Request Status" label="Request Status" value="{!v.emr.Request_Status__c}">
+           
+           <option value="New/In Progress">New/In Progress</option>
+           <option value="Fulfilled">Fulfilled</option>           
+         </lightning:Select>
+      </div> 
+                                
+                                
+                            </div>
+                        </span>
+               </div>
+          </div>
+      </lightning:layout>
+       </div>         
+    </div>
+    
+   <div class="slds-p-around--large">
+   
+    <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.sectionTwo}">
+      <section class="slds-clearfix">
+        <div class="slds-float--left">
+            <lightning:icon class="slds-show" aura:id="articleTwo" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+            <lightning:icon class="slds-hide" aura:id="articleTwo" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+        </div>
+        <div class="slds-m-left--large">Surgery Information</div>
+      </section>
+    </div>
+    
+  <div class="slds-hide slds-p-around--medium" aura:id="articleTwo">
+        <lightning:layout>
+             <div class="slds-grid">
+                            <div class="slds-col slds-p-horizontal_medium">
+                                <span>
+                                    <div class="slds-form--stacked slds-p-around--medium slds---x-large">
+                                    
+      <div class="slds-form-element">
+         <lightning:Select aura:id="reqso" name="Request Source" label="Request Source" value="{!v.emr.Request_Source__c}">
+           <option value=""></option>
+           <option value="Requested">Requested</option>
+           <option value="Offered">Offered</option>
+         </lightning:Select>
+      </div> 
+          
+      <div class="slds-form-element ">
+          <lightning:input type="datetime" name="RequestDateTime" value="{!v.emr.Request_Date_time__c}" label="Request Date/Time" required="true" />             
+      </div>
+                                        
+      <div class="slds-form-element" style="width:55%">   
+      <c:customLookup aura:id="recorg"  objectAPIName="Contact"  selectedRecord="{!v.donarcon}" IconName="standard:contact" label="Requesting Organization"/><br/>
+      </div>
+       
+
+
+                                        
+      <div class="slds-form-element" style="width:55%">
+      <c:customLookup aura:id="recsur" objectAPIName="Contact" selectedRecord="{!v.donarcon1}" IconName="standard:contact"  label="Requesting Surgeon"/><br/>
+      </div>
+                                        
+                                                
+  <aura:if isTrue="{!v.donarcon1}">
+      <div class="slds-form-element ">
+            <lightning:input  auraid:id="reqadd" type="string"  label="Address" name="Address" value="{!v.emr.Requesting_Organisation_Address__c}"/>             
+      </div>
+     
+      <div class="slds-form-element ">
+            <lightning:input aura:id="reqph1" type="integer" label="Mobile Phone" name="Phone" value="{!v.emr.Requesting_Organisation_Mobile_Phone__c}"/>             
+      </div>
+  </aura:if>    
+                                        
+      <div class="slds-form-element ">
+            <lightning:input aura:id="surnote" type="string" label="Surgery Notes" name="Surgery Notes" value="{!v.emr.Surgery_Notes__c}"/>             
+      </div>
+                                      
+                                                          
+                                    </div>
+                                </span>
+                 </div>
+            </div>
+             <div class="slds-grid">
+                    <div class="slds-col slds-p-horizontal_large">
+                        <span>
+                            <div class="slds-form--stacked slds-p-around--medium slds---x-large"> 
+                               
+              <div class="slds-form-element" style="width:55%">
+                   <c:customLookup aura:id="sdl" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.donarcon2}" label="Surgery Location"/><br/>
+              </div>
+              
+              <aura:if isTrue="{!v.donarcon2}">
+              <div class="slds-form-element ">
+                  <lightning:input aura:id="suradd" type="string" label="Address" name="Address" value="{!v.emr.Surgery_Location_Address__c}"/>             
+              </div>
+
+              <div class="slds-form-element ">
+                  <lightning:input aura:id="surph" type="integer" label="Mobile Phone" name="Phone" value="{!v.emr.Surgery_Location_Mobile_Phone__c}"/>             
+              </div>
+              </aura:if>
+ 
+              <div class="slds-form-element ">
+                  <lightning:input type="datetime" name="SurgeryDateTime" value="{!v.emr.Surgery_Date_Time__c}" label="Surgery Date/Time" />             
+              </div>      
+                                        
+              <div class="slds-form-element">
+                 <lightning:Select aura:id="surgy" onchange="{!c.OnPick}" name="Surgery" label="Surgery" value="{!v.emr.Surgery__c}">
+                   <option value=""></option>
+                   <option value="PK">PK</option>
+                   <option value="EK">EK</option>
+                   <option value="ALK">ALK</option>
+                   <option value="KLA">KLA</option>
+                   <option value="K-pro">K-pro</option>
+                  </lightning:Select>
+              </div>    
+                                
+             <aura:if isTrue="{!v.disp}">
+              <div class="slds-form-element">
+                 <lightning:Select aura:id="surgy" name="Surgery Sub-Type:EK" label="Surgery Sub-Type:EK" value="{!v.emr.Surgery_Sub_Type_EK__c}">
+                   <option value=""></option>
+                   <option value="PK">DSEK</option>
+                   <option value="EK">DSAEK</option>
+                   <option value="ALK">DMEK</option>
+                   <option value="ALK">DMAEK</option>
+                  </lightning:Select>
+              </div>                      
+             </aura:if>           
+                             </div>
+                        </span>
+                 </div>
+            </div>
+        </lightning:layout>
+  </div>
+       
+       <div class="slds-p-around--large">
+           
+    <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.sectionThree}">
+      <section class="slds-clearfix">
+        <div class="slds-float--left">
+            <lightning:icon class="slds-show" aura:id="articleThree" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+            <lightning:icon class="slds-hide" aura:id="articleThree" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+        </div>
+        <div class="slds-m-left--large">Pre Cut-Request</div>
+      </section>
+    </div>
+           
+       <div class="slds-hide slds-p-around--medium" aura:id="articleThree">
+        <lightning:layout>
+             <div class="slds-grid">
+                            <div class="slds-col slds-p-horizontal_medium">
+                                <span>
+                                    <div class="slds-form--stacked slds-p-around--medium slds---x-large">
+  
+                          <div class="slds-form-element">
+                             <lightning:Select aura:id="pcn" name="Precutneeded" onchange="{!c.OnSpecPick}" label="Pre-cut needed" value="{!v.emr.Pre_cut_needed__c}">
+                               <option value="No">No</option>
+                               <option value="DSAEK">DSAEK</option>
+                             </lightning:Select>
+                          </div>
+                                        
+                                        
+                          <aura:if isTrue="{!v.display}">  
+                              
+                          <div class="slds-form-element" style="width:55%">
+                            <c:customLookup aura:id="ebppc" objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.donarcon3}" label="Eye Bank Performing Pre-Cut"/><br/>
+                          </div>
+            
+                          <div class="slds-form-element ">
+                             <lightning:input aura:id="suradd" type="string" label="Cut Parameters" name="Cut Parameters" value="{!v.emr.Cut_Parameters__c}"/>             
+                          </div>                              
+                          
+                          <div class="slds-form-element ">
+                             <lightning:input aura:id="suradd" type="string" label="Notes/Comments" name="Notes/Comments" value="{!v.emr.unknown_custom_field}"/>             
+                          </div>
+                                        </aura:if>
+                                    </div>
+                                </span>
+                             </div>
+                       </div>
+            
+            <aura:if isTrue="{!v.display}">
+            <div class="slds-grid">
+                    <div class="slds-col slds-p-horizontal_large">
+                        <span>
+                            <div class="slds-form--stacked slds-p-around--medium slds---x-large"> 
+                                
+              <div class="slds-form-element ">
+                  <lightning:input type="datetime" name="PrecutDateTime" label="Pre-cut Date/Time" value="{!v.emr.Pre_cut_Date_Time__c}" />             
+              </div>
+                                
+              <div class="slds-form-element">
+                 <lightning:Select aura:id="pcso" name="PrecutSentOut" label="Pre-cut Sent Out" value="{!v.emr.Pre_cut_Sent_Out__c}">
+                   <option value=""></option>
+                   <option value="No">No</option>
+                   <option value="Yes">Yes</option>
+                 </lightning:Select>
+              </div>
+                                        
+                                
+                            </div>
+                        </span>
+                </div>
+            </div>    
+            </aura:if>
+           </lightning:layout>
+           </div>
+       </div>
+       
+       
+              <div class="slds-p-around--large">
+           
+                <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.sectionFour}">
+                  <section class="slds-clearfix">
+                    <div class="slds-float--left">
+                        <lightning:icon class="slds-show" aura:id="articleFour" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                        <lightning:icon class="slds-hide" aura:id="articleFour" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                    </div>
+                    <div class="slds-m-left--large">Patient Information</div>
+                  </section>
+                </div>
+                       
+       <div class="slds-hide slds-p-around--medium" aura:id="articleFour">
+        <lightning:layout>
+             <div class="slds-grid">
+                            <div class="slds-col slds-p-horizontal_medium">
+                                <span>
+                                    <div class="slds-form--stacked slds-p-around--medium slds---x-large">
+  
+                              <div class="slds-form-element ">
+                                    <lightning:input aura:id="fn" type="string" label="First Name" name="FirstName" value="{!v.emr.First_Name__c}"/>             
+                              </div>
+                                        
+                              <div class="slds-form-element ">
+                                    <lightning:input aura:id="ln" type="string" label="Last Name" name="LastName" value="{!v.emr.Last_Name__c}"/>             
+                              </div>
+                                                            
+                              <div class="slds-form-element ">
+                                      <lightning:input type="date" name="DOB" label="DOB" value="{!v.emr.DOB__c}" />             
+                              </div> 
+                 
+                              <div class="slds-form-element ">
+                                    <lightning:input aura:id="age" type="integer" label="Age" name="Age" value="{!v.emr.Age__c}"/>             
+                              </div>
+                                        
+                              <div class="slds-form-element">
+                                 <lightning:Select aura:id="urg" name="Gender" label="Gender" value="{!v.emr.Gender__c}">
+                                   <option value=""></option>
+                                   <option value="Male">Male</option>
+                                   <option value="Female">Female</option>
+                                   <option value="Other">Other</option>
+                                 </lightning:Select>
+                              </div>
+           
+                              <div class="slds-form-element ">
+                                    <lightning:input aura:id="add1" type="string" label="Address" name="Address" value="{!v.emr.Address}"/>             
+                              </div>
+                                        
+                              <div class="slds-form-element ">
+                                    <lightning:input aura:id="phn" type="integer" label="Phone" name="Phone" value="{!v.emr.Phone}"/>             
+                              </div>
+                                        
+                              <div class="slds-form-element ">
+                                    <lightning:input aura:id="eml" type="string" label="Email" name="Email" value="{!v.emr.Email__c}"/>             
+                              </div>
+             
+                              <div class="slds-form-element ">
+                                    <lightning:input aura:id="mr" type="string" label="Medical Record #" name="medicalrec" value="{!v.emr.Medical_Record__c}"/>             
+                              </div>
+                                        
+              <div class="slds-form-element">
+                 <lightning:Select aura:id="urg" name="Urgency" label="Urgency" value="{!v.emr.Urgency__c}">
+                   <option value=""></option>
+                   <option value="Emergency">Emergency</option>
+                   <option value="Routine">Routine</option>
+                 </lightning:Select>
+              </div>
+                                        
+              <div class="slds-form-element">
+                 <lightning:Select aura:id="ei" name="EyeInvolved" label="Eye Involved" value="{!v.emr.Eye_Involved__c}">
+                   <option value=""></option>
+                   <option value="OD">OD</option>
+                   <option value="OS">OS</option>
+                 </lightning:Select>
+              </div>
+                                        
+              
+                                    </div>
+                        </span>
+                </div>
+            </div>   
+            
+             <div class="slds-grid">
+                    <div class="slds-col slds-p-horizontal_large">
+                        <span>
+                            <div class="slds-form--stacked slds-p-around--medium slds---x-large"> 
+         
+             <div class="slds-form-element">
+                 <lightning:Select aura:id="bls" name="Blindness" label="Blindness" value="{!v.emr.Blindness__c}">
+                   <option value=""></option>
+                   <option value="Bilateral">Bilateral</option>
+                   <option value="Unilateral">Unilateral</option>
+                 </lightning:Select>
+              </div>
+                                
+              <div class="slds-form-element">
+                 <lightning:Select aura:id="ppt" name="PatientPaymentType" label="Patient Payment Type" value="{!v.emr.Patient_Payment_Type__c}">
+                   <option value=""></option>
+                   <option value="Paying">Paying</option>
+                   <option value="Non-Paying">Non-Paying</option>
+                   <option value="Partial Paying">Partial Paying</option>
+                 </lightning:Select>
+              </div>
+                                
+              <div class="slds-form-element">
+                 <lightning:Select aura:id="psd" name="PreSurgicalDiagnosis" label="Pre-Surgical Diagnosis" value="{!v.emr.Pre_Surgical_Diagnosis__c}">
+                   <option value=""></option>
+                   <option value="Post cataract Surgery Edema">Post cataract Surgery Edema</option>
+                   <option value="Ectasias/Thinnings">Ectasias/Thinnings</option>
+                   <option value="Endothelial Dystrophies">Endothelial Dystrophies</option>
+                   <option value="Repeat Corneral Transplant">Repeat Corneral Transplant</option>
+                   <option value="Other Degenarations Or Dystrophies">Other Degenarations Or Dystrophies</option>
+                 </lightning:Select>
+              </div>
+              <div class="slds-form-element ">
+                           <lightning:input aura:id="pos" type="string" label="Previous Ocular Surgery" name="Previous Ocular Surgery" value="{!v.emr.Previous_Ocular_Surgery__c}"/>             
+              </div>
+              <div class="slds-form-element ">
+                           <lightning:input aura:id="opn" type="string" label="Other Patient Notes" name="Other_Patient_Notes__c" value="{!v.emr.Other_Patient_Notes__c}"/>             
+              </div>
+                                
+              <div class="slds-form-element">
+                 <lightning:Select aura:id="arc" name="Adverse Reaction Reported" label="Adverse Reaction Reported" value="{!v.emr.Adverse_Reaction_Reported__c}">
+                   
+                   <option value="NO">NO</option>
+                   <option value="YES">YES</option>
+                 </lightning:Select>
+              </div>                              
+
+                                
+              <div class="slds-form-element ">
+                  <lightning:input type="datetime" name="AdverseReactionReportDateTime" label="Adverse Reaction Report Date/Time" value="{!v.emr.Adverse_Reaction_Report_Date_Time__c}"/>             
+              </div>                              
+                         
+             <div class="slds-form-element">
+                 <lightning:Select aura:id="tar" name="TypeOfAdverseReaction" label="Type Of Adverse Reaction" value="{!v.emr.Type_Of_Adverse_Reaction__c}">
+                   <option value=""></option>
+                   <option value="Primary Graft Failure">Primary Graft Failure</option>
+                   <option value="Intraocular Infection">Intraocular Infection</option>
+                   <option value="Transmission Of Systemic Or Viral Disease">Transmission Of Systemic Or Viral Disease</option>
+                   <option value="Evidence Suggestive Of Prior Refractive">Evidence Suggestive Of Prior Refractive</option>
+                 </lightning:Select>
+              </div>
+                                
+              <div class="slds-form-element">
+                 <lightning:Select aura:id="arc" name="AdverseReactionCase" label="Adverse Reaction Case" value="{!v.emr.Adverse_Reaction_Case__c}">
+                   <option value=""></option>
+                   <option value="Probably due to donor tissue">Probably due to donor tissue</option>
+                   <option value="Probably not due to donor tissue">Probably not due to donor tissue</option>
+                 </lightning:Select>
+              </div>
+            
+                                
+                            </div>
+                        </span>
+                    </div>
+                 </div>
+
+            
+           </lightning:layout>
+           </div>
+       </div>
+       
+       
+   </div>
+    
+    <lightning:button variant="brand" label="Save" onclick="{!c.SaveERMval}" />
+</aura:component>

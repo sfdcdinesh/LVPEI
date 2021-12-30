@@ -1,0 +1,1111 @@
+<aura:component controller="RecoverySave" implements="force:appHostable,force:hasRecordId,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+   <aura:attribute name="RecordId" type="Id"/>
+    
+<!--<aura:handler name="init" value="{!this}" action="{!c.myaction}"/>-->
+    <aura:attribute name="today" type="DateTime" default=""/>
+    <aura:attribute name="display" type="Boolean" default="false"/>
+    <aura:attribute name="dis" type="Boolean" default="false"/>
+    <aura:attribute name="disp" type="Boolean" default="false"/>
+    <aura:attribute name="displ" type="Boolean" default="false"/>
+    <aura:attribute name="selLookUp" type="sObject" default="{}"/>
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <aura:attribute name="dispppy" type="Boolean" default="false"/>
+    <aura:attribute name="di" type="Boolean" default="false"/>
+    <aura:attribute name="ScleraProcessed" type="Boolean" default="false"/>
+    
+    <aura:method name="DonorMethod">
+        <aura:attribute name="Donor" type="Referral__c"/>
+    </aura:method>
+    <aura:attribute name="Donor" type="Referral__c"/>
+    <aura:attribute name="Don" type="Referral__c"/>
+    
+    <aura:attribute name="donorcon" type="Sobject" default="{}"/>
+    <aura:attribute name="donorcon1" type="Sobject" default="{}"/>
+    <aura:attribute name="donorcon2" type="Sobject" default="{}"/>
+    <aura:attribute name="donorcon3" type="Sobject" default="{}"/>
+    <aura:attribute name="donorcon4" type="Sobject" default="{}"/>
+    <aura:attribute name="donorcon5" type="Sobject" default="{}"/>
+    <aura:attribute name="donorcon6" type="Sobject" default="{}"/>
+    <aura:attribute name="donorcon7" type="Sobject" default="{}"/>
+    <aura:attribute name="donorcon8" type="Sobject" default="{}"/>
+    
+    <aura:attribute name="consult" type="Consult__c" default="{'sobjectType' : 'Consult__c', 'Name' : '',
+                                                              'Date_Time__c' : '', 'Discussion__c' : '',
+                                                              'Notes__c' : '', 'Topic_Subject_matter__c' : ''}"/>
+    <aura:attribute name="consultList" type="list"/>
+    <aura:attribute name="rec" type="Recovery__c" default="{'sobjectType': 'Recovery__c',
+                                                           'Recovery_Intent__c': '','Name': '',  'Tissue_recovery_date_time__c' : '',
+                                                           'unknown_custom_field' : '', 'unknown_custom_field' : '', 'Eyes_or_Corneas_Recovered__c' : '',
+                                                           'unknown_custom_field' : '', 'unknown_custom_field' : '', 'Recovery_Method__c' : '',
+                                                           'unknown_custom_field' : '', 'Body_Identification_Method__c' : '', 	
+                                                           'Body_Identified_By__c' : '', 'Cooling_Method__c' : '', 'Date_Time_body_removed_from_cooling__c' : '',
+                                                           'Date_Time_body_subjected_to_cooling__c' : '', 'Physical_Inspection_By__c' : '',
+                                                           'unknown_custom_field' : '', 'Recovery_completed_by__c' : '', 'Assisted_by__c' : '',
+                                                           'Cornea_Preservation_Date_Time__c' : '', 'Cornea_preserved_by__c' : '', 'Sclera_processed__c' : '',
+                                                           'Sclera_Preservation_Date_Time__c' : '', 'Sclera_Preserved_By__c' : '', 'Date_Time_of_blood_sample_collection__c' : '',
+                                                           'Pre_Post_Morterm__c' : '', 'Collected_By__c' : '', 'Recovery_outcome__c' : '', 'unknown_custom_field' : '', 'Donor_Name__c' : '',
+                                                           'Death_viewed_by__c' : '', 'Is_body_identified_by_using_ID_Tag__c' : '', 'Technician_performing_physicalAssessmen__c' : '',
+                                                           'Gross_physical_examination_findings__c' : '', 'Does_physical_examination_riveal_other__c' : '',
+                                                           'Evidence_of_sexually_transmitted_disease__c' : '', 'Lymphadenopathy__c' : '', 'White_spots_in_mouth__c' : '',
+                                                           'Needle_tracks_or_other_signs_of_IV_drug__c' : '', 'Blue_purple_or_gray_black_spots_lesions__c' : '',
+                                                           'Evidance_of_blood_loss__c' : '', 'Red_skin_lesions_non_genital__c' : '', 'Evidence_of_smallpox_vaccination_or_scab__c' : '',                                                           
+                                                           'Mucous_memberance_hemorrhages__c' : '', 'Explain_if_any_of_the_above_option_is_se__c' : '', 'Condition_of_superior_LId__c' : '',
+                                                           'Condition_of_inferior_Lid__c' : '', 'Condition_of_conjuctiva__c' : '', 'Codition_of_epithelium__c' : '', 
+                                                           'Condition_of_corneal_stroma__c' : '', 'Comments__c' : '', 'Condition_of_intraocular__c' : '', 'Iris_color__c' : '',
+                                                           'Pupil_diameter_mm__c' : '', 'Abnormalities__c' : '', 'Evidence_of_surgery__c' : '', 'unknown_custom_field' : '',
+                                                           'TLCs_performed__c' : '', 'Temperature_recorded__c' : '', 'Cultures_done__c' : '', 'Reason_if_TLC_Not_Performed__c' : '',
+                                                           'Reason_if_Cultures_not_done__c' : '', 'Reason_if_Temperature_not_Recorded__c' : '',
+                                                           'OS_Abnormalities__c' : '', 'OS_Comments__c' : '', 'OS_Condition_of_conjunctiva__c' : '', 'OS_Condition_of_corneal_stroma__c' : '',
+                                                           'OS_Condition_of_Epithelium__c' : '', 'OS_Condition_of_inferior_Lid__c' : '', 'OS_Condition_of_Intraocular__c' : '', 'OS_Condition_of_superior_LId__c' : '',
+                                                           'OS_Evidence_of_surgery__c' : '', 'OS_Iris_color__c' : '', 'unknown_custom_field' : '', 'OS_Pupil_Diameter_mm__c' : '', 'Recovery_Kit_ID_Sterialization_ID__c' : ''}" />
+    <aura:registerEvent name="GetRecoveryID" type="c:GetRecoveryID"/>
+    <!--<aura:handler name="init" action="{!c.doInit}" value="{!this}"/>-->
+    <aura:attribute name="record" type="Object" />
+    <force:recordData aura:id="forceRecordCmp" 
+                      recordId="{!v.recordId}"/>
+   
+    <div aura:id="secondPath" class="vhide">
+        <article class="slds-card">
+            
+            <div class="slds-path">
+                <div class="slds-grid slds-path__track">
+                    
+                    <div class="slds-grid slds-path__scroller-container slds-align_absolute-center" >
+                        <div class="slds-path__scroller" role="application">
+                            <div class="slds-path__scroller_inner">
+                                <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+                                    <li class="slds-path__item slds-is-complete" role="presentation">
+                                        <a aria-selected="true" class="slds-path__link" href="javascript:void(0);" id="path-2" role="option" tabindex="0">
+                                            <span class="slds-path__title">Referral</span>
+                                        </a>
+                                    </li>
+                                    <li class="slds-path__item slds-is-complete" role="presentation">
+                                        <a aria-selected="true" class="slds-path__link" href="javascript:void(0);" id="path-1" role="option" tabindex="0">
+                                            <span class="slds-path__title">Donor</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="slds-path__item slds-is-current slds-is-active" role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-3" role="option" tabindex="-1">
+                                            <span class="slds-path__title">Recovery</span>
+                                        </a>
+                                    </li>
+                                    <li class="slds-path__item slds-is-incomplete" role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-4" role="option" tabindex="-1">
+                                            <span class="slds-path__title">Medical Review</span>
+                                        </a>
+                                    </li>
+                                    <li class="slds-path__item slds-is-incomplete" role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-4" role="option" tabindex="-1">
+                                            <span class="slds-path__title">Request</span>
+                                        </a>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </article>
+    </div>
+    
+    
+ 
+
+ 
+    <div class="slds-container--large slds-align_absolute-center slds-wrap slds-m-bottom_medium" style="margin-top:1rem;">
+        
+        <div class="slds-col slds-size_1-of-1">
+            
+          
+            
+            <div class="slds-show slds-p-around--medium" aura:id="Zero" style="background:#f3f3f2;color:#000;
+    box-shadow:0px 0px 1px 0px  rgba(0, 0, 0, 0.10);">
+                <div class="slds-grid slds-gutters slds-form slds-form_stacked ">
+                    <div class="slds-col slds-size_4-of-12" style="border-right: 1px solid #ccc;">
+                        
+                        <div class="slds-m-bottom_x-small">
+                        <span > Cooling Method</span><span style="color:#ff0000;font-weight:bold;">*</span> :  <ui:outputText value="{!v.rec.Cooling_Method__c}"/>
+                        </div>
+                        <div class="slds-m-bottom_x-small">
+                            <span >Date/Time Body Subjected :</span>   <ui:outputText value="{!v.rec.Date_Time_body_subjected_to_cooling__c}"/>
+                        </div>
+                        <div class="slds-m-bottom_x-small">
+                            <span >  Date/Time Body Removed : </span>   <ui:outputText value="{!v.rec.Date_Time_body_removed_from_cooling__c}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_4-of-12" style="border-right: 1px solid #ccc;">
+                        <div class="slds-m-bottom_x-small">
+                            <span > Recovery Outcome : </span>   <ui:outputText value="{!v.rec.Recovery_outcome__c}"/>
+                        </div>
+                        <div class="slds-m-bottom_x-small">
+                            <span >Created On : </span>  <ui:outputText value="{!v.rec.Recovery_outcome__c}"/>
+                        </div>
+                        <div class="slds-m-bottom_x-small">
+                            <span >Created By : </span>  <ui:outputText value="{!v.rec.Recovery_outcome__c}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_4-of-12">
+                        <div class="slds-m-bottom_x-small">
+                            <span >Owner : </span>   <ui:outputText value="{!v.rec.Recovery_outcome__c}"/>
+                        </div>
+                        <div class="slds-m-bottom_x-small">
+                            <span >Modified By : </span>  <ui:outputText value="{!v.rec.Recovery_outcome__c}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div></div>
+     
+    
+    
+    <div class="slds-container--large slds-align_absolute-center">
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-1">  
+                <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.Four}">
+                    <section class="slds-clearfix">
+                        
+                        <div class="slds-float--left ">
+                            <lightning:icon class="slds-show" aura:id="four" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                            <lightning:icon class="slds-hide" aura:id="four" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                        </div>
+                        <div class="slds-m-left--large">Outcome</div>
+                    </section>
+                </div>
+                
+                
+                <div class="slds-hide slds-p-around--medium" aura:id="four">
+                    
+                    <div class="slds-col slds-size_6-of-12">
+                        <div class="slds-form-element">
+                            <c:customLookup objectAPIName="Referral__c" IconName="standard:contact" selectedRecord="{!v.donorcon8}" label="Referral"/>
+                        </div>
+                        
+                        
+                         
+                        <div class="slds-form-element">
+      <label class="slds-form-element__label" for="select-01">Recovery Outcome</label>
+      <div class="slds-select_container">
+         <ui:inputSelect  aura:id="recoveryOutcome" class="slds-select"  change="{!c.onPicklistChange}"/>
+      </div>
+   </div>
+                    </div>
+                    
+                </div>
+            </div>  
+            
+            <div class="slds-col slds-size_1-of-1"> 
+                
+                
+                <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.First}">
+                    <section class="slds-clearfix">
+                        <div class="slds-float--left ">
+                            <lightning:icon class="slds-show" aura:id="one" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                            
+                            <lightning:icon class="slds-hide" aura:id="one" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                        </div>
+                        <div class="slds-m-left--large">Eye Recovery Information</div>
+                    </section>
+                </div>
+                
+                
+                <div class="slds-hide" aura:id="one">
+                    <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                        <div class="slds-col slds-size_6-of-12">
+                            
+                            
+                            
+                            <div class="slds-form-element">
+                                <lightning:input type="string" label="Donor ID" value="{!v.rec.Donor_Id__c}" name="donorId" disabled="true"/>                 
+                            </div>
+                            
+                            
+                            <div class="slds-form-element">
+      <label class="slds-form-element__label" for="select-01">Recovery Intent</label>
+      <div class="slds-select_container">
+         <ui:inputSelect  aura:id="recoveryIntent" class="slds-select"  change="{!c.onPicklistChange}"/>
+      </div>
+   </div>
+                            
+                            
+                            <div class="slds-form-element">
+      <label class="slds-form-element__label" for="select-01">Eyes or Corneas Recovered</label>
+      <div class="slds-select_container">
+         <ui:inputSelect  aura:id="eyesorcorneasrecovered" class="slds-select"  change="{!c.onPicklistChange}"/>
+      </div>
+   </div>
+                            
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="show" label="Location of Donor" onchange="{!c.OnSpecPick}" value="{!v.rec.unknown_custom_field}" required="false">
+                                    <option value="">--</option>
+                                    <option value="Hospital">Hospital</option>
+                                    <option value="Mortury">Mortury</option>
+                                    <option value="Residency">Residency</option>
+                                    <option value="Other">Other</option>
+                                </lightning:Select>
+                            </div>   
+                            <aura:if isTrue="{!v.display}">
+                                <div class="slds-form-element">
+                                    <lightning:input type="string" label="Other Location of Donor" value="{!v.rec.unknown_custom_field}" name="Name"/>                 
+                                </div></aura:if>
+                            
+                            <div class="slds-form-element">
+      <label class="slds-form-element__label" for="select-01">Death Verified By</label>
+      <div class="slds-select_container">
+         <ui:inputSelect  aura:id="deathverifiedby" class="slds-select"  change="{!c.onPicklistChange}"/>
+      </div>
+   </div>
+                            
+                            <div class="slds-form-element">
+      <label class="slds-form-element__label" for="select-01">Body Identification Method</label>
+      <div class="slds-select_container">
+         <ui:inputSelect  aura:id="bodyidentificationmethod" class="slds-select"  change="{!c.onPicklistChange}"/>
+      </div>
+   </div>
+                            <div class="slds-form-element" >
+                                <lightning:input type="string" label="Body Identified By" value="{!v.rec.Body_Identified_By__c}" name="IdentityBy"/>                 
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="disppp" label="Cooling Method" value="{!v.rec.Cooling_Method__c}" >
+                                    <option value="">--</option>
+                                    <option value="Not Cooled">Not Cooled</option>
+                                    <option value="Refregeration">Refregeration</option>
+                                    <option value="Ice">Ice</option>
+                                    <option value="Wet Gauze">Wet Gauze</option>
+                                </lightning:Select>
+                            </div>
+                            <aura:if isTrue="{!and(v.rec.Cooling_Method__c != 'Not Cooled' , v.rec.Cooling_Method__c != '' )}">
+                                <div class="slds-form-element">
+                                    <lightning:input type="datetime" name="date" value="{!v.rec.Date_Time_body_subjected_to_cooling__c}" label="Date/Time Body Subjected to Cooling" />  
+                                </div>
+                                <div class="slds-form-element">
+                                    <lightning:input type="datetime" name="date" value="{!v.rec.Date_Time_body_removed_from_cooling__c}" label="Date/Time Body Removed from Cooling" />
+                                </div></aura:if>
+                            <div> 
+                                <c:customLookup objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.donorcon}" label="Physical Inspection By"/>
+                            </div>
+                            <div class="slds-form-element" >
+                                <lightning:input type="string" label="Recovery Kit ID/Sterialization ID" value="{!v.rec.Recovery_Kit_ID_Sterialization_ID__c}" name="kitId"/>                 
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        
+                        <div class="slds-col slds-size_6-of-12">
+                            <div class="slds-form-element">
+                                <lightning:input type="string" label="Referral Id" value="{!v.rec.unknown_custom_field}" name="RefId" disabled="true"/>                 
+                            </div> 
+                           
+                            <div class="slds-form-element">
+      <label class="slds-form-element__label" for="select-01">Recovery Method</label>
+      <div class="slds-select_container">
+         <ui:inputSelect  aura:id="recoverymethod" class="slds-select"  change="{!c.onPicklistChange}"/>
+      </div>
+   </div>
+                            <div class="slds-form-element">
+                                <lightning:input type="datetime" name="date" value="{!v.rec.Tissue_recovery_date_time__c}" label="Tissue Recovery Date/Time" required="true"/>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="preservationMedium" name="preservationMedium" value="{!v.rec.unknown_custom_field}" label="Preservation Medium" required="true">
+                                    <option value="">--</option>
+                                    <option value="MK">MK</option>
+                                    <option value="Cornisol">Cornisol</option>
+                                    <option value="OptisolGS">OptisolGS</option>
+                                    <option value="Eusol-c">Eusol-c</option>
+                                    <option value="Life4c">Life4c</option>
+                                    <option value="100%EtOH">100%EtOH</option>
+                                    <option value="95%EtOH">95%EtOH</option>
+                                    <option value="70%EtOH">70%EtOH</option>
+                                    <option value="MoistChamber">MoistChamber</option>
+                                    <option value="Formalin">Formalin</option>
+                                    <option value="Tobramycin">Tobramycin</option>
+                                    <option value="Glycerin">Glycerin</option>
+                                    <option value="Other Antibiotic">Other Antibiotic</option>
+                                    <option value="Other Fixative">Other Fixative</option>
+                                    <option value="N/A">N/A</option>
+                                </lightning:Select>
+                            </div>
+                            
+                            <div class="slds-form-element">
+                                <lightning:input type="string" label="MediaLot#" value="{!v.rec.unknown_custom_field}" name="mediaLot"/>                 
+                            </div>
+                            
+                            <div>
+                                <c:customLookup objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.donorcon1}" recordId="{!v.rec.Recovery_completed_by__c}" label="Recovery Completed By"/>
+                            </div>
+                            <div>
+                                <c:customLookup objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.donorcon2}" label="Assisted By"/>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning:input type="datetime" name="date" value="{!v.rec.unknown_custom_field}" label="Preservation Media Expiration Date" />
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning:input type="datetime" name="date" value="{!v.rec.Tissue_recovery_date_time__c}" label="Cornea Preservation Date Time" />
+                            </div>
+                            <div>
+                                <c:customLookup objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.donorcon1}" label="Cornea Preserved By"/>
+                            </div>
+                            
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="Sclera" name="recoveryMethod" value="{!v.rec.Sclera_processed__c}" label="Sclera Processed" onchange="{!c.Sclera}">
+                                    <option value="">--</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </lightning:Select>
+                            </div> 
+                            <aura:if isTrue="{!v.ScleraProcessed}">
+                                <div class="slds-form-element">
+                                    <lightning:input type="datetime" name="date" value="{!v.rec.Sclera_Preservation_Date_Time__c}" label="Sclera Preservation Date Time" />
+                                </div>
+                                <div>
+                                    <c:customLookup objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.donorcon4}" label="Sclera Preserved By"/>
+                                </div>
+                            </aura:if>
+                        </div>
+                        
+                        
+                        
+                    </div>  
+                </div>
+                
+            </div>
+            <!--================================================================-->
+            <div class="slds-col slds-size_1-of-1"> 
+                
+                <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.sectionTwo}">
+                    <section class="slds-clearfix">
+                        <div class="slds-float--left">
+                            <lightning:icon class="slds-show" aura:id="articleTwo" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                            <lightning:icon class="slds-hide" aura:id="articleTwo" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                        </div>
+                        <div class="slds-m-left--large">Physical Assessment and Eye Assessment (FORM-C)</div>
+                    </section>
+                </div>
+                
+                <div class="slds-hide slds-p-around--medium" aura:id="articleTwo">
+                    
+                    
+                    
+                    <div class="slds-col slds-size_6-of-12">
+                        <div class="slds-form-element">
+                            <lightning:input type="string" label="Donor Name" name="donorName" value="{!v.rec.Donor_Name__c}" disabled="true"/>                 
+                        </div> </div>
+                    
+                    <div class="slds-text-align_left">
+                        
+                        <h6 class="slds-text-heading--medium"><b>DONOR MEDICAL INFORMATION</b></h6>
+                    </div>
+                    <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                        
+                        <div class="slds-col slds-size_6-of-12">
+                            <div class="slds-form-element">
+                                <lightning:input type="string" label="Death Verified By" name="deathVerifiedBy" value="{!v.rec.Death_verified_by__c}" disabled="true"/>                 
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning:input type="datetime" label="Body Subjected to Cooling Date Time" name="coolingMethod" value="{!v.rec.Date_Time_body_subjected_to_cooling__c}" disabled="true"/>                 
+                            </div>
+                            
+                        </div>
+                        <div class="slds-col slds-size_6-of-12"> 
+                            <div class="slds-form-element">
+                                <lightning:input type="string" label="Cooling Method" name="coolingMethod" value="{!v.rec.Cooling_Method__c}" disabled="true"/>                 
+                            </div>
+                            
+                            
+                            
+                            <div class="slds-form-element">
+                                <lightning:input type="datetime" label="Body Removed from Cooling DateTime" name="coolingMethod" value="{!v.rec.Date_Time_body_removed_from_cooling__c}" disabled="true"/>                 
+                            </div>
+                            
+                        </div> 
+                    </div> 
+                    <div class="slds-text-align_left">
+                        
+                        <h6 class="slds-text-heading--medium"><b>PHYSICAL ASSESSMENT</b></h6>
+                    </div>
+                    <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                        <div class="slds-col slds-size_6-of-12">
+                            
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="isBody" name="IsBody"  label="Is body identified by using ID tag ?:" value="{!v.rec.Is_body_identified_by_using_ID_Tag__c}">
+                                    <option value="">--</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </lightning:Select>
+                            </div>
+                            
+                            <div>
+                                <c:customLookup objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.donorcon5}" label="Technician performing physical assessment ?:"/>
+                            </div>
+                            
+                            <div class="slds-form-element">
+                                <lightning:input type="string" label="Gross physical examination findings ?:" name="physicalExamination" value="{!v.rec.Gross_physical_examination_findings__c}"/>                 
+                            </div>
+                            
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="isBody" name="EvidenceOf"  label="Evidence of sexually transmitted disease(eg:Genital lesions, parianal warts):" value="{!v.rec.Evidence_of_sexually_transmitted_disease__c}">
+                                    <option value="">--</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </lightning:Select>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="isBody" name="Lymphadenopathy"  label="Lymphadenopathy(i.e., Enlarged Lymph Nodes):" value="{!v.rec.Lymphadenopathy__c}">
+                                    <option value="">--</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </lightning:Select>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="isBody" name="bluepurple"  label="Blue/purple or gray/black spots/lesions:" value="{!v.rec.Blue_purple_or_gray_black_spots_lesions__c}">
+                                    <option value="">--</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </lightning:Select>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="isBody" name="doesPhysical"  label="Does physical examination riveal other evidence of HIV infection or 
+                                                                                               high-risk behaviour, such as: Jaundice/Icterus ?:" value="{!v.rec.Does_physical_examination_riveal_other__c}">
+                                    <option value="">--</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </lightning:Select>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning:textarea aura:id="commentField" name="noteComment"
+                                                    label="Explain if any of the above option is selected" value="{!v.rec.Explain_if_any_of_the_above_option_is_se__c}"/>
+                                
+                            </div>
+                            
+                        </div><!--col-6closed-->
+                        
+                        <div class="slds-col slds-size_6-of-12">     
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="isBody" name="bloodloss"  label="Evidance of blood loss?:" value="{!v.rec.Evidance_of_blood_loss__c}">
+                                    <option value="">--</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </lightning:Select>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="isBody" name="redskin"  label="Red/skin lesions(non-genital)?:" value="{!v.rec.Red_skin_lesions_non_genital__c}">
+                                    <option value="">--</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </lightning:Select>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="isBody" name="smallpox"  label="Evidence of smallpox vaccination or scab?:" value="{!v.rec.Evidence_of_smallpox_vaccination_or_scab__c}">
+                                    <option value="">--</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </lightning:Select>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="isBody" name="mucous"  label="Mucous memberance hemorrhages?:" value="{!v.rec.Mucous_memberance_hemorrhages__c}">
+                                    <option value="">--</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </lightning:Select>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="isBody" name="whitespot"  label="White spots in mouth" value="{!v.rec.White_spots_in_mouth__c}">
+                                    <option value="">Select Option</option>
+                                    
+                                </lightning:Select>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="isBody" name="NeedleTracks"  label="Needle tracks or other signs of IV drug use :" value="{!v.rec.Needle_tracks_or_other_signs_of_IV_drug__c}">
+                                    <option value="">--</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </lightning:Select>
+                            </div>
+                            
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    
+                    
+                    <div class="slds-text-align_left">
+                        
+                        <h6 class="slds-text-heading--medium"><b>EYE ASSESSMENT / PENLIGHT EXAM</b></h6>
+                    </div>
+                    <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered penlight-exam">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="slds-text-title_caps" scope="col">
+                                        <div class="slds-truncate" title="Name"></div>
+                                    </th>
+                                    <th class="slds-text-title_caps" scope="col">
+                                        <div class="slds-truncate" title="OD"><b>OD</b></div>
+                                    </th>
+                                    <th class="slds-text-title_caps" scope="col">
+                                        <div class="slds-truncate" title="OS"><b>OS</b></div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="slds-hint-parent">
+                                    <th data-label="Opportunity Name" scope="row">
+                                        <div class="slds-truncate" title="Cloudhub">Condition of Superior ID</div>
+                                    </th>
+                                    <td data-label="supId">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost" label="" value="{!v.rec.Condition_of_superior_LId__c}">
+                                            <option value="Select Option">Select Option</option>
+                                            
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    <td data-label="supId2">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.OS_Condition_of_superior_LId__c}">
+                                            <option value="Select Option">Select Option</option>
+                                            
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    
+                                </tr>
+                                <tr class="slds-hint-parent">
+                                    <th data-label="Opportunity Name" scope="row">
+                                        <div class="slds-truncate" title="Cloudhub">Condition of Inferior Lid</div>
+                                    </th>
+                                    <td data-label="supId">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.Condition_of_inferior_Lid__c}">
+                                            <option value="Select Option">Select Option</option>
+                                            
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    <td data-label="supId2">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.OS_Condition_of_inferior_Lid__c}">
+                                            <option value="Select Option">Select Option</option>
+                                            
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    
+                                </tr>
+                                <tr class="slds-hint-parent">
+                                    <th data-label="Opportunity Name" scope="row">
+                                        <div class="slds-truncate" title="Cloudhub">Condition of Conjunctiva</div>
+                                    </th>
+                                    <td data-label="supId">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.Condition_of_conjuctiva__c}">
+                                            <option value="Select Option">Select Option</option>
+                                            
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    <td data-label="supId2">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.OS_Condition_of_conjunctiva__c}">
+                                            <option value="Select Option">Select Option</option>
+                                            
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    
+                                </tr>
+                                <tr class="slds-hint-parent">
+                                    <th data-label="Opportunity Name" scope="row">
+                                        <div class="slds-truncate" title="Cloudhub">Condition of Epithelium</div>
+                                    </th>
+                                    <td data-label="supId">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.Codition_of_epithelium__c}">
+                                            <option value="Select Option">Select Option</option>
+                                            
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    <td data-label="supId2">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.OS_Condition_of_Epithelium__c}">
+                                            <option value="Select Option">Select Option</option>
+                                            
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    
+                                </tr>
+                                <tr class="slds-hint-parent">
+                                    <th data-label="Opportunity Name" scope="row">
+                                        <div class="slds-truncate" title="Cloudhub">Condition of Corneal Stroma</div>
+                                    </th>
+                                    <td data-label="supId">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.Condition_of_corneal_stroma__c}">
+                                            <option value="Select Option">Select Option</option>
+                                            
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    <td data-label="supId2">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.OS_Condition_of_corneal_stroma__c}">
+                                            <option value="Select Option">Select Option</option>
+                                            
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    
+                                </tr>
+                                <tr class="slds-hint-parent">
+                                    <th data-label="Opportunity Name" scope="row">
+                                        <div class="slds-truncate" title="Cloudhub">Comments</div>
+                                    </th>
+                                    <td data-label="supId">
+                                        <div class="slds-form-element">
+                                            <lightning:textarea aura:id="commentField" name="noteComment"
+                                                                label="" value="{!v.rec.Comments__c}"/>
+                                            
+                                        </div>
+                                    </td>
+                                    <td data-label="supId2">
+                                        <div class="slds-form-element">
+                                            <lightning:textarea aura:id="commentField" name="noteComment"
+                                                                label="" value="{!v.rec.OS_Comments__c}"/>
+                                            
+                                        </div>
+                                    </td>
+                                    
+                                </tr>
+                                <tr class="slds-hint-parent">
+                                    <th data-label="Opportunity Name" scope="row">
+                                        <div class="slds-truncate" title="Cloudhub">Condition of Intraocular</div>
+                                    </th>
+                                    <td data-label="supId">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.Condition_of_intraocular__c}">
+                                            <option value="Select Option">Select Option</option>
+                                            
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    <td data-label="supId2">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.OS_Condition_of_Intraocular__c}">
+                                            <option value="Select Option">Select Option</option>
+                                            
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    
+                                </tr>
+                                <tr class="slds-hint-parent">
+                                    <th data-label="Opportunity Name" scope="row">
+                                        <div class="slds-truncate" title="Cloudhub">Iris Color</div>
+                                    </th>
+                                    <td data-label="supId">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.Iris_color__c}">
+                                            <option value="Select Option">Select Option</option>
+                                            
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    <td data-label="supId2">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.OS_Iris_color__c}">
+                                            <option value="Select Option">Select Option</option>
+                                            
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    
+                                </tr>
+                                <tr class="slds-hint-parent">
+                                    <th data-label="Opportunity Name" scope="row">
+                                        <div class="slds-truncate" title="Cloudhub">Pupil Diameter(mm)</div>
+                                    </th>
+                                    <td data-label="supId">
+                                        <div class="slds-form-element">
+                                            <lightning:input type="string"   name="pupil" value="{!v.rec.Pupil_diameter_mm__c}"/>                 
+                                        </div> 
+                                    </td>
+                                    <td data-label="supId2">
+                                        <div class="slds-form-element">
+                                            <lightning:input type="string"   name="pupil" value="{!v.rec.OS_Pupil_Diameter_mm__c}"/>                 
+                                        </div>
+                                    </td>
+                                    
+                                </tr>
+                                <tr class="slds-hint-parent">
+                                    <th data-label="Opportunity Name" scope="row">
+                                        <div class="slds-truncate" title="Cloudhub">Abnormalities</div>
+                                    </th>
+                                    <td data-label="supId">
+                                        <div class="slds-form-element">
+                                            <lightning:input type="string"   name="pupil" value="{!v.rec.Abnormalities__c}"/>                 
+                                        </div> 
+                                    </td>
+                                    <td data-label="supId2">
+                                        <div class="slds-form-element">
+                                            <lightning:input type="string"   name="pupil" value="{!v.rec.OS_Abnormalities__c}"/>                 
+                                        </div>
+                                    </td>
+                                    
+                                </tr>
+                                <tr class="slds-hint-parent">
+                                    <th data-label="Opportunity Name" scope="row">
+                                        <div class="slds-truncate" title="Cloudhub">Evidence of Surgery</div>
+                                    </th>
+                                    <td data-label="supId">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.Evidence_of_surgery__c}">
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    <td data-label="supId2">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.OS_Evidence_of_surgery__c}">
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    
+                                </tr>
+                                <tr class="slds-hint-parent">
+                                    <th data-label="Opportunity Name" scope="row">
+                                        <div class="slds-truncate" title="Cloudhub">Performed By</div>
+                                    </th>
+                                    <td data-label="supId">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.unknown_custom_field}">
+                                            <option value="Select Value">Select Value</option>
+                                            
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    <td data-label="supId2">
+                                        <div class="slds-truncate" title="Cloudhub"><lightning:Select aura:id="prepost" name="prepost"   label="" value="{!v.rec.unknown_custom_field}">
+                                            <option value="Select Value">Select Value</option>
+                                            
+                                            
+                                            </lightning:Select></div>
+                                    </td>
+                                    
+                                </tr>
+                            </tbody>
+                        </table> </div>
+                    <!--==============================================================-->
+                    <div class="slds-text-align_left" style="margin-top:20px;">
+                        
+                        <h6 class="slds-text-heading--medium"><b>LABORATORY INFORMATION</b></h6>
+                    </div> 
+                    <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">  
+                        <div class="slds-col slds-size_6-of-12">
+                            <div class="slds-text-align_left">
+                                <h2 class="slds-text-heading--small"><b>TLC</b></h2>
+                            </div> 
+                            
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="tlc" name="tlc" onchange="{!c.tlc}" label="TLCs Performed" value="{!v.rec.TLCs_performed__c}">
+                                    <option value="">--</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </lightning:Select>
+                            </div>
+                            <br/>
+                            <aura:if isTrue="{!v.dis}">
+                                <div class="slds-form-element">
+                                    <lightning:textarea aura:id="commentField" name="noteComment" placeholder="Reason, If TLC not Performed"
+                                                        label="" value="{!v.rec.Reason_if_TLC_Not_Performed__c}"/>
+                                    
+                                </div>
+                            </aura:if>
+                            <div class="slds-text-align_left">
+                                
+                                <h2 class="slds-text-heading--small"><b>Temperature</b></h2>
+                            </div> 
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="temp" name="temp" onchange="{!c.temp}" label="Temperature Recorded" value="{!v.rec.Temperature_recorded__c}">
+                                    <option value="">--</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </lightning:Select>
+                            </div>
+                            
+                            <aura:if isTrue="{!v.disp}">
+                                <div class="slds-form-element">
+                                    <lightning:textarea aura:id="commentField" name="noteComment" placeholder="Reason, If Temperature not Recorded"
+                                                        label="" value="{!v.rec.Reason_if_Temperature_not_Recorded__c}"/>
+                                    
+                                </div>
+                            </aura:if>
+                            <div class="slds-text-align_left">
+                                
+                                <h2 class="slds-text-heading--small"><b>Cultures</b></h2>
+                            </div> 
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="cult" name="cultures"  onchange="{!c.cult}" label="Cultured Done" value="{!v.rec.Cultures_done__c}">
+                                    <option value="">--</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </lightning:Select>
+                            </div>
+                        </div>
+                        
+                        <aura:if isTrue="{!v.displ}">
+                            <div class="slds-form-element">
+                                <lightning:textarea aura:id="commentField" name="noteComment" placeholder="Reason, If Cultures not Done"
+                                                    label="" value="{!v.rec.Reason_if_Cultures_not_done__c}"/>
+                                
+                            </div>  
+                        </aura:if>
+                        
+                    </div> </div>
+                
+            </div>
+            
+            <!--======================================================================-->
+            
+            <div class="slds-col slds-size_1-of-1"> 
+                
+                <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.Three}">
+                    <section class="slds-clearfix">
+                        <div class="slds-float--left ">
+                            <lightning:icon class="slds-show" aura:id="three" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                            <lightning:icon class="slds-hide" aura:id="three" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                        </div>
+                        <div class="slds-m-left--large">Blood Sample For Serology Test</div>
+                    </section>
+                </div>
+                
+                
+                <div class="slds-hide slds-p-around--medium" aura:id="three">
+                    
+                    <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                        
+                        
+                        <div class="slds-col slds-size_6-of-12">
+                            <div class="slds-form-element">
+                                <lightning:input type="datetime" name="date"  label="Date/Time of Blood sample collection" value="{!v.rec.Date_Time_of_blood_sample_collection__c}"/>
+                            </div>
+                            <div class="slds-form-element">
+                                <lightning:Select aura:id="prepost" name="prepost"   label="Pre/Post Morterm" value="{!v.rec.Pre_Post_Morterm__c}">
+                                    <option value="">--</option>
+                                    <option value="Pre">Pre</option>
+                                    <option value="Post">Post</option>
+                                </lightning:Select>
+                            </div>
+                            <div>
+                                <c:customLookup objectAPIName="Contact" IconName="standard:contact" selectedRecord="{!v.donorcon6}" label="Collected By"/>
+                            </div>
+                            
+                        </div> </div></div> </div>
+            <div class="slds-col slds-size_1-of-1"> 
+                
+                <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.Five}">
+                    <section class="slds-clearfix">
+                        <div class="slds-float--left ">
+                            <lightning:icon class="slds-show" aura:id="five" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                            <lightning:icon class="slds-hide" aura:id="five" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                        </div>
+                        <div class="slds-m-left--large">Consult</div>
+                    </section>
+                </div>
+                
+                
+                <div class="slds-hide slds-p-around--medium" aura:id="five">
+                    <!--<div class="slds-form-element">
+                <label class="slds-form-element__label" for="inputName"></label>
+            </div>   -->                  
+                    
+                    
+                    
+                    <!-- Button to view form-->
+                    <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap slds-float--right" >
+                        
+                        <div  style="cursor: pointer;" >
+                            <section class="slds-clearfix" style="margin-bottom:20px;">
+                                
+                                <div class="slds-float--right" onclick="{!c.consultView}" style="padding-right:10px;" >
+                                    <lightning:icon class="slds-show" aura:id="eight" value="abcd" iconName="action:share_poll" size="x-small" alternativeText="Indicates sheet"/>
+                                </div>
+                                <div class="slds-float--left " onclick="{!c.openModel}" style="padding-right:10px;">
+                                    <lightning:icon class="slds-show" aura:id="seven" iconName="action:new" size="x-small" alternativeText="Indicates new"/>
+                                </div>
+                            </section>
+                        </div>
+                        
+                        
+                        <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->   
+                        <aura:if isTrue="{!v.isOpen}">
+                            
+                            <!--###### MODAL BOX Start######--> 
+                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open" >
+                                <div class="slds-modal__container">
+                                    <!-- ###### MODAL BOX HEADER Start ######-->
+                                    <header class="slds-modal__header">
+                                        <lightning:buttonIcon iconName="utility:close"
+                                                              onclick="{! c.closeModel }"
+                                                              alternativeText="close"
+                                                              variant="bare-inverse"
+                                                              class="slds-modal__close"/>
+                                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">NEW CONSULT</h2>
+                                    </header>
+                                    <!--###### MODAL BOX BODY Part Start######-->
+                                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                        <div class="slds-form-element " >
+                                            <lightning:input aura:id="consultid" label="Person Consulted" value="{!v.consult.Name}" name="personConsulted" required="true"/> 
+                                        </div>
+                                        <div class="slds-form-element">
+                                            <lightning:input aura:id="consultid" type="datetime" value="{!v.consult.Date_Time__c}" name="date"  label="Date/Time" />  
+                                        </div>
+                                        <div class="slds-form-element " >
+                                            <lightning:input aura:id="consultid" value="{!v.consult.Topic_Subject_matter__c}" label="Topic/Subject Matter" name="Topic" /> 
+                                        </div>
+                                        <div class="slds-form-element " >
+                                            <lightning:input aura:id="consultid" value="{!v.consult.Discussion__c}" label="Discussion" name="discussion" /> 
+                                        </div>
+                                        <div class="slds-form-element " >
+                                            <lightning:input aura:id="consultid" value="{!v.consult.Notes__c}" label="Notes" name="notes2" /> 
+                                        </div>
+                                    </div>
+                                    <!--###### MODAL BOX FOOTER Part Start ######-->
+                                    <footer class="slds-modal__footer">
+                                        <lightning:button variant="brand" 
+                                                          label="Save"
+                                                          title="Save"
+                                                          onclick="{!c.savemodal}"/>
+                                        <lightning:button variant="neutral" 
+                                                          label="Cancel"
+                                                          title="Cancel"
+                                                          onclick="{!c.closeModel}"/>
+                                        
+                                    </footer>
+                                </div>
+                            </section>
+                            <div class="slds-backdrop slds-backdrop_open"></div>
+                            <!--###### MODAL BOX Part END Here ######-->
+                            
+                        </aura:if>
+                    </div>
+                    
+                    <!-- Button to View form end-->
+                    
+                    
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Person Consulted">Person Consulted</div>
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Date/Time">Date/Time</div>
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Topic">Topic/Subjecct</div>
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Topic">Discussion</div>
+                                </th>
+                                
+                            </tr>
+                        </thead> 
+                        <tbody>
+                            <aura:iteration items="{!v.consultList}" var="c">
+                                <tr>
+                                    <td>{!c.Name}</td>                        
+                                    <td>{!c.Date_Time__c}</td>                        
+                                    <td>{!c.Topic_Subject_matter__c}</td>
+                                    <td>{!c.Discussion__c}</td>
+                                    
+                                </tr>
+                            </aura:iteration>                    
+                        </tbody>
+                    </table><br/><br/>
+                    <aura:if isTrue="{!v.di}">
+                        
+                        <div class="slds-form-element" >
+                            <div class="slds-text-heading_medium">
+                                <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap slds-align_absolute-center" >                        
+                                    <div class="slds-col slds-size_6-of-12"><div style="float:left;">Consult Associated View </div><lightning:icon class="slds-show"  iconName="utility:chevrondown" size="x-small" alternativeText="Indicates new" style="float:left;" >
+                                        </lightning:icon></div>
+                                    <div class="slds-col slds-size_6-of-12">  <lightning:layout class="right-align">
+                                        <lightning:input type="search" label="Search" placeholder="Search Here..."/>
+                                        </lightning:layout> </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col">
+                                        <span><a href="javascript:void(0);" class="slds-text-link_reset"><span class="slds-text-link"><lightning:icon class="slds-show"  iconName="utility:record_create" size="x-small" style="    float: left;
+                                                                                                                                                                                                                                padding-right: 10px;"></lightning:icon>Add New Consult</span></a>
+                                        </span>
+                                    </div>
+                                    <div class="slds-col">
+                                        <span><a href="javascript:void(0);" class="slds-text-link_reset"><span class="slds-text-link"><lightning:icon class="slds-show"  iconName="utility:metrics" size="x-small" style="    float: left;
+                                                                                                                                                                                                                          padding-right: 10px;"></lightning:icon>Chart Pane</span></a>
+                                        </span>
+                                    </div>
+                                    <div class="slds-col">
+                                        <span><a href="javascript:void(0);" class="slds-text-link_reset"><span class="slds-text-link"><lightning:icon class="slds-show"  iconName="utility:right" size="x-small" style="float: left;
+                                                                                                                                                                                                                        padding-right: 10px;"></lightning:icon>Run Report</span></a>
+                                        </span>
+                                    </div>
+                                    <div class="slds-col">
+                                        <span><a href="javascript:void(0);" class="slds-text-link_reset"><span class="slds-text-link"><lightning:icon class="slds-show"  iconName="utility:offline_cached" size="x-small" style="    float: left;
+                                                                                                                                                                                                                                 padding-right: 10px;" ></lightning:icon>Export Consult</span></a>
+                                        </span>
+                                    </div>                            
+                                </div>
+                            </div><br/>
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="Person Consulted">Person Consulted</div>
+                                        </th>
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="Date/Time">Created On</div>
+                                        </th>
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <lightning:icon class="slds-show"  iconName="utility:filterList" size="x-small" alternativeText="Indicates new"/>
+                                        </th>
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <lightning:icon class="slds-show"  iconName="utility:refresh" size="x-small" alternativeText="Indicates new"/>
+                                        </th>
+                                    </tr>
+                                </thead> 
+                                <tbody>
+                                    
+                                    <tr>
+                                        
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </aura:if>
+                </div>
+            </div>
+            <!--======================================================================-->
+            <div class="slds-col slds-size_1-of-1"> 
+                
+                <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.Six}">
+                    <section class="slds-clearfix">
+                        <div class="slds-float--left ">
+                            <lightning:icon class="slds-show" aura:id="six" iconName="utility:add" size="x-small" alternativeText="Indicates add"/>
+                            <lightning:icon class="slds-hide" aura:id="six" iconName="utility:dash" size="x-small" alternativeText="Indicates dash"/>
+                        </div>
+                        <div class="slds-m-left--large">Notes and Attachments</div>
+                    </section>
+                </div>
+                
+                
+                <div class="slds-hide slds-p-around--medium" aura:id="six">
+                    <div class="slds-grid slds-gutters slds-form slds-form_stacked slds-wrap">
+                        <div class="slds-col slds-size_6-of-12">    
+                            <div class="slds-form-element">
+                                <lightning:textarea aura:id="commentField" name="noteComment"
+                                                    label="Notes" value="{!v.rec.unknown_custom_field}"/>
+                                
+                            </div> </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slds-col slds-size_1-of-1" style="text-align:center;margin-top:20px;">
+                <lightning:button variant="brand" label="Save" onclick="{!c.saveRecovery}" />
+            </div> </div></div>
+</aura:component>

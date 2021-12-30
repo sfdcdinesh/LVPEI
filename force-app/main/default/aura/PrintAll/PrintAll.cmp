@@ -1,0 +1,156 @@
+<aura:component controller="PlacementController" implements="force:appHostable,lightning:actionOverride,lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+
+    <aura:attribute name="placement" type="Placement__c" default="{'sObjecttype' : 'Placement__c'}"/>
+    <aura:attribute name="request" type="Request__c" default="{'sObjecttype' : 'Request__c'}"/>
+    <aura:attribute name="runningUser" type="sObject"/>
+    <force:recordData aura:id="forceRecord"
+                      recordId="{!v.recordId}"
+                      targetFields="{!v.placement}"
+                      layoutType="FULL"
+                      mode="EDIT" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+   
+     <!--Lookup Tab Index-->
+        <aura:handler name="oSelectedRecordEvent" event="c:selectedsObjectRecordEvent" action="{!c.focusToNextField}"/>
+   
+    <aura:attribute name="tissuelookup" type="sObject" default="{}"/>
+    <aura:attribute name="contactlookup" type="sObject" default="{}"/>
+    <aura:attribute name="requestlookup" type="sObject" default="{}"/>
+    <aura:attribute name="tocontactlookup" type="sObject" default="{}"/>
+    <aura:attribute name="CompletedBylookup" type="sObject" default="{}"/>
+    <aura:attribute name="selectedreports" type="list"/>
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <aura:attribute name="viewreport" type="boolean" default="false"/>
+    <aura:attribute name="ref" type="Referral__c" default="{}"/>
+   
+    <aura:attribute name="tissuedetail" type="boolean"/>
+    <aura:attribute name="isOpened" type="boolean" default="false"/>  
+   
+    <aura:attribute name="RcdId" type="Id"/>  
+    <aura:attribute name="tisRtrn" type="Tissue_Return__c" default="{'sobjectType': 'Tissue_Return__c'}" />
+    <aura:attribute name="tissueReturn" type="Tissue_Return__c" default="{}"/>
+    <aura:attribute name="plac" type="Placement__c" default="{}"/>
+    <aura:attribute name="tissueId" type="string"/>    
+    <aura:attribute name="ETDateTime" type="Datetime"/>    
+    <aura:attribute name="lookupList" type="Map" default="{}"/>
+    <aura:attribute name="RequestType" type="string"/>
+    <aura:registerEvent name="tissueReturnId" type="c:TissueReturnId"/>
+    <aura:handler name="tissueReturnId" event="c:TissueReturnId" action="{!c.getTissueReturnId}"/>
+   
+    <aura:attribute name="GenreList" type="List" default="[]" description="Genre Picklist Values"/>
+    <aura:attribute name="selectedGenreList" type="List" default="[]" description="Selected Genre Picklist Values"/>
+                   
+                    <!--RIGHT SIDE FIELDS STARTS-->
+                   
+                   
+                       
+                            <div class="slds-col slds-size_6-of-12">
+                                <div class="slds-form-element">
+                                    <ui:button label="Print All Forms" press="{!c.openModel}" class="slds-button slds-button_brand slds-m-top_large printbtn"/>            
+                                    <aura:if isTrue="{!v.isOpen}">                                        
+                                        <!--###### MODAL BOX Start######-->                                        
+                                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                            <div class="slds-modal__container">
+                                                <!-- ###### MODAL BOX HEADER Start ######-->
+                                                <aura:if isTrue="{!v.viewreport}">
+                                                    <header class="slds-modal__header">
+                                                        <lightning:buttonIcon iconName="utility:close"
+                                                                              onclick="{! c.closeModel }"
+                                                                              alternativeText="close"
+                                                                              variant="bare-inverse"
+                                                                              class="slds-modal__close"/>                                                        
+                                                               <div class="slds-form-element" style="text-align:left;">
+                                                            <div class="slds-form-element__control">    
+                                                                <div class="check-div">
+                                                                    <ui:inputCheckbox aura:id="TDForm" name="tissue"/>
+                                                                    <label class="slds-checkbox__label" for="tissue">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span class="slds-form-element__label">Tissue Detail Form</span>
+                                                                    </label>
+                                                                </div></div></div>
+                                                       
+                                                        <div class="slds-form-element" style="text-align:left;">
+                                                            <div class="slds-form-element__control">    
+                                                                <div class="check-div">                                                          
+                                                                    <ui:inputCheckbox aura:id="ARForm"  name="advreactf"/>                                                            
+                                                                    <label class="slds-checkbox__label" for="advreactf">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span class="slds-form-element__label">Adverse Reaction Form</span>
+                                                                    </label>
+                                                                </div></div></div>
+                                                       
+                                                        <div class="slds-form-element" style="text-align:left;">
+                                                            <div class="slds-form-element__control">    
+                                                                <div class="check-div">                                                            
+                                                                    <ui:inputCheckbox aura:id="ACForm"  name="attcorsurf"/>                                                            
+                                                                    <label class="slds-checkbox__label" for="attcorsurf">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span class="slds-form-element__label">Attention Corneal Surgeon</span>
+                                                                    </label>
+                                                                </div></div></div>
+                                                        <div class="slds-form-element" style="text-align:left;">
+                                                            <div class="slds-form-element__control">    
+                                                                <div class="check-div">                                                            
+                                                                    <ui:inputCheckbox aura:id="RIForm"  name="recinfof"/>                                                            
+                                                                    <label class="slds-checkbox__label" for="recinfof">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span class="slds-form-element__label">Recipient Information Form</span>
+                                                                    </label>
+                                                                </div></div></div>
+                                                        <div class="slds-form-element" style="text-align:left;">
+                                                            <div class="slds-form-element__control">    
+                                                                <div class="check-div">                                                            
+                                                                    <ui:inputCheckbox aura:id="RQForm"  name="reqf"/>                                                            
+                                                                    <label class="slds-checkbox__label" for="reqf">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span class="slds-form-element__label">Request Form</span>
+                                                                    </label>
+                                                                </div></div></div>
+                                                        <div class="slds-form-element" style="text-align:left;">
+                                                            <div class="slds-form-element__control">    
+                                                                <div class="check-div">                                                            
+                                                                    <ui:inputCheckbox aura:id="SLForm" name="shipping"/>                                                            
+                                                                    <label class="slds-checkbox__label" for="shipping">
+                                                                        <span class="slds-checkbox_faux"></span>
+                                                                        <span class="slds-form-element__label">Shipment label</span>
+                                                                    </label>
+                                                                </div></div></div><ui:button label="View Report" press="{!c.viewReport}" class="slds-button slds-button--neutral slds-button slds-button_brand"/>                                                    
+                                                    </header>
+                                                    <!--###### MODAL BOX BODY Part Start######-->
+                                                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                                        <!--Body Content-->
+                                                    </div>                                  
+                                                    <aura:set attribute="else">
+                                                        <header class="slds-modal__header">
+                                                            <lightning:buttonIcon iconName="utility:close"
+                                                                                  onclick="{! c.closeModel }"
+                                                                                  alternativeText="close"
+                                                                                  variant="bare-inverse"
+                                                                                  class="slds-modal__close"/>
+                                                            <div class="slds-float--left" style="cursor:pointer" onclick="{!c.goback}">
+                                                                <lightning:icon class="slds-show" aura:id="goback" iconName="utility:back" size="x-small" alternativeText="Go back"/>
+                                                            </div>
+                                                            <div class="slds-float--right" style="cursor:pointer" onclick="{!c.downloadpdf}">
+                                                                <lightning:icon class="slds-show" aura:id="getpdf" iconName="doctype:pdf" size="medium" alternativeText="Download PDF"/>                                                                
+                                                            </div>                                                            
+                                                        </header>
+                                                        <!--###### MODAL BOX BODY Part Start######-->
+                                                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">                                                            
+                                                            <c:ViewReports referralrecord="{!v.ref}"/>
+                                                            <!--Body Content-->
+                                                        </div>                            
+                                                    </aura:set>
+                                                </aura:if>
+                                               
+                                            </div>
+                                        </section>                                                                                                                            
+                                        <div class="slds-backdrop slds-backdrop_open"></div>
+                                        <!--###### MODAL BOX Part END Here ######-->                                            
+                                    </aura:if>
+                                </div>
+                              <!--  <div class="slds-form-element">
+                                    <lightning:input type="string" name="owner" value="{!v.runningUser.LastName+' '+v.runningUser.FirstName}" label="Owner" disabled="true" required="true"/>
+                                </div> -->
+                       
+                                </div>
+</aura:component>

@@ -1,0 +1,234 @@
+<aura:component controller="PlacementController">
+    <aura:attribute name="ref" type="Referral__c" default="{}" />
+   <!-- <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> -->
+    <aura:attribute name="referralrecord" type="Referral__c" default="{}"/>
+    <table>
+        <thead>
+        </thead>
+        <tbody>
+            <tr style="border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;">
+                <th colspan="4" style="text-align: center;">
+                    <b>Tissue Detail Form</b>
+                </th>
+            </tr>
+            <tr style="color:white;background:black;border-left: 2px solid black;border-right: 2px solid black;">
+                <th colspan="4" style="text-align: center;">
+                    <b>DONOR INFORMATION</b>
+                </th>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td>
+                    <b>Donor ID#:</b>
+                </td>
+                <td>
+                    <b>{!v.referralrecord.Id}</b>
+                </td>
+                <td>
+                    Weight Unit
+                </td>
+                <td>
+                    {!v.referralrecord.Weight_Unit__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td>
+                    First Name
+                </td>
+                <td>
+                    {!v.referralrecord.First_Name__c}
+                </td>
+                <td>
+                    Weight
+                </td>
+                <td>
+                    {!v.referralrecord.Weight__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td>
+                    Last Name
+                </td>
+                <td>
+                    {!v.referralrecord.Last_Name__c}
+                </td>
+                <td>
+                    Is weight Estimated or Reported?
+                </td>
+                <td>
+                    {!v.referralrecord.Is_weight_Estimated_or_Reported__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td>
+                    Age
+                </td>
+                <td>
+                    {!v.referralrecord.Age_of_Donor__c}
+                </td>
+                <td>
+                    Medical Record Number
+                </td>
+                <td>
+                    {!v.referralrecord.Medical_Record_Number__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td>
+                    Religion
+                </td>
+                <td>
+                    {!v.referralrecord.Religion__c}
+                </td>
+                <td>
+                    Primary Cause of Death
+                </td>
+                <td>
+                    {!v.referralrecord.Primary_Cause_of_Death__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td>
+                    Height Unit
+                </td>
+                <td>
+                    {!v.referralrecord.Height_Unit__c}
+                </td>
+                <td>
+                    Circumstances Leading to Death
+                </td>
+                <td>
+                    {!v.referralrecord.Circumstances_Leading_to_Death__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td>
+                    Height
+                </td>
+                <td>
+                    {!v.referralrecord.Height__c}
+                </td>
+                <td>
+                    Attending physician
+                </td>
+                <td>
+                    {!v.referralrecord.Attending_physician__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td>
+                    Is Height Estimated or Reported?
+                </td>
+                <td>
+                    {!v.referralrecord.Is_Height_Estimated_or_Reported__c}
+                </td>
+                <td>
+                    Gender
+                </td>
+                <td>      
+                    {!v.referralrecord.Gender__c}
+                </td>
+            </tr>
+            <tr style="color:white;background:black;border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;">
+                <th colspan="4" style="text-align: center;">
+                    <b>MEDICAL SUMMARY</b>
+                </th>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td>
+                    Date/Time of Death
+                </td>
+                <td>
+                    {!v.referralrecord.Date_Time_of_Death__c}
+                </td>
+                <td>
+                    Medical/Ocular History
+                </td>
+                <td>
+                    {!v.referralrecord.Medical_Ocular_History__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td>
+                    Was the donor on a ventilator
+                </td>
+                <td>
+                    {!v.referralrecord.Was_the_donor_on_a_ventilator__c}
+                </td>
+                <td>
+                    Social and Behavioral History
+                </td>
+                <td>
+                    {!v.referralrecord.Social_and_Behavioral_History__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td>
+                    Duration of time on Ventilator if Yes
+                </td>
+                <td>
+                    {!v.referralrecord.Duration_of_time_on_Ventilator_if_Yes__c}
+                </td>
+                <td>
+                    Initially Suitable?
+                </td>
+                <td>
+                    {!v.referralrecord.Initially_Suitable__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td>
+                    Isolation
+                </td>
+                <td>
+                    {!v.referralrecord.Isolation__c}
+                </td>
+                <td>
+                    Suitability Explanation
+                </td>
+                <td>
+                    {!v.referralrecord.Suitability_Explanation__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td>
+                    IV Fluid given in last hour
+                </td>
+                <td>
+                    {!v.referralrecord.IV_Fluid_given_in_last_hour__c}
+                </td>
+                <td>
+                    Blood given in the last 48 hours
+                </td>
+                <td>
+                    {!v.referralrecord.Blood_given_in_the_last_48_hours__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td>
+                    Sign/symptoms of systemic infection
+                </td>
+                <td>
+                    {!v.referralrecord.Sign_symptoms_of_systemic_infection__c}
+                </td>
+                <td>
+                    Transferred from other facility
+                </td>
+                <td>
+                    {!v.referralrecord.Transferred_from_other_facility__c}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;">
+                <td>
+                    Facility Name
+                </td>
+                <td>
+                    {!v.referralrecord.Facility_Name__c}
+                </td>
+                <td>                    
+                </td>
+                <td>                    
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</aura:component>

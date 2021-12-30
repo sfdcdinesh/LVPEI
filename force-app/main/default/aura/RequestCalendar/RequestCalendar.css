@@ -1,0 +1,128 @@
+.THIS {
+    background-color: white;
+    
+}
+.THIS .slds-input {
+    background-color: lightblue;
+    
+}
+.THIS .slds-select {
+    background-color: lightblue;
+}
+.THIS .slds-page-header {
+    background: #f3f3f2;
+    border: 1px solid #ccc;
+    padding: 4px 10px;
+    margin-top: 10px;
+}
+.THIS.b {
+  width: 90px;
+}
+
+
+.THIS .slds-file-selector__text{
+    display:none!important;
+}
+
+.THIS .save-btn{
+    margin-top:20px;
+}
+
+.THIS .slds-p-around--medium {
+    border: 1px solid #ecebea;
+    background: #fff;
+}
+
+.THIS .tissuefomr-btn{
+    margin-top:20px;
+    
+}
+.THIS .custom-background {
+    background-color: white;
+}
+.THIS .cus_button {
+    background-color:#808080;
+    color:#fff;
+    width:auto;
+    height:32px;
+}
+.THIS .cus1_button {
+    /*border-color:#000000;*/
+    color: black;
+    width:auto;
+    height:30px;
+}
+.THIS .cus2_button {
+    color: white;
+    background-color: #07f152;
+    width:auto;
+    height:32px;
+}
+.THIS .cus3_button {
+    color: white;
+    background-color: red;
+    width:auto;
+    height:32px;
+}
+.THIS .cus4_button {
+    color: white;
+    background-color: #808080 !important;
+    width:auto;
+    height:30px;
+}
+.THIS .red {
+    background-color: red;
+}
+.THIS .white {
+    background-color: white;
+}
+.THIS .grey {
+    background-color: grey;
+}
+.THIS .lightgreen {
+    background-color: lightgreen;
+}
+.THIS.slds-spinner_container {
+    z-index: 10000;
+    position: fixed;
+}
+.THIS.grid-container {
+    display: grid;
+    grid-auto-columns: 1000px;
+}
+.THIS .tier-one {
+    background-color: yellow;
+}
+
+.THIS .tier-two {
+    background-color: grey;
+}
+
+.THIS .tier-three {
+    background-color:  #07F152;
+}
+.THIS .tier-four{
+    background-color: red;
+}
+.THIS .stickheader {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.THIS .stickheader2 {
+    position: sticky;
+    top: 55px;
+    z-index: 20;
+}
+.THIS .buttonmargin{
+    margin-top:20px;
+    
+}
+.THIS .datemargin{
+    margin-left:200px;
+    margin-top:-5px;
+    
+}
+.THIS .input {
+    width: 130px;
+}

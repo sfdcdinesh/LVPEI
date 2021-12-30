@@ -1,0 +1,33 @@
+.THIS .slds-page-header{
+background: #f3f3f2;
+border: 1px solid #ccc;
+padding: 4px 10px; 
+margin-top:10px;
+}
+.THIS .slds-text-heading--medium{
+ margin-top:20px;   
+}
+.THIS .cReferral .slds-p-around--medium {
+    border: 1px solid #ecebea;
+    background: #fff;
+}
+
+.THIS .slds-page-header--object-home {
+  padding-top: 10px;
+    padding-bottom: 5px;
+    text-align: center;
+    margin: 0 auto;
+    
+}
+.THIS .slds-m-left--large {
+    font-weight: 600;
+}
+
+.THIS .slds-p-around--medium {
+    border: 1px solid #ecebea;
+    background: #fff;
+}
+
+.THIS .penlight-exam .slds-form-element__label{
+    display:none;
+}

@@ -1,0 +1,46 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+	<aura:attribute name="oRecord" type="sObject" />
+        <aura:attribute name="IconName" type="string"/>
+    <!--Decleared By Sandy-->
+    <aura:attribute name="labeltoevent" type="String"/> 
+ 
+  <!--Register the component level event-->
+    <aura:registerEvent name="oSelectedRecordEvent" type="c:selectedsObjectRecordEvent"/>
+ 
+    <li role="presentation" class="slds-listbox__item" onclick="{!c.selectRecord}">
+        <span id="listbox-option-unique-id-01" class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option">
+              <span class="slds-media__figure">
+                  <span class="slds-icon_container" title="Description of icon when needed">
+                    <lightning:icon iconName="{!v.IconName}" class="slds-icon slds-icon_small" size="small" alternativeText="icon"/>
+                    <span class="slds-assistive-text">Description of icon</span>
+                  </span>
+              </span>    
+              <span class="slds-media__body">  
+                  <span class="slds-listbox__option-text slds-listbox__option-text_entity">{!v.oRecord.Name}</span>
+                  <aura:if isTrue="{!v.oRecord.Tissue_Suitability__c == 'Suitable'}">
+                         <div class="slds-listbox__option-meta slds-listbox__option-meta_entity"> 
+                        <aura:if isTrue="{!v.oRecord.PK__c == 'Yes'}">
+                            PK ;
+                         </aura:if>	 
+                        <aura:if isTrue="{!v.oRecord.EK__c == 'Yes'}"> 
+                            EK ;
+                         </aura:if>
+                        <aura:if isTrue="{!v.oRecord.KLA__c == 'Yes'}">
+                            KLA ;
+                         </aura:if>
+                        <aura:if isTrue="{!v.oRecord.Tectonic_Therapeutic__c == 'Yes'}">
+                            Tectonic/Therapeutic ;
+                         </aura:if>
+                        <aura:if isTrue="{!v.oRecord.ALK__c == 'Yes'}">
+                             ALK ;
+                         </aura:if>
+                        <aura:if isTrue="{!v.oRecord.K_Pro__c == 'Yes'}">
+                             K Pro ;
+                         </aura:if>
+                        </div>
+                   </aura:if>	
+          
+              </span>
+        </span>
+    </li>
+</aura:component>

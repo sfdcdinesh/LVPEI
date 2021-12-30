@@ -1,0 +1,5 @@
+<aura:event type="Component" description="Event template">
+    <aura:attribute name="tissue" type="Tissue_Evaluation__c"/>
+    <aura:attribute name="closeModal" type="Boolean" default="false"/>
+    <aura:attribute name="tissueId" type="string"/>
+</aura:event>

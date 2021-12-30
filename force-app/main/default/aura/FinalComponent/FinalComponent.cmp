@@ -1,0 +1,491 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="FinalListController">
+    <style>
+  
+        table tr td{
+        width:29%; 
+        /* width:7%;*/
+        white-space: normal!important;
+    word-break: break-all;
+        }
+        .tissue-tab tbody tr td{
+         width:7%!important;
+        }
+        html{
+        background:#fff;
+        }
+        .flexipageHeader{
+        display:none!important;
+        border:5px solid red;
+        }
+        .slds-brand-band{
+        background:#fff!important;
+        }
+        .slds-template_default.slds-brand-band:before{
+        background:#fff!important;
+        }
+        
+        .slds-template_default{
+        padding:0px;
+        }
+        .cFinalComponent.vshow, .oneFlexipage{
+        background:#fff;
+        }
+     .header-box{
+        background:#1b5297;
+        width:100%;
+        height:32px;
+        position:absolute;
+        top:0;
+        }
+      .slds-cell-fixed {
+    background-color: transparent;
+color: #fff;
+    padding: 8px;        
+        }
+         .fixed-position{
+          position: fixed;
+    width: 100%;
+    z-index: 9;
+          }
+   
+  .cFinalComponent .donor-details-box{
+    margin-top: 1rem;
+     position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 110px;
+    z-index:99;
+}
+.donor-details-box span{
+        font-weight:600;
+} 
+        
+.donor-details-box .uiOutputText{
+font-weight:normal!important;
+        }
+ .cFinalComponent .medical-pad{
+padding-top:124px;        
+        }
+ .workshett-table tr td{
+padding-left:10px!important; 
+font-size:12px;  
+width:32%;        
+        }
+.workshett-table tr th{
+padding-left:10px!important;
+font-size:12px;        
+width:32%;        
+        }  
+ .slds-th__action{
+        color:#000!important;
+        padding:0px!important;
+        height:auto!important;
+        }
+    </style>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="refEvent" event="c:GetReferral" action="{!c.getReferral}"/>
+    <aura:attribute name="referral" type="Referral__c"/>
+    <aura:handler name="GetRecoveryID" event="c:GetRecoveryID" action="{!c.getRecovery}"/>
+    <aura:attribute name="recovery" type="Recovery__c"/>
+    <aura:attribute name="ReferralList" type="Referral__c[]"/>
+    <aura:attribute name="referralName" type="String"/>
+    <aura:attribute name="RecoveryList" type="Recovery__c[]"/>
+    <aura:attribute name="MedicalRevList" type="Medical_Review__c[]"/>
+    <aura:attribute name="TissueList" type="Tissue_Evaluation__c[]"/>
+    <aura:attribute name="dislpayNext" type="Boolean" default="false"/>
+   <div class="vshow" aura:id="home">
+    
+   
+<div class="slds-grid slds-gutters  slds-wrap slds-m-left_medium slds-m-right_medium">        
+<div class="slds-col slds-size_1-of-1 slds-gutters slds-m-bottom_medium" style="margin-top:20px;"> 
+<lightning:button variant="brand" label="New" title="Brand action" onclick="{!c.gotopath}" class="new-btn" />   </div>
+    
+<div class="slds-col slds-size_6-of-12 slds-m-bottom_xx-large">
+ <div class="slds-table--header-fixed_container" style="height:200px;">
+    <div class="slds-scrollable_y" style="height:100%;">    
+<table id="example" class="slds-table slds-table_bordered slds-table--header-fixed" style="margin-top: 2%;">
+   <div class="header-box"></div> 
+        <thead>
+            <tr class="slds-text-title--caps">
+                <th scope="col">
+                    <div class="slds-truncate slds-cell-fixed" title="">Referral ID</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate slds-cell-fixed" title="">Referral Method</div>
+                </th>
+                                <th scope="col">
+                    <div class="slds-truncate slds-cell-fixed" title="">Referral Source</div>
+                </th>
+     
+                <th class="" scope="col">
+                        <div class="slds-truncate slds-cell-fixed" title="pdf" style="text-align:center;width:5%;"></div>
+                </th>
+
+           </tr>
+        </thead>
+       <tbody>
+         <aura:iteration items="{!v.ReferralList}" var="ref">
+                <tr>   
+                    <td data-label="Close Date">
+                        <div class="slds-truncate" title=""><a href="{!'/'+ref.Id}">{!ref.Name}</a></div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="slds-truncate" title="">{!ref.Referral_Method__c}</div>
+                    </td>
+                                        <td data-label="Close Date">
+                        <div class="slds-truncate" title="">{!ref.Referral_Source__c}</div>
+                    </td>
+                  
+                     <td data-label="Edit">                         
+                        <div class="slds-truncate" title="id9"  onclick="{!c.editRecord}" data-value="{!ref.Id}"><lightning:button type="submit" class="slds-button_brand slds-align_absolute-center" >Edit</lightning:button></div>
+                    </td>
+             </tr>
+            </aura:iteration>
+        </tbody>
+        </table> </div></div>
+    </div>
+<div class="slds-col slds-size_6-of-12 slds-m-bottom_xx-large">
+<div class="slds-table--header-fixed_container" style="height:200px;">
+    <div class="slds-scrollable_y" style="height:100%;">    
+<table id="example" class="tissue-tab slds-table slds-table_bordered slds-table--header-fixed" style="margin-top: 2%;">
+   <div class="header-box "></div> 
+        <thead>
+            <tr class="slds-text-title--caps">
+                <th scope="col">
+                    <div class="slds-truncate slds-cell-fixed" title="">Donor ID</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate slds-cell-fixed" title="">Tissue Recovery Date/Time </div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate slds-cell-fixed" style="padding-left:32px;" title="">Recovery Outcome</div>
+                </th>
+               <th class="" scope="col">
+                        <div class="slds-truncate slds-cell-fixed" title="pdf" style="text-align:center;width:5%;"></div>
+                </th>
+           </tr>
+        </thead>
+       <tbody>
+         <aura:iteration items="{!v.RecoveryList}" var="rec">
+                <tr>   
+                     <td data-label="Close Date">
+                         <div class="slds-truncate" title=""><a href="{!'/'+rec.Id}">{!rec.Name}</a></div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="slds-truncate" title=""><ui:outputDateTime aura:id="dt" value="{!rec.Tissue_recovery_date_time__c}" />
+</div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="slds-truncate" title="">{!rec.Recovery_outcome__c}</div>
+                    </td>
+                    <td data-label="Edit">                         
+                        <div class="slds-truncate" title="id9"  onclick="{!c.editRecoveryRecord}" data-value="{!rec.Id}"><lightning:button type="submit" class="slds-button_brand slds-align_absolute-center" >Edit</lightning:button></div>
+                    </td>
+             </tr>
+            </aura:iteration>
+        </tbody>
+        </table> </div></div>
+</div>
+   
+    
+ <div class="slds-col slds-size_6-of-12">
+  <div class="slds-table--header-fixed_container" style="height:200px;">
+    <div class="slds-scrollable_y" style="height:100%;">    
+<table id="example" class="slds-table slds-table_bordered slds-table--header-fixed" style="margin-top: 2%;">
+   <div class="header-box"></div> 
+        <thead>
+            <tr class="slds-text-title--caps">
+                <th scope="col">
+                    <div class="slds-truncate slds-cell-fixed" title="">Donor ID</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate slds-cell-fixed" title="">Tissue Imported</div>
+                </th>
+                 <th scope="col">
+                    <div class="slds-truncate slds-cell-fixed" title="">Donor Eligibility</div>
+                </th>
+                <th class="" scope="col">
+                        <div class="slds-truncate slds-cell-fixed" title="pdf" style="text-align:center;width:5%;"></div>
+                </th>
+           </tr>
+        </thead>
+       <tbody>
+       <aura:iteration items="{!v.MedicalRevList}" var="Mes">
+               <tr>   
+                    <td data-label="Close Date">
+                        <div class="slds-truncate" title=""><a href="{!'/'+Mes.Id}">{!Mes.Donor_Name_Id__c}</a></div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="slds-truncate" title="">{!Mes.Tissue_Imported__c}</div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="slds-truncate" title="">{!Mes.Donor_Eligibility__c}</div>
+                    </td>
+                   <td data-label="Edit">                         
+                        <div class="slds-truncate" title="id9"  onclick="{!c.editMedicalRecord}" data-value="{!Mes.Id}"><lightning:button type="submit" class="slds-button_brand slds-align_absolute-center" >Edit</lightning:button></div>
+                    </td>
+
+             </tr>
+            </aura:iteration>
+        </tbody>
+        </table> </div></div>
+    </div>
+<div class="slds-col slds-size_6-of-12">
+<div class="slds-table--header-fixed_container" style="height:200px;">
+    <div class="slds-scrollable_y" style="height:100%;">    
+<table id="example" class="slds-table slds-table_bordered slds-table--header-fixed" style="margin-top: 2%;">
+   <div class="header-box "></div> 
+        <thead>
+            <tr class="slds-text-title--caps">
+              <th scope="col">
+                    <div class="slds-truncate slds-cell-fixed" title="">Donor Id </div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate slds-cell-fixed" title="">Tissue Type</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate slds-cell-fixed" title="">Tissue Sub-Type</div>
+                </th>
+                <th class="" scope="col">
+                        <div class="slds-truncate slds-cell-fixed" title="pdf" style="text-align:center;width:5%;"></div>
+                </th>
+           </tr>
+        </thead>
+       <tbody>
+        <aura:iteration items="{!v.TissueList}" var="Tis">
+                <tr>   
+                    <td data-label="Close Date">
+                        <div class="slds-truncate" title=""><a href="{!'/'+Tis.Id}">{!Tis.Donor_ID__c}</a></div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="slds-truncate" title="">{!Tis.Tissue_Type__c}</div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="slds-truncate" title="">{!Tis.Tissue_Sub_Type__c}</div>
+                    </td>
+                    
+                    <td data-label="Edit">                         
+                        <div class="slds-truncate" title="id9"  onclick="{!c.editTissueRecord}" data-value="{!Tis.Id}"><lightning:button type="submit" class="slds-button_brand slds-align_absolute-center" >Edit</lightning:button></div>
+                    </td>
+                   
+             </tr>
+            </aura:iteration>
+        </tbody>
+    </table>
+</div>
+    
+    </div> </div> </div>
+       
+       
+</div>
+    <div aura:id="firstPath" class="vhide slds-is-fixed fixed-position">
+        
+        <article >
+            <div class="slds-path">
+                
+                <div class="slds-grid slds-m-top_xxx-small">
+                    <div class="slds-grid slds-path__scroller-container slds-align_absolute-center">
+                        
+                        <div class="slds-path__scroller" role="application">
+                            <div class="slds-path__scroller_inner">
+                                <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+                                    <li class="slds-path__item slds-is-current slds-is-active" role="presentation">
+                                        <a aria-selected="true" class="slds-path__link" href="javascript:void(0);" id="path-1" role="option" tabindex="0">
+                                            <span class="slds-path__title">Referral</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="slds-path__item slds-is-incomplete" role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-3" role="option" tabindex="-1">
+                                            <span class="slds-path__title">Recovery</span>
+                                        </a>
+                                    </li>
+                                    <li class="slds-path__item slds-is-incomplete" role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-4" role="option" tabindex="-1">
+                                            <span class="slds-path__title">Medical Review</span>
+                                        </a>
+                                    </li>
+                                    <li class="slds-path__item slds-is-incomplete" role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-4" role="option" tabindex="-1">
+                                            <span class="slds-path__title">Request</span>
+                                        </a>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <div aura:id="secondPath" class="vhide slds-is-fixed fixed-position">
+        <article >
+            
+            <div class="slds-path">
+                <div class="slds-grid slds-m-top_xxx-small">
+                    
+                    <div class="slds-grid slds-path__scroller-container slds-align_absolute-center" >
+                        <div class="slds-path__scroller" role="application">
+                            <div class="slds-path__scroller_inner">
+                                <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+                                    <li class="slds-path__item slds-is-complete" role="presentation">
+                                        <a aria-selected="true" class="slds-path__link" href="javascript:void(0);" id="path-2" role="option" tabindex="0">
+                                            <span class="slds-path__title">Referral</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="slds-path__item slds-is-current slds-is-active" role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-3" role="option" tabindex="-1">
+                                            <span class="slds-path__title">Recovery</span>
+                                        </a>
+                                    </li>
+                                    <li class="slds-path__item slds-is-incomplete" role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-4" role="option" tabindex="-1">
+                                            <span class="slds-path__title">Medical Review</span>
+                                        </a>
+                                    </li>
+                                    <li class="slds-path__item slds-is-incomplete" role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-4" role="option" tabindex="-1">
+                                            <span class="slds-path__title">Request</span>
+                                        </a>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </article>
+    </div>
+    <!--=============================-->
+    
+    <div aura:id="thirdPath" class="vhide slds-is-fixed fixed-position">
+        <article >
+            <div class="slds-path">
+                <div class="slds-grid slds-m-top_xxx-small slds-align_absolute-center">
+                    
+                    <div class="slds-grid slds-path__scroller-container">
+                        <div class="slds-path__scroller" role="application">
+                            <div class="slds-path__scroller_inner">
+                                <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+                                    <li class="slds-path__item slds-is-complete" role="presentation">
+                                        <a aria-selected="true" class="slds-path__link" href="javascript:void(0);" id="path-1" role="option" tabindex="0">
+                                            <span class="slds-path__title">Referral</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="slds-path__item slds-is-complete" role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-3" role="option" tabindex="-1">
+                                            <span class="slds-path__title">Recovery</span>
+                                        </a>
+                                    </li>
+                                    <li class="slds-path__item slds-is-current slds-is-active" role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-4" role="option" tabindex="-1">
+                                            <span class="slds-path__title">Medical Review</span>
+                                        </a>
+                                    </li>
+                                    <li class="slds-path__item slds-is-incomplete" role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-4" role="option" tabindex="-1">
+                                            <span class="slds-path__title">Request</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </article>
+        
+    </div>
+    <div aura:id="FourthPath" class="vhide slds-is-fixed fixed-position">
+        <article >
+            <div class="slds-path">
+                <div class="slds-grid slds-m-top_xxx-small slds-align_absolute-center">
+                     
+                    <div class="slds-grid slds-path__scroller-container">
+                        <div class="slds-path__scroller" role="application">
+                            <div class="slds-path__scroller_inner">
+                                <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+                                    <li class="slds-path__item slds-is-complete" role="presentation">
+                                        <a aria-selected="true" class="slds-path__link" href="javascript:void(0);" id="path-1" role="option" tabindex="0">
+                                            <span class="slds-path__title">Referral</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="slds-path__item slds-is-complete" role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-3" role="option" tabindex="-1">
+                                            <span class="slds-path__title">Recovery</span>
+                                        </a>
+                                    </li>
+                                    <li class="slds-path__item slds-is-complete " role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-4" role="option" tabindex="-1">
+                                            <span class="slds-path__title">Medical Review</span>
+                                        </a>
+                                    </li>
+                                    <li class="slds-path__item slds-is-current slds-is-active" role="presentation">
+                                        <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-4" role="option" tabindex="-1">
+                                            <span class="slds-path__title">Request</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+    
+    
+     <div aura:id="fifthsession" class="vhide ">
+        <c:Referral aura:id="Refcmp"/> 
+        <div class="slds-container--large slds-align_absolute-center" style="text-align:center;">
+           <aura:if isTrue="{!v.dislpayNext}">
+            <div aura:id="Next" class="slds-show slds-col slds-size_1-of-1">
+                <lightning:button variant="brand" label="Next" title="Brand action" onclick="{!c.clinkOnNextdonor}" class="next-btn" />
+            </div> 
+           </aura:if>     
+       </div>
+    </div>   
+    <div aura:id="sessiontwo" class="vhide">
+        <c:Recovery aura:id="RecoveryCmp"/>
+        <div class="slds-container--large slds-align_absolute-center" style="text-align:center;">
+            <div class="slds-col slds-size_1-of-1">     
+                <lightning:button variant="brand" label="Previous" title="Brand action" onclick="{!c.gobacktoRefferal}" class="previ-btn" />
+                <aura:if isTrue="{!v.dislpayNext}">
+                <lightning:button variant="brand" label="Next" title="Brand action" onclick="{!c.gotoMedical}"  class="next-btn"/>
+                </aura:if>
+                </div></div> </div>   
+    
+    <div aura:id="sessionthree" class="vhide">
+       <c:MedicalReview aura:id="MedRevCmp"/>
+        <div class="slds-container--large slds-align_absolute-center" style="text-align:center;">
+        <div class="slds-col slds-size_1-of-1">       
+        <lightning:button variant="brand" label="Previous" title="Brand action" onclick="{!c.gobacktoRecovery}" class="previ-btn" />
+        <aura:if isTrue="{!v.dislpayNext}">
+        <lightning:button variant="brand" label="Next" title="Brand action" onclick="{!c.gotoEMR}" class="next-btn" />   
+        </aura:if>  
+        </div> </div> </div>
+    <div aura:id="sessionfour" class="vhide">
+         <c:Request/>
+   <div class="slds-container--large slds-align_absolute-center" style="text-align:center;">
+        <div class="slds-col slds-size_1-of-1">        
+                <lightning:button variant="brand" label="Previous" title="Brand action" onclick="{!c.gobacktoMedical}"  class="previ-btn"/>
+       </div></div></div>
+    
+        <div aura:id="sessionSix" class="vhide">
+        <!-- <c:Donor/>-->
+   <div class="slds-container--large slds-align_absolute-center" style="text-align:center;">
+        <div class="slds-col slds-size_1-of-1">        
+                <lightning:button variant="brand" label="Previous" title="Brand action" onclick="{!c.gobacktoMedical}"  class="previ-btn"/>
+       </div></div></div>
+
+</aura:component>

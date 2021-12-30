@@ -1,0 +1,465 @@
+<apex:page id="tisd" controller="TissueDetailFormPrintController" renderAs="PDF"  cache="true" showheader="false" sidebar="false" applyHtmlTag="false" docType="html-5.0" standardStylesheets="false" >
+    
+ <html>    
+ <head>         
+<style>
+
+ @page :left {
+         margin-left: 0.5cm;
+         margin-right: 0.5cm;
+    margin-top: 3%;
+      }
+     
+
+      @page :right {
+         margin-left: 0.5cm;
+         margin-right: 0.5cm;
+      }    
+    </style> 
+     </head> 
+
+           
+    
+<div class="satya" style="margin:0;padding:0;">   
+  <div style="width:100%;float:left;">
+     <div  style="text-align:left;padding-bottom:25px;width:30%;float:left;">
+        <apex:variable var="imageVar" value="{!branch.LogoName__c}"/> 
+        <apex:image alt="cloud" title="cloud" url="{!URLFOR($Resource.LVPEI_Logos, imageVar)}"/>
+        <!-- <img src="{!$Resource.RIEB_PDF}" style="width:55%;text-align:left"/> -->
+    </div>
+      
+   <div style="width:30%;float:left;font-size:12px;">
+        <div><b>Tissue ID :</b> 
+            
+                    {!tissue.Name}
+             <br/>
+         <b>Tissue Type :</b>
+             
+                   {!tissue.Tissue_Type__c} 
+            
+       </div>
+      </div>  
+      
+     <div style="width:30%;float:right;font-size:13px;float:right;">
+        {!branch.Address__c}
+        <!-- Ramayamma International Eye Bank,<br/>
+        Kallam Anji Reddy Campus,<br/>
+        L V Prasad Marg,<br/>
+        Hyderabad, 500034,<br/>
+        +91 040 68102514,<br/>
+        Telangana. -->
+    </div>     
+    </div>   
+    <table style="width:100%;float:left;margin-top:10px;border:1px solid #000;">       
+        <tbody>
+            <tr style="border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;">
+                <th colspan="4" style="text-align: center;" >
+                    <b>TISSUE DETAIL FORM</b>     
+                </th>
+            </tr>
+            <tr style="color:white;background:black;">
+                <th colspan="4" style="text-align: center;font-size:14px;" >
+                    <b>DONOR INFORMATION</b>
+                </th>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td width="20%" align="left" valign="top" style="font-size:12px;">
+                    <b>Donor ID# :</b>
+                </td>
+                <td width="38%" style="font-size:12px;">
+                    <b> {!tissue.Donor_ID__c} </b>
+              </td>
+                <td width="20%" align="left" style="font-size:12px;" >
+                    Primary COD :
+                </td>
+                <td width="22%" style="font-size:12px;" valign="bottom">
+                   {!tissue.Recovery__r.Referral__r.Primary_Cause_of_Death__c}    
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td align="left" style="font-size:12px;">
+                    <b>Tissue ID# :</b>
+                </td>
+                <td style="font-size:13px;">
+                    <b> {!tissue.Name}  </b>
+              </td>
+                <td align="left" style="font-size:12px;">
+                    Ocular Cooling :
+                </td>
+                <td style="font-size:13px;">
+                    <apex:outputText value="{0,date,dd/MM/yyyy HH:mm a}">
+                                <apex:param value="{!tissue.Recovery__r.Date_Time_body_subjected_to_cooling__c+offset}"/> 
+                            </apex:outputText>
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td align="left" style="font-size:12px;">
+                    <b>Tissue Type :</b>
+                </td>
+                <td style="font-size:12px;">
+                    <b> {!tissue.Tissue_Type__c} </b>
+              </td>
+                <td align="left" style="font-size:12px;">
+                    Total Cooling Time:
+                </td>
+                <td style="font-size:12px;">
+                    {!tissue.Medical_Review__r.Total_Cooling_Time__c} hrs
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td align="left" style="font-size:12px;">
+                    Donor Age :
+                </td>
+                <td style="font-size:13px;">
+                    {!tissue.Recovery__r.Referral__r.Age_of_Donor__c} Years
+                </td>
+  
+                <td align="left" style="font-size:12px;">
+                    Excision Tech :
+                </td>
+                <td style="font-size:13px;">
+                    {!tissue.Recovery__r.Recovery_completed_by__r.Name}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td align="left" style="font-size:12px;">
+                    Donor Gender :
+                </td>
+                <td style="font-size:13px;">
+                   {!tissue.Recovery__r.Referral__r.Gender__c} 
+              </td>
+  
+                <td align="left" style="font-size:12px;">
+                    Preservation Tech :
+                </td>
+                <td style="font-size:13px;">
+                    {!tissue.Recovery__r.Cornea_preserved_by__r.Name} 
+                </td>
+            </tr>
+           <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td align="left" style="font-size:12px;">
+                    Date/Time of Death :
+                </td>
+                <td style="font-size:12px;">
+                    
+                 <apex:outputText value="{0,date,dd/MM/yyyy HH:mm a}">
+                                <apex:param value="{!tissue.Recovery__r.Referral__r.Date_Time_of_Death__c+offset}"/> 
+                            </apex:outputText> 
+                    
+                </td>
+  
+                <td align="left" style="font-size:12px;">
+                    Storage Media :
+                </td>
+                <td style="font-size:12px;">
+                  {!tissue.Preservation_Medium__c}   
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td align="left" style="font-size:12px;">
+                    Date/Time of in Situ :
+                </td>
+                <td style="font-size:12px;">
+                    
+                 <apex:outputText value="{0,date,dd/MM/yyyy HH:mm a}">
+                                <apex:param value="{!tissue.Recovery__r.Tissue_recovery_date_time__c+offset}"/>
+                            </apex:outputText> 
+                    
+                </td>
+  
+                <td align="left" style="font-size:12px;">
+                    Media Lot# :
+                </td>
+                <td style="font-size:12px;">
+                    {!tissue.Media_Lot__c}   
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td align="left" style="font-size:11px;">
+                    Date/Time of Preservation :
+                </td>
+                <td style="font-size:12px;">
+                    
+                 <apex:outputText value="{0,date,dd/MM/yyyy HH:mm a}">
+                             <apex:param value="{!tissue.Recovery__r.Cornea_Preservation_Date_Time__c+offset}"/> 
+                            </apex:outputText> 
+                    
+                </td>
+  
+                <td align="left" style="font-size:12px;">
+                    Tissue Expiry Date :
+                </td>
+                <td style="font-size:12px;">
+                    
+                      <apex:outputText value="{0,date,dd/MM/yyyy HH:mm a}">
+                                <apex:param value="{!tissue.Tissue_Expiry_Date__c+offset}"/> 
+                            </apex:outputText> 
+                    
+                </td>
+            </tr>
+            
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <td align="left" style="font-size:11px;">
+                    Death to Preservation Time :
+                </td>
+                <td style="font-size:12px;">
+                    {!tissue.Medical_Review__r.Death_To_Cornea_Preservation_Time1__c} hrs  
+                </td>
+          </tr>
+           
+            <tr style="color:white;background:black;border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;">
+                <th colspan="4" style="text-align: center;font-size:14px;">
+                    <b>MEDICAL SUMMARY</b>
+                </th>
+            </tr>
+            
+                <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <td align="left" style="font-size:12px;">
+                     Social and Behavioural History :
+                </td>
+                <td style="font-size:12px;">
+                  {!tissue.Recovery__r.Referral__r.Social_and_Behavioral_History__c}     
+                </td>
+          </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <td align="left" style="font-size:12px;">
+                    Medical/Surgical History :
+                </td>
+                <td style="font-size:12px;" colspan="4">
+                   {!tissue.Medical_Review__r.MedicalSurgical_History_Summary__c}  
+                </td>
+          </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td align="left" style="font-size:12px;">
+                    Donor on a Respirator :
+                </td>
+                <td style="font-size:12px;">
+                {!tissue.Recovery__r.Referral__r.Was_the_donor_on_a_ventilator__c}  
+              </td>
+                <td align="left" style="font-size:12px;">
+                    Amount of Time on a Respirator :
+                </td>
+                <td style="font-size:12px;">
+                 {!tissue.Recovery__r.Referral__r.Duration_of_time_on_Ventilator_if_Yes__c} 
+                </td>
+            </tr>
+            <tr style="color:white;background:black;border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;">
+                <th colspan="4" style="text-align: center;font-size:14px;">
+                    <b>PATHOLOGY</b>
+                </th>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <td align="left" style="font-size:13px;">
+                    Autopsy :
+                </td>
+                <td style="font-size:13px;">
+                    {!tissue.Recovery__r.Referral__r.Autopsy_Completed__c} 
+                </td>
+          </tr>
+            <tr style="color:white;background:black;border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;">
+                <th colspan="4" style="text-align: center;font-size:14px;">
+                    <b>CORNEA EVALUATION</b>
+                </th>
+            </tr>
+              <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            	
+                <td align="left" style="font-size:12px;">
+                    Tissue Suitability :  
+                </td>
+                  
+                <td style="font-size:12px;">
+                    {!tissue.Tissue_Suitability__c} 
+                </td>  
+  
+                <td align="left" style="font-size:12px;">
+                    Approved Usages :
+                </td>
+                <td style="font-size:12px;">
+                    {!approvedUsages}
+                </td>
+          </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td align="left" style="font-size:12px;">
+                    Clear Zone :
+                </td>
+                <td style="font-size:12px;">
+                   {!tissue.Clear_Zone__c}   
+              </td>
+                <td align="left" style="font-size:12px;">
+                    Lens Type :
+                </td>
+                <td style="font-size:12px;">
+                 {!tissue.Lens__c} 
+                </td>
+            </tr>
+         <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td colspan="2" style="font-size:12px;">
+                    Cell Count (per mm2) : {!tissue.Cell_Count_per_mm2__c} <span style="margin-left:50px"># of Fields : {!tissue.Number_of_Fields__c}</span> 
+                </td>
+                
+                       <td colspan="3" style="font-size:12px;">
+                    Pachymetry (microns) : {!tissue.Pachymetry_microns__c} 
+                </td>
+             
+            </tr>
+    
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <td colspan="3" align="left" valign="top" style="font-size:12px;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="5">
+                  <tr>
+                    <td align="left" valign="top" style="font-size:12px;">
+                   <b> Epithelium : </b>
+                </td>
+                                             
+                      
+                <td width="75%" align="left" valign="top" style="font-size:12px;text-transform:uppercase;">{!EpitheliumValues} </td>
+                      
+                  </tr>
+                  <tr>
+                    <td align="left" style="font-size:12px;">
+                        <b> Stroma : </b>
+                </td>
+                    <td width="59%" align="left" valign="top" style="font-size:12px;text-transform:uppercase;">{!StromaValues} </td>
+                          
+                  </tr>
+                  <tr>
+                     <th align="left" style="font-size:12px;">
+                    Descemet's :
+                </th>
+                    <td width="59%" align="left" valign="top" style="font-size:12px;text-transform:uppercase;">{!DescemetValues} </td>
+                        
+                  </tr>
+                  <tr>
+                    <td align="left" style="font-size:12px;">
+                    <strong>Endothelium : </strong></td>
+                    <td width="59%" align="left" valign="top" style="font-size:12px;text-transform:uppercase;">{!EndotheliumValues} </td>
+                      
+                  </tr>
+                  <tr>
+                    <td align="left" style="font-size:12px;"> <strong>Additonal : </strong></td>
+                    <td width="59%" align="left" valign="top" style="font-size:12px;text-transform:uppercase;">{!AdditionalValues} </td>
+                  </tr>
+                  <tr>
+                    <td align="left" style="font-size:12px;">
+                    Comments :
+                </td>
+                <td style="font-size:12px;">
+                 {!tissue.Evaluations_Comments__c}
+                </td>
+                  </tr>
+                </table></td>
+                <td align="left"><!-- <apex:repeat value="{!attachments}" var="image"> -->
+                <apex:image url="/servlet/servlet.FileDownload?file={!attachment.Id}" style="width:300px;height:200px;"/>
+
+          <!--  </apex:repeat>  --></td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td align="left" style="font-size:12px;">
+                    Slit Lamp Date/Time :
+                </td>
+                <td style="font-size:12px;">
+                    
+                   <apex:outputText value="{0,date,dd/MM/yyyy HH:mm}">
+                      <!-- <apex:param value="{!tissue.Slit_Lamp_Date_Time__c+offset}"/>--> 
+                       <apex:param value="{!tissue.Outcome_Slit_Lamp_Date_Time__c+offset}"/>
+                            </apex:outputText> 
+                    
+                </td>
+                <td align="left" style="font-size:12px;">
+                    Slit Lamp Tech :
+                </td>
+                <td style="font-size:13px;">
+                 {!tissue.Slit_Lamp_Eval_Performed_By__r.Name}
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td align="left" style="font-size:12px;">
+                    Specular Date/Time :
+                </td>
+                <td style="font-size:12px;">
+                    
+               <apex:outputText value="{0,date,dd/MM/yyyy HH:mm}">
+                              <apex:param value="{!tissue.Specular_Evaluation_Date_Time__c+offset}"/> 
+                            </apex:outputText> 
+                    
+                </td>
+                <td align="left" style="font-size:12px;">
+                     Specular Tech :
+                </td>
+                <td style="font-size:12px;">
+                   {!tissue.Specular_Evaluation_Done_By__r.Name}
+                </td>
+            </tr>
+           <tr style="color:white;background:black;border-top: 2px solid black;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black;">
+                <th colspan="4" style="text-align: center;font-size:14px;font-family:sans-serif;">
+                    <b>SEROLOGY</b>
+                </th>
+            </tr>
+              <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td align="left" style="font-size:12px;">
+                    HBsAg : {!tissue.Medical_Review__r.HBsAG__c}
+                </td>
+                <td style="font-size:12px;">
+                    HCV : {!tissue.Medical_Review__r.HCV__c} 
+               </td>
+                <td style="font-size:12px;">
+                    HIV I/II : {!tissue.Medical_Review__r.HIV_I_II__c} 
+                </td>
+                <td style="font-size:12px;">
+                 Syphilis : {!tissue.Medical_Review__r.Syphilis__c} 
+                </td>
+            </tr>
+
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <td colspan="3" align="left" style="font-size:12px;">
+                    This Tissue was Reviewed and Released for Transplant Based on the Following :
+                </td>
+                
+                
+            </tr>
+              <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                
+                <td colspan="3" style="font-size:12px;">
+                     {!medicalReviewOutcome} 
+                </td>
+            </tr>
+           <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+                <td align="left" style="font-size:12px;">
+                    Final Release By :
+                </td>
+                <td style="font-size:12px;">
+                     {!tissue.Final_Review_and_Approval_Done_By__r.Name} 
+                    <!--{!tissue.CreatedBy.FirstName} {!tissue.CreatedBy.LastName} -->
+              </td>
+                <td style="font-size:12px;width:28%">
+                    Final Release Date/Time :
+                </td>
+                <td style="font-size:12px;">
+
+                    <apex:outputText value="{0,date,dd/MM/yyyy HH:mm}">
+                                <apex:param value="{!tissue.Date_Time_of_Final_Review_Approval__c+offset}"/> 
+                            </apex:outputText> 
+                    
+                </td>
+            </tr>
+            <tr style="border-left: 2px solid black;border-right: 2px solid black;">
+            
+                <td align="left" style="font-size:12px;width:25%">
+                    Registered with THOA :
+                </td>
+                <td style="font-size:12px;">
+                 Yes
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+      </html> 
+</apex:page>

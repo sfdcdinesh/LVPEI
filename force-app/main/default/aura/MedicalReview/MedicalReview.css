@@ -1,0 +1,91 @@
+.THIS.donor-details-box {
+    margin-top: 1rem;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 75px;
+    z-index: 99;
+    
+}
+
+.THIS .slds-truncate{
+ white-space:normal;
+    width: 100%;
+    left: 0;
+    font-size: 11px;    
+}
+.THIS .slds-cell-fixed{
+ background-color: transparent;
+}
+.THIS.medical-pad{
+    padding-top:89px;
+   
+}
+
+.THIS .slds-table th {
+      white-space: normal;
+       
+}
+.THIS .slds-icon_small{
+    width: 1rem;
+    height: 1rem;
+}
+.THIS .slds-text-title_caps th{
+    background: #0070d2;
+    color: #fff;
+}
+
+.THIS .slds-icon-text-error {
+    fill: rgb(112, 110, 107);
+}
+
+.THIS .warning-pop{
+    position: absolute;
+    left: 50%;
+}
+
+.THIS .slds-page-header--object-home {
+    padding-top: 10px;
+    padding-bottom: 5px;
+    text-align: center;
+    margin: 0 auto;
+} 
+
+.THIS .slds-m-left--large {
+    font-weight: 600;
+}
+
+.THIS .slds-page-header {
+    background: #f3f3f2;
+    border: 1px solid #ccc;
+    padding: 4px 10px;
+    margin-top: 10px;
+}
+.THIS .slds-table_cell-buffer tr>td:first-child{
+    padding-left:2rem;
+}
+               
+.THIS .slds-p-around--medium {
+    border: 1px solid #ecebea;
+    background: #fff;
+}
+.THIS .new-tissue th{
+background:#005fb2;
+padding:5px 0px;
+color:#fff;
+text-align:center;    
+    
+}
+.THIS .slds-table td{
+white-space: normal;    
+}
+
+
+
+.THIS .slds-modal__container {
+    margin: 0 auto;
+    width: 70%;
+    max-width: 90rem;
+    min-width: 20rem;
+}
