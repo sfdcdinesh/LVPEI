@@ -13,7 +13,7 @@ node {
 	environment {
 
     PATH = "C:\\WINDOWS\\SYSTEM32"
-
+	}
 	
 
     println 'KEY IS' 
